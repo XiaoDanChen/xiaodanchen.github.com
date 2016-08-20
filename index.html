@@ -252,7 +252,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/19/hello-world/">Glide 框架及源码解析</a>
+      <a class="article-title" href="/2016/08/19/hello-world/">跟着源码学设计：Glide 框架及源码解析</a>
     </h1>
   
 
@@ -263,7 +263,7 @@
       
           
         <p> 近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。<br> 有疑问的同学，可以留言，也可以加博主QQ:1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Glide-简介"><a href="#Glide-简介" class="headerlink" title="Glide 简介"></a>Glide 简介</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内存和快速流畅加载方面具有较好体现。究其内部机制，发现其优良性能得益于以下几点：</div><div class="line">* 与使用环境生命周期相绑定：RequestManagerFragment &amp; SupportRequestManagerFragment</div><div class="line">* 内存的三级缓存池：LruMemoryResources, ActiveResources, BitmapPool</div><div class="line">* 内存复用机制：BitmapPool</div></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
 <h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
