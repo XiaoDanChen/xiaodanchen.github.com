@@ -5,19 +5,19 @@
   
   <title>跟着源码学设计：Glide 框架及源码解析 | Hello World!</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。 有疑问的同学，可以留言，也可以加博主QQ:1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
-Quick StartGlide 简介1234Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内">
+  <meta name="description" content="近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以留言，也可以加博主QQ:1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
+Quick StartGlide 简介Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内存和快速流">
 <meta property="og:type" content="article">
 <meta property="og:title" content="跟着源码学设计：Glide 框架及源码解析">
 <meta property="og:url" content="http://yoursite.com/2016/08/19/hello-world/index.html">
 <meta property="og:site_name" content="Hello World!">
-<meta property="og:description" content="近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。 有疑问的同学，可以留言，也可以加博主QQ:1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
-Quick StartGlide 简介1234Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内">
-<meta property="og:updated_time" content="2016-08-20T04:20:33.250Z">
+<meta property="og:description" content="近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以留言，也可以加博主QQ:1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
+Quick StartGlide 简介Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内存和快速流">
+<meta property="og:updated_time" content="2016-08-20T04:23:59.272Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跟着源码学设计：Glide 框架及源码解析">
-<meta name="twitter:description" content="近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。 有疑问的同学，可以留言，也可以加博主QQ:1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
-Quick StartGlide 简介1234Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内">
+<meta name="twitter:description" content="近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以留言，也可以加博主QQ:1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
+Quick StartGlide 简介Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内存和快速流">
   
     <link rel="alternative" href="/atom.xml" title="Hello World!" type="application/atom+xml">
   
@@ -268,8 +268,13 @@ Quick StartGlide 简介1234Glide是一个性能优良的第三方网络图片加
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p> 近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。<br> 有疑问的同学，可以留言，也可以加博主QQ:1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Glide-简介"><a href="#Glide-简介" class="headerlink" title="Glide 简介"></a>Glide 简介</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内存和快速流畅加载方面具有较好体现。究其内部机制，发现其优良性能得益于以下几点：</div><div class="line">* 与使用环境生命周期相绑定：RequestManagerFragment &amp; SupportRequestManagerFragment</div><div class="line">* 内存的三级缓存池：LruMemoryResources, ActiveResources, BitmapPool</div><div class="line">* 内存复用机制：BitmapPool</div></pre></td></tr></table></figure>
+        <p> 近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以留言，也可以加博主QQ:1404562848。<br>如果这篇文章对大家学习Glide有帮助，还望大家多多转载。</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Glide-简介"><a href="#Glide-简介" class="headerlink" title="Glide 简介"></a>Glide 简介</h3><p>Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内存和快速流畅加载方面具有较好体现。究其内部机制，发现其优良性能得益于以下几点：</p>
+<ul>
+<li>与使用环境生命周期相绑定：RequestManagerFragment &amp; SupportRequestManagerFragment</li>
+<li>内存的三级缓存池：LruMemoryResources, ActiveResources, BitmapPool</li>
+<li>内存复用机制：BitmapPool</li>
+</ul>
 <p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
 <h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
@@ -288,7 +293,7 @@ Quick StartGlide 简介1234Glide是一个性能优良的第三方网络图片加
         <p><span>本文标题:</span><a href="/2016/08/19/hello-world/">跟着源码学设计：Glide 框架及源码解析</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 行者 的个人博客">行者</a></p>
         <p><span>发布时间:</span>2016年08月19日 - 15时44分</p>
-        <p><span>最后更新:</span>2016年08月20日 - 12时20分</p>
+        <p><span>最后更新:</span>2016年08月20日 - 12时23分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2016/08/19/hello-world/" title="跟着源码学设计：Glide 框架及源码解析">http://yoursite.com/2016/08/19/hello-world/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/08/19/hello-world/　　作者: 行者" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
