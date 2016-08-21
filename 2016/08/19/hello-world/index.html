@@ -13,11 +13,13 @@ Quick StartGlide 简介Glide是一个性能优良的第三方网络图片加载�
 <meta property="og:site_name" content="Hello World!">
 <meta property="og:description" content="近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以留言，也可以加博主QQ:1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
 Quick StartGlide 简介Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内存和快速流">
-<meta property="og:updated_time" content="2016-08-21T07:15:05.041Z">
+<meta property="og:image" content="http://yoursite.com/file:///D:/Hexo/source/hello-world/GlideLifeCycle.png">
+<meta property="og:updated_time" content="2016-08-21T08:11:59.463Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跟着源码学设计：Glide 框架及源码解析">
 <meta name="twitter:description" content="近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以留言，也可以加博主QQ:1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
 Quick StartGlide 简介Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内存和快速流">
+<meta name="twitter:image" content="http://yoursite.com/file:///D:/Hexo/source/hello-world/GlideLifeCycle.png">
   
     <link rel="alternative" href="/atom.xml" title="Hello World!" type="application/atom+xml">
   
@@ -289,8 +291,18 @@ Quick StartGlide 简介Glide是一个性能优良的第三方网络图片加载�
 <li>Glide内部定义封装了RequestManagerFragment 和 SupportRequestManagerFragment两种fragment用来实现绑定。该两类Fragment不具有任何的界面和其他功能，通过入口传入的context获取到的fm绑定生命周期到context上。</li>
 <li>Glide内部的生命周期绑定机制进一步通过基于xxxxRequestManagerFragment 的生命周期接口的回调实现。</li>
 </ul>
-<h4 id="关键类"><a href="#关键类" class="headerlink" title="关键类"></a>关键类</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">RequestManagerRetriever：</div><div class="line">* 根据context获取fm;</div><div class="line">* 获取xxxxRequestManagerFragment实例</div><div class="line">* 获取RequestManager实例</div><div class="line">* 相互绑定xxxxRequestManagerFragment和RequestManager</div></pre></td></tr></table></figure>
-<p>  ​</p>
+<h4 id="话不多说，先扔张类图："><a href="#话不多说，先扔张类图：" class="headerlink" title="话不多说，先扔张类图："></a>话不多说，先扔张类图：</h4><p><img src="file:///D:/Hexo/source/hello-world/GlideLifeCycle.png" alt=""></p>
+<h4 id="关键类"><a href="#关键类" class="headerlink" title="关键类"></a>关键类</h4><ul>
+<li><p>RequestManagerRetriever：</p>
+<ul>
+<li>根据context获取fm;</li>
+<li>获取xxxxRequestManagerFragment实例</li>
+<li>获取RequestManager实例</li>
+<li>相互绑定xxxxRequestManagerFragment和RequestManager</li>
+</ul>
+<p>​</p>
+</li>
+</ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
 <h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
@@ -308,7 +320,7 @@ Quick StartGlide 简介Glide是一个性能优良的第三方网络图片加载�
         <p><span>本文标题:</span><a href="/2016/08/19/hello-world/">跟着源码学设计：Glide 框架及源码解析</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 行者 的个人博客">行者</a></p>
         <p><span>发布时间:</span>2016年08月19日 - 15时44分</p>
-        <p><span>最后更新:</span>2016年08月21日 - 15时15分</p>
+        <p><span>最后更新:</span>2016年08月21日 - 16时11分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2016/08/19/hello-world/" title="跟着源码学设计：Glide 框架及源码解析">http://yoursite.com/2016/08/19/hello-world/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/08/19/hello-world/　　作者: 行者" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -327,7 +339,7 @@ Quick StartGlide 简介Glide是一个性能优良的第三方网络图片加载�
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Glide-简介"><span class="toc-number">1.1.</span> <span class="toc-text">Glide 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生命周期绑定"><span class="toc-number">1.2.</span> <span class="toc-text">生命周期绑定</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Q-为什么要绑定生命周期（有什么优点）？"><span class="toc-number">1.2.1.</span> <span class="toc-text">Q:为什么要绑定生命周期（有什么优点）？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#绑定原理"><span class="toc-number">1.2.2.</span> <span class="toc-text">绑定原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#关键类"><span class="toc-number">1.2.3.</span> <span class="toc-text">关键类</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Glide-简介"><span class="toc-number">1.1.</span> <span class="toc-text">Glide 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生命周期绑定"><span class="toc-number">1.2.</span> <span class="toc-text">生命周期绑定</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Q-为什么要绑定生命周期（有什么优点）？"><span class="toc-number">1.2.1.</span> <span class="toc-text">Q:为什么要绑定生命周期（有什么优点）？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#绑定原理"><span class="toc-number">1.2.2.</span> <span class="toc-text">绑定原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#话不多说，先扔张类图："><span class="toc-number">1.2.3.</span> <span class="toc-text">话不多说，先扔张类图：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#关键类"><span class="toc-number">1.2.4.</span> <span class="toc-text">关键类</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
 </div>
 <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
 
