@@ -283,7 +283,6 @@
 <li>Glide内部定义封装了RequestManagerFragment 和 SupportRequestManagerFragment两种fragment用来实现绑定。该两类Fragment不具有任何的界面和其他功能，通过入口传入的context获取到的fm绑定生命周期到context上。</li>
 <li>Glide内部的生命周期绑定机制进一步通过基于xxxxRequestManagerFragment 的生命周期接口的回调实现。</li>
 </ul>
-<h4 id="话不多说，先扔张类图："><a href="#话不多说，先扔张类图：" class="headerlink" title="话不多说，先扔张类图："></a>话不多说，先扔张类图：</h4><p><img src="/img/GlideLifeCycle.png" alt="GlideLifeCycle"></p>
 <h4 id="关键类"><a href="#关键类" class="headerlink" title="关键类"></a>关键类</h4><ul>
 <li><p>RequestManagerRetriever：</p>
 <ul>
@@ -297,6 +296,7 @@
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<p><img src="/img/GlideLifeCycle.png" alt="GlideLifeCycle"></p>
 <h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
 <h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
