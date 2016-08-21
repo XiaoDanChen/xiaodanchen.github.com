@@ -269,8 +269,23 @@
 <li>内存的三级缓存池：LruMemoryResources, ActiveResources, BitmapPool</li>
 <li>内存复用机制：BitmapPool</li>
 </ul>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+<p>更多的关于Glide的介绍网上资料很多，在这里不再赘述，下文中将针对Glide的内部机制展开说明。</p>
+<h3 id="生命周期绑定"><a href="#生命周期绑定" class="headerlink" title="生命周期绑定"></a>生命周期绑定</h3><h4 id="Q-为什么要绑定生命周期（有什么优点）？"><a href="#Q-为什么要绑定生命周期（有什么优点）？" class="headerlink" title="Q:为什么要绑定生命周期（有什么优点）？"></a>Q:为什么要绑定生命周期（有什么优点）？</h4><ul>
+<li>可以实现网络请求根据生命周期而暂停、执行、恢复、释放等</li>
+<li>可以实现资源比如图片的自动释放</li>
+<li>降低了内存的压力</li>
+<li>降低了内存泄漏的风险</li>
+</ul>
+<h4 id="绑定原理"><a href="#绑定原理" class="headerlink" title="绑定原理"></a>绑定原理</h4><ul>
+<li>原理的知识基础：Android中FragmentManager（简称fm）中的所有fragment（通过fm.add()添加进来）都与fm所处的context环境具有生命周期的绑定。例如：我们的activity中的fragment的生命周期自动通过activity的fm和activity的生命周期绑定。</li>
+</ul>
+<ul>
+<li>Glide内部定义封装了RequestManagerFragment 和 SupportRequestManagerFragment两种fragment用来实现绑定。该两类Fragment不具有任何的界面和其他功能，通过入口传入的context获取到的fm绑定生命周期到context上。</li>
+<li>Glide内部的生命周期绑定机制进一步通过基于xxxxRequestManagerFragment 的生命周期接口的回调实现。</li>
+</ul>
+<h4 id="关键类"><a href="#关键类" class="headerlink" title="关键类"></a>关键类</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">RequestManagerRetriever：</div><div class="line">* 根据context获取fm;</div><div class="line">* 获取xxxxRequestManagerFragment实例</div><div class="line">* 获取RequestManager实例</div><div class="line">* 相互绑定xxxxRequestManagerFragment和RequestManager</div></pre></td></tr></table></figure>
+<p>  ​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
 <h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
