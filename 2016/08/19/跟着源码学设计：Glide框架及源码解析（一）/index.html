@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>跟着源码学设计：Glide 框架及源码解析（一） | Hello World!</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Android,Java,Material Design,用户体验,设计,减肥" />
+  
+
+  <meta name="description" content="近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跟着源码学设计：Glide 框架及源码解析（一）">
+<meta property="og:url" content="http://yoursite.com/2016/08/19/跟着源码学设计：Glide框架及源码解析（一）/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/">
+<meta property="og:image" content="http://yoursite.com/hello-world/img/GlideLifeCycle.png">
+<meta property="og:image" content="http://yoursite.com/hello-world/img/GlideLifeCycleCallBack.png">
+<meta property="og:updated_time" content="2016-08-21T14:31:41.064Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跟着源码学设计：Glide 框架及源码解析（一）">
+<meta name="twitter:description" content="近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/">
+<meta name="twitter:image" content="http://yoursite.com/hello-world/img/GlideLifeCycle.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="http://www.android-doc.com/"
+            target="_self"
+            >
+            Android Doc
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="http://www.jcodecraeer.com/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Glide-简介"><span class="toc-text">Glide 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么要绑定生命周期（有什么优点）？"><span class="toc-text">为什么要绑定生命周期（有什么优点）？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#绑定原理"><span class="toc-text">绑定原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#话不多说，先来张类图"><span class="toc-text">话不多说，先来张类图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关键类：RequestManagerRetriever-单例模式-："><span class="toc-text">关键类：RequestManagerRetriever(单例模式)：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关键类：xxxxRequestManagerFragment-绑定context的生命周期"><span class="toc-text">关键类：xxxxRequestManagerFragment(绑定context的生命周期)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关键类：ActivityFragmentLifecycle"><span class="toc-text">关键类：ActivityFragmentLifecycle</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关键类：RequestManager"><span class="toc-text">关键类：RequestManager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生命周期时序图"><span class="toc-text">生命周期时序图</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-跟着源码学设计：Glide框架及源码解析（一）" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">跟着源码学设计：Glide 框架及源码解析（一）</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.08.19</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>行者</span>
+        </span>
+      
+
+      
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="https://xiaodanchen.github.io//2016/08/19/跟着源码学设计：Glide框架及源码解析（一）/#disqus_thread"></a>
+        </span>
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。<br>如果这篇文章对大家学习Glide有帮助，还望大家多多转载。<br>（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/2016/08/19/hello-world/" target="_blank" rel="external">https://xiaodanchen.github.io/2016/08/19/hello-world/</a> ）</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Glide-简介"><a href="#Glide-简介" class="headerlink" title="Glide 简介"></a>Glide 简介</h3><p>Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内存和快速流畅加载方面具有较好体现。究其内部机制，发现其优良性能得益于以下几点：</p>
+<ul>
+<li>与使用环境生命周期相绑定：RequestManagerFragment &amp; SupportRequestManagerFragment</li>
+<li>内存的三级缓存池：LruMemoryResources, ActiveResources, BitmapPool</li>
+<li>内存复用机制：BitmapPool</li>
+</ul>
+<p>更多的关于Glide的介绍网上资料很多，在这里不再赘述，下文中将针对Glide的内部机制展开说明。</p>
+<h3 id="为什么要绑定生命周期（有什么优点）？"><a href="#为什么要绑定生命周期（有什么优点）？" class="headerlink" title="为什么要绑定生命周期（有什么优点）？"></a>为什么要绑定生命周期（有什么优点）？</h3><ul>
+<li>可以实现网络请求根据生命周期而暂停、执行、恢复、释放等</li>
+<li>可以实现资源比如图片的自动释放</li>
+<li>降低了内存的压力</li>
+<li>降低了内存泄漏的风险</li>
+</ul>
+<h3 id="绑定原理"><a href="#绑定原理" class="headerlink" title="绑定原理"></a>绑定原理</h3><ul>
+<li>原理的知识基础：Android中FragmentManager（简称fm）中的所有fragment（通过fm.add()添加进来）都与fm所处的context环境具有生命周期的绑定。例如：我们的activity中的fragment的生命周期自动通过activity的fm和activity的生命周期绑定。</li>
+</ul>
+<ul>
+<li>Glide内部定义封装了RequestManagerFragment 和 SupportRequestManagerFragment两种fragment用来实现绑定。该两类Fragment不具有任何的界面和其他功能，通过入口传入的context获取到的fm绑定生命周期到context上。</li>
+<li>Glide内部的生命周期绑定机制进一步通过基于xxxxRequestManagerFragment 的生命周期接口的回调实现。</li>
+</ul>
+<h3 id="话不多说，先来张类图"><a href="#话不多说，先来张类图" class="headerlink" title="话不多说，先来张类图"></a>话不多说，先来张类图</h3><p><img src="/hello-world/img/GlideLifeCycle.png" alt="Glide生命周期绑定机制类图"></p>
+<h3 id="关键类：RequestManagerRetriever-单例模式-："><a href="#关键类：RequestManagerRetriever-单例模式-：" class="headerlink" title="关键类：RequestManagerRetriever(单例模式)："></a>关键类：RequestManagerRetriever(单例模式)：</h3><ul>
+<li>根据context获取fm;</li>
+<li>获取xxxxRequestManagerFragment实例</li>
+<li>获取RequestManager实例</li>
+<li>相互绑定xxxxRequestManagerFragment和RequestManager</li>
+<li>xxxxRequestManagerFragment绑定到context生命周期</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Note: 根据context类型，获取fm</div><div class="line"> */</div><div class="line">@TargetApi(Build.VERSION_CODES.HONEYCOMB)</div><div class="line"> public RequestManager get(Activity activity) &#123;</div><div class="line">   <span class="keyword">if</span> (Util.isOnBackgroundThread() || Build.VERSION.SDK_INT &lt; Build.VERSION_CODES.HONEYCOMB) &#123;</div><div class="line">     <span class="built_in">return</span> get(activity.getApplicationContext());</div><div class="line">   &#125; <span class="keyword">else</span> &#123;</div><div class="line">     assertNotDestroyed(activity);</div><div class="line">     android.app.FragmentManager fm = activity.getFragmentManager();</div><div class="line">     <span class="built_in">return</span> fragmentGet(activity, fm);</div><div class="line">   &#125;</div><div class="line"> &#125;</div><div class="line"> </div><div class="line">/**</div><div class="line"> * Note: new RequestManager(context,lifecycle,RequestManagerTreeNode)中，绑定了lifecycle;</div><div class="line"> * current.setRequestManager(requestManager):requestManager绑定到fragment</div><div class="line"> */</div><div class="line"> @TargetApi(Build.VERSION_CODES.HONEYCOMB)</div><div class="line"> RequestManager fragmentGet(Context context, android.app.FragmentManager fm) &#123;</div><div class="line">   RequestManagerFragment current = getRequestManagerFragment(fm);</div><div class="line">   RequestManager requestManager = current.getRequestManager();</div><div class="line">   <span class="keyword">if</span> (requestManager == null) &#123;</div><div class="line">     requestManager = new RequestManager(context, current.getLifecycle(),current.getRequestManagerTreeNode());</div><div class="line">     current.setRequestManager(requestManager);</div><div class="line">   &#125;</div><div class="line">   <span class="built_in">return</span> requestManager;</div><div class="line"> &#125;</div><div class="line">  </div><div class="line">/**</div><div class="line"> * Note: fm.beginTransaction().add(current, FRAGMENT_TAG): fragment绑定context生命周期</div><div class="line"> */</div><div class="line"> @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)</div><div class="line"> RequestManagerFragment getRequestManagerFragment(final android.app.FragmentManager fm) &#123;</div><div class="line">   RequestManagerFragment current = (RequestManagerFragment) fm.findFragmentByTag(FRAGMENT_TAG);</div><div class="line">   <span class="keyword">if</span> (current == null) &#123;</div><div class="line">     current = pendingRequestManagerFragments.get(fm);</div><div class="line">     <span class="keyword">if</span> (current == null) &#123;</div><div class="line">       current = new RequestManagerFragment();</div><div class="line">       pendingRequestManagerFragments.put(fm, current);</div><div class="line">       fm.beginTransaction().add(current, FRAGMENT_TAG).commitAllowingStateLoss();</div><div class="line">       handler.obtainMessage(ID_REMOVE_FRAGMENT_MANAGER, fm).sendToTarget();</div><div class="line">     &#125;</div><div class="line">   &#125;</div><div class="line">   <span class="built_in">return</span> current;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<h3 id="关键类：xxxxRequestManagerFragment-绑定context的生命周期"><a href="#关键类：xxxxRequestManagerFragment-绑定context的生命周期" class="headerlink" title="关键类：xxxxRequestManagerFragment(绑定context的生命周期)"></a>关键类：xxxxRequestManagerFragment(绑定context的生命周期)</h3><ul>
+<li>内部绑定一个RequestManager对象;</li>
+<li>内部绑定一个ActivityFragmentLifecycle对象</li>
+<li>在生命周期的回调中调用ActivityFragmentLifecycle的相应生命周期方法</li>
+<li>RequestManager通过注册到ActivityFragmentLifecycle的lifecycleListeners集合实现生命周期绑定</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">private final ActivityFragmentLifecycle lifecycle;</div><div class="line">private RequestManager requestManager;</div><div class="line"> </div><div class="line">public <span class="function"><span class="title">RequestManagerFragment</span></span>() &#123;</div><div class="line">	this(new ActivityFragmentLifecycle());</div><div class="line">&#125;</div><div class="line"> </div><div class="line">RequestManagerFragment(ActivityFragmentLifecycle lifecycle) &#123;</div><div class="line">	this.lifecycle = lifecycle;</div><div class="line">&#125;</div><div class="line">  </div><div class="line">/**</div><div class="line">* Sets the current &#123;@link com.bumptech.glide.RequestManager&#125;.</div><div class="line">* @param requestManager The request manager to use.</div><div class="line">*/</div><div class="line">public void <span class="built_in">set</span>RequestManager(RequestManager requestManager) &#123;</div><div class="line">	this.requestManager = requestManager;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">/**</div><div class="line">* 生命周期：Glide通过xxxxRequestManagerFragment的生命周期回调实现内部生命周期回调</div><div class="line">*/</div><div class="line">@Override</div><div class="line">public void <span class="function"><span class="title">onStart</span></span>() &#123;</div><div class="line">  super.onStart();</div><div class="line">  lifecycle.onStart();</div><div class="line">&#125;</div><div class="line"> </div><div class="line">@Override</div><div class="line">public void <span class="function"><span class="title">onStop</span></span>() &#123;</div><div class="line">  super.onStop();</div><div class="line">  lifecycle.onStop();</div><div class="line">&#125;</div><div class="line"> </div><div class="line">@Override</div><div class="line">public void <span class="function"><span class="title">onDestroy</span></span>() &#123;</div><div class="line">  super.onDestroy();</div><div class="line">  lifecycle.onDestroy();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="关键类：ActivityFragmentLifecycle"><a href="#关键类：ActivityFragmentLifecycle" class="headerlink" title="关键类：ActivityFragmentLifecycle"></a>关键类：ActivityFragmentLifecycle</h3><ul>
+<li>管理同一个xxxxRequestManagerFragment分支下的所有LifecycleListener（具有生命周期）</li>
+<li>被xxxxRequestManagerFragment生命周期接口回调</li>
+<li>遍历回调所有LifecycleListener生命周期接口</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * A &#123;@link com.bumptech.glide.manager.Lifecycle&#125; implementation <span class="keyword">for</span> tracking and notifying listeners of</div><div class="line"> * &#123;@link android.app.Fragment&#125; and &#123;@link android.app.Activity&#125; lifecycle events.</div><div class="line"> */</div><div class="line">class ActivityFragmentLifecycle implements Lifecycle &#123;</div><div class="line">    private final Set&lt;LifecycleListener&gt; lifecycleListeners =</div><div class="line">            Collections.newSetFromMap(new WeakHashMap&lt;LifecycleListener, Boolean&gt;());</div><div class="line">    private boolean isStarted;</div><div class="line">    private boolean isDestroyed;</div><div class="line">  </div><div class="line">    @Override</div><div class="line">    public void addListener(LifecycleListener listener) &#123;</div><div class="line">        lifecycleListeners.add(listener);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (isDestroyed) &#123;</div><div class="line">            listener.onDestroy();</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isStarted) &#123;</div><div class="line">            listener.onStart();</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            listener.onStop();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">  </div><div class="line">    void <span class="function"><span class="title">onStart</span></span>() &#123;</div><div class="line">        isStarted = <span class="literal">true</span>;</div><div class="line">        <span class="keyword">for</span> (LifecycleListener lifecycleListener : Util.getSnapshot(lifecycleListeners)) &#123;</div><div class="line">            lifecycleListener.onStart();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">  </div><div class="line">    void <span class="function"><span class="title">onStop</span></span>() &#123;</div><div class="line">        isStarted = <span class="literal">false</span>;</div><div class="line">        <span class="keyword">for</span> (LifecycleListener lifecycleListener : Util.getSnapshot(lifecycleListeners)) &#123;</div><div class="line">            lifecycleListener.onStop();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">  </div><div class="line">    void <span class="function"><span class="title">onDestroy</span></span>() &#123;</div><div class="line">        isDestroyed = <span class="literal">true</span>;</div><div class="line">        <span class="keyword">for</span> (LifecycleListener lifecycleListener : Util.getSnapshot(lifecycleListeners)) &#123;</div><div class="line">            lifecycleListener.onDestroy();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="关键类：RequestManager"><a href="#关键类：RequestManager" class="headerlink" title="关键类：RequestManager"></a>关键类：RequestManager</h3><ul>
+<li>RequestManager被绑定于xxxxRequestManagerFragment</li>
+<li>RequestManager实现了LifecycleListener接口</li>
+<li>RequestManager注册给xxxxRequestManagerFragment的ActivityFragmentLifecycle</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">public RequestManager(Context context, Lifecycle lifecycle, RequestManagerTreeNode treeNode) &#123;</div><div class="line">        this(context, lifecycle, treeNode, new RequestTracker(), new ConnectivityMonitorFactory());</div><div class="line">    &#125;</div><div class="line"> </div><div class="line"> RequestManager(Context context, final Lifecycle lifecycle, RequestManagerTreeNode treeNode,</div><div class="line"> RequestTracker requestTracker, ConnectivityMonitorFactory factory) &#123;</div><div class="line">   this.context = context.getApplicationContext();</div><div class="line">   this.lifecycle = lifecycle;</div><div class="line">   this.treeNode = treeNode;</div><div class="line">   this.requestTracker = requestTracker;</div><div class="line">   this.glide = Glide.get(context);</div><div class="line">   this.optionsApplier = new OptionsApplier();</div><div class="line"> </div><div class="line">  ConnectivityMonitor connectivityMonitor = factory.build(context,</div><div class="line">  new RequestManagerConnectivityListener(requestTracker));</div><div class="line"> </div><div class="line">  <span class="keyword">if</span> (Util.isOnBackgroundThread()) &#123;</div><div class="line">    new Handler(Looper.getMainLooper()).post(new <span class="function"><span class="title">Runnable</span></span>() &#123;</div><div class="line">      @Override</div><div class="line">      public void <span class="function"><span class="title">run</span></span>() &#123;</div><div class="line">          lifecycle.addListener(RequestManager.this);</div><div class="line">      &#125;</div><div class="line">    &#125;);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">  	lifecycle.addListener(this);</div><div class="line">  &#125;</div><div class="line">  lifecycle.addListener(connectivityMonitor);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="生命周期时序图"><a href="#生命周期时序图" class="headerlink" title="生命周期时序图"></a>生命周期时序图</h3><p><img src="/hello-world/img/GlideLifeCycleCallBack.png" alt="Glide生命周期绑定机制时序图"></p>
+<p>（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/2016/08/19/hello-world/" target="_blank" rel="external">原文链接</a>）</p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持XiaoDanChen</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="http://www.android-doc.com/"
+              target="_self"
+              >
+              Android Doc
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="http://www.jcodecraeer.com/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://yoursite.com/2016/08/19/跟着源码学设计：Glide框架及源码解析（一）/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
