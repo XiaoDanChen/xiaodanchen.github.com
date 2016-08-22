@@ -15,18 +15,18 @@
     <meta name="keywords" content="Android,Java,Material Design,用户体验,设计,减肥" />
   
 
-  <meta name="description" content="近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/">
+  <meta name="description" content="前言近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.i">
 <meta property="og:type" content="article">
 <meta property="og:title" content="跟着源码学设计：Glide 框架及源码解析（一）">
 <meta property="og:url" content="http://yoursite.com/2016/08/19/跟着源码学设计：Glide框架及源码解析（一）/index.html">
 <meta property="og:site_name" content="Hello World!">
-<meta property="og:description" content="近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/">
+<meta property="og:description" content="前言近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.i">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/GlideLifeCycle.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/GlideLifeCycleCallBack.png">
-<meta property="og:updated_time" content="2016-08-21T14:31:41.064Z">
+<meta property="og:updated_time" content="2016-08-22T06:46:26.261Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跟着源码学设计：Glide 框架及源码解析（一）">
-<meta name="twitter:description" content="近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/">
+<meta name="twitter:description" content="前言近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.i">
 <meta name="twitter:image" content="http://yoursite.com/hello-world/img/GlideLifeCycle.png">
 
   
@@ -124,7 +124,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Glide-简介"><span class="toc-text">Glide 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么要绑定生命周期（有什么优点）？"><span class="toc-text">为什么要绑定生命周期（有什么优点）？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#绑定原理"><span class="toc-text">绑定原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#话不多说，先来张类图"><span class="toc-text">话不多说，先来张类图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关键类：RequestManagerRetriever-单例模式-："><span class="toc-text">关键类：RequestManagerRetriever(单例模式)：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关键类：xxxxRequestManagerFragment-绑定context的生命周期"><span class="toc-text">关键类：xxxxRequestManagerFragment(绑定context的生命周期)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关键类：ActivityFragmentLifecycle"><span class="toc-text">关键类：ActivityFragmentLifecycle</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关键类：RequestManager"><span class="toc-text">关键类：RequestManager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生命周期时序图"><span class="toc-text">生命周期时序图</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Glide-简介"><span class="toc-text">Glide 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么要绑定生命周期（有什么优点）？"><span class="toc-text">为什么要绑定生命周期（有什么优点）？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#绑定原理"><span class="toc-text">绑定原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#话不多说，先来张类图"><span class="toc-text">话不多说，先来张类图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关键类：RequestManagerRetriever-单例模式-："><span class="toc-text">关键类：RequestManagerRetriever(单例模式)：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关键类：xxxxRequestManagerFragment-绑定context的生命周期"><span class="toc-text">关键类：xxxxRequestManagerFragment(绑定context的生命周期)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关键类：ActivityFragmentLifecycle"><span class="toc-text">关键类：ActivityFragmentLifecycle</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关键类：RequestManager"><span class="toc-text">关键类：RequestManager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生命周期时序图"><span class="toc-text">生命周期时序图</span></a></li></ol>
   </div>
 
 
@@ -162,7 +162,7 @@
 
   <div class="article-content">
     
-      <p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。<br>如果这篇文章对大家学习Glide有帮助，还望大家多多转载。<br>（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/2016/08/19/hello-world/" target="_blank" rel="external">https://xiaodanchen.github.io/2016/08/19/hello-world/</a> ）</p>
+      <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。<br>如果这篇文章对大家学习Glide有帮助，还望大家多多转载。<br>（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/2016/08/19/hello-world/" target="_blank" rel="external">https://xiaodanchen.github.io/2016/08/19/hello-world/</a> ）</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Glide-简介"><a href="#Glide-简介" class="headerlink" title="Glide 简介"></a>Glide 简介</h3><p>Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内存和快速流畅加载方面具有较好体现。究其内部机制，发现其优良性能得益于以下几点：</p>
 <ul>
 <li>与使用环境生命周期相绑定：RequestManagerFragment &amp; SupportRequestManagerFragment</li>
