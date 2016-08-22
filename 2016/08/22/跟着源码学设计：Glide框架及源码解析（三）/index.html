@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>跟着源码学设计：Glide框架及源码解析（三） | Hello World!</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Android,Java,Material Design,用户体验,设计,减肥" />
+  
+
+  <meta name="description" content="前言
+近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。
+本篇是Glide框架及源码解析的第三篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
+往期文章：
+跟着源码学设计：Glide框架及源码解析（一）跟着源码学设计：Glide框架及源码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跟着源码学设计：Glide框架及源码解析（三）">
+<meta property="og:url" content="http://yoursite.com/2016/08/22/跟着源码学设计：Glide框架及源码解析（三）/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="前言
+近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。
+本篇是Glide框架及源码解析的第三篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
+往期文章：
+跟着源码学设计：Glide框架及源码解析（一）跟着源码学设计：Glide框架及源码">
+<meta property="og:image" content="http://yoursite.com/hello-world/img/MemoryCacheManager.png">
+<meta property="og:image" content="http://yoursite.com/hello-world/img/inbitmap_null.png">
+<meta property="og:image" content="http://yoursite.com/hello-world/img/inbitmap.png">
+<meta property="og:image" content="http://yoursite.com/hello-world/img/ActiveCache.png">
+<meta property="og:updated_time" content="2016-08-22T12:21:31.145Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跟着源码学设计：Glide框架及源码解析（三）">
+<meta name="twitter:description" content="前言
+近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。
+本篇是Glide框架及源码解析的第三篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
+往期文章：
+跟着源码学设计：Glide框架及源码解析（一）跟着源码学设计：Glide框架及源码">
+<meta name="twitter:image" content="http://yoursite.com/hello-world/img/MemoryCacheManager.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="http://www.android-doc.com/"
+            target="_self"
+            >
+            Android Doc
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="http://www.jcodecraeer.com/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Glide内存缓存机制"><span class="toc-text">Glide内存缓存机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BitmapPool的内存复用机制"><span class="toc-text">BitmapPool的内存复用机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#使用inbitmap前，内存占用情况"><span class="toc-text">使用inbitmap前，内存占用情况</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用inbitmap后，内存占用情况"><span class="toc-text">使用inbitmap后，内存占用情况</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ActiveResourceCache的设计（怎么做用？为什么采用弱引用？）"><span class="toc-text">ActiveResourceCache的设计（怎么做用？为什么采用弱引用？）</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-跟着源码学设计：Glide框架及源码解析（三）" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">跟着源码学设计：Glide框架及源码解析（三）</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.08.22</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>行者</span>
+        </span>
+      
+
+      
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="https://xiaodanchen.github.io//2016/08/22/跟着源码学设计：Glide框架及源码解析（三）/#disqus_thread"></a>
+        </span>
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>前言</p>
+<p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。</p>
+<p>本篇是Glide框架及源码解析的第三篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。</p>
+<p>往期文章：</p>
+<p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（一）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（二）</a></p>
+<p>（版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> ）</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Glide内存缓存机制"><a href="#Glide内存缓存机制" class="headerlink" title="Glide内存缓存机制"></a>Glide内存缓存机制</h3><p>在之前的两篇中我们剖析了Glide的生命周期绑定机制和Glide的请求管理机制。接下来按说应该讲到request实际请求资源并回调刷新界面这一块了，但是为了更好的理解Glide在这一块的设计，我先大致的讲一讲Glide的内存缓存和管理机制。<br>不同于其他常见网络加载框架只有LruCatch一种缓存机制，Glide内存为三级缓存（非常牛逼巧妙的设计）：</p>
+<ul>
+<li>LruResourceCache： 缓存最近使用过但是当前未使用的资源，LRU算法</li>
+<li>ActiveResourceCache：缓存当前正在使用的资源（注意是弱引用）</li>
+<li><p>BitmapPool：缓存所有被释放的图片，内存复用，LRU算法</p>
+</li>
+<li><p>LruResourceCache和ActiveResourceCache设计是为了尽可能的资源复用</p>
+</li>
+<li>BitmapPool的设计是为了尽可能的内存复用</li>
+<li>这样的设计能够有效的避免内存的抖动和内存的开销，进一步减少了GC的频率，这也就是为啥Glide是一种体验流畅的加载框架。</li>
+</ul>
+<p>说的比较抽象，是不是懵逼了？别急，上图：</p>
+<p><img src="/hello-world/img/MemoryCacheManager.png" alt="Glide内存缓存及管理机制"></p>
+<ul>
+<li>当我们需要显示某个资源时，Glide会先去查找LruResourceCache，找到了则将资源从LruResourceCache移除加入到ActiveResourceCache；</li>
+<li>LruResourceCache找不到资源则查找ActiveResourceCache，找不到则查找BitmapPool。</li>
+<li>如果在BitmapPool也找不到合适的资源，则会根据加载策略从硬盘或者网络加载资源。</li>
+<li>资源文件（流）数据会被转换封装为Resource缓存入ActiveResourceCache和Request对象中。</li>
+<li>Request的target会获取resource中引用的资源并展示。</li>
+</ul>
+<ul>
+<li><p>当target的资源需要release时，resource会根据缓存策略被缓存到LruResourceCache，同时ActiveResourceCache中的弱引用会被删除。如果，该资源不能缓存到LruResourceCache，则资源将被recycle到BitmapPool。</p>
+</li>
+<li><p>当需要回收内存时（比如系统内存不足或者生命周期结束），LruResourceCache将根据LRU算法recycle一些resource到BitmapPool。</p>
+</li>
+<li><p>BitmapPool会根据缓存池的尺寸和recycled resource的缓存策略来缓存resource的bitmap。</p>
+</li>
+<li><p>BitmapPool会根据LRU算法和缓存池的尺寸来释放一些老旧资源。</p>
+</li>
+</ul>
+<p>这样就完成了一个资源的完整的循环。</p>
+<h3 id="BitmapPool的内存复用机制"><a href="#BitmapPool的内存复用机制" class="headerlink" title="BitmapPool的内存复用机制"></a>BitmapPool的内存复用机制</h3><p>知识储备：</p>
+<ul>
+<li>BitmapFactory.Options.inBitmap是AndroiD3.0新增的一个属性，如果设置了这个属性则会重用这个Bitmap的内存从而提升性能。</li>
+<li>在SDK 11 -&gt; 18之间，重用的bitmap大小必须是一致的，例如给inBitmap赋值的图片大小为100-100，那么新申请的bitmap必须也为100-100才能够被重用。从SDK 19开始，新申请的bitmap大小必须小于或者等于已经赋值过的bitmap大小。</li>
+<li>新申请的bitmap与旧的bitmap必须有相同的解码格式，例如大家都是8888的，如果前面的bitmap是8888，那么就不能支持4444与565格式的bitmap了</li>
+</ul>
+<h4 id="使用inbitmap前，内存占用情况"><a href="#使用inbitmap前，内存占用情况" class="headerlink" title="使用inbitmap前，内存占用情况"></a>使用inbitmap前，内存占用情况</h4><p><img src="/hello-world/img/inbitmap_null.png" alt="使用inbitmap前，内存占用情况"></p>
+<h4 id="使用inbitmap后，内存占用情况"><a href="#使用inbitmap后，内存占用情况" class="headerlink" title="使用inbitmap后，内存占用情况"></a>使用inbitmap后，内存占用情况</h4><p><img src="/hello-world/img/inbitmap.png" alt="使用inbitmap后，内存占用情况"></p>
+<p>下面看一下核心代码：GenericRequestBuilder的into(target)方法<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">private Bitmap downsampleWithSize(MarkEnforcingInputStream is, RecyclableBufferedInputStream  bufferedStream,</div><div class="line">BitmapFactory.Options options, BitmapPool pool, int <span class="keyword">in</span>Width, int <span class="keyword">in</span>Height, int sampleSize,</div><div class="line">DecodeFormat decodeFormat) &#123;</div><div class="line">  // Prior to KitKat, the <span class="keyword">in</span>Bitmap size must exactly match the size of the bitmap we<span class="string">'re decoding.</span></div><div class="line">  Bitmap.Config config = getConfig(is, decodeFormat);</div><div class="line">  options.inSampleSize = sampleSize;</div><div class="line">  options.inPreferredConfig = config;</div><div class="line">  if ((options.inSampleSize == 1 || Build.VERSION_CODES.KITKAT &lt;= Build.VERSION.SDK_INT) &amp;&amp; shouldUsePool(is)) &#123;</div><div class="line">    int targetWidth = (int) Math.ceil(inWidth / (double) sampleSize);</div><div class="line">    int targetHeight = (int) Math.ceil(inHeight / (double) sampleSize);</div><div class="line">    // BitmapFactory will clear out the Bitmap before writing to it, so getDirty is safe.</div><div class="line">    setInBitmap(options, pool.getDirty(targetWidth, targetHeight, config));</div><div class="line">  &#125;</div><div class="line">  return decodeStream(is, bufferedStream, options);</div><div class="line">&#125;</div><div class="line"> </div><div class="line">@TargetApi(Build.VERSION_CODES.HONEYCOMB)</div><div class="line">private static void setInBitmap(BitmapFactory.Options options, Bitmap recycled) &#123;</div><div class="line">  if (Build.VERSION_CODES.HONEYCOMB &lt;= Build.VERSION.SDK_INT) &#123;</div><div class="line">  	options.inBitmap = recycled;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="ActiveResourceCache的设计（怎么做用？为什么采用弱引用？）"><a href="#ActiveResourceCache的设计（怎么做用？为什么采用弱引用？）" class="headerlink" title="ActiveResourceCache的设计（怎么做用？为什么采用弱引用？）"></a>ActiveResourceCache的设计（怎么做用？为什么采用弱引用？）</h3><ul>
+<li>从LruResourceCache找到的资源会被从LruResourceCache移除加入到ActiveResourceCache。这样就尽量将LruResourceCache中的资源从LRU算法中提高了优先级。</li>
+<li>ActiveResourceCache缓存的是Resource的弱引用对象，这样在GC的时候就会被释放，从而避免了LruResourceCache内存的释放几率</li>
+</ul>
+<p>以上两点体现的设计思想非常巧妙，还请大家好好体会。体会不了？别急，博主再给你来张图：</p>
+<p><img src="/hello-world/img/ActiveCache.png" alt="ActiveResourceCache的设计"></p>
+<p>此处应该有掌声（绝对是精华）！！</p>
+<p>最后总结一下：<br>Glide的内存管理设计非常巧妙，让博主我是叹为观止啊。</p>
+<ul>
+<li>BitmapPool对内存的复用，有效的减少了内吨抖动和内存操作带来的性能损耗（绝对精华！！）</li>
+<li>LruResourceCache + ActiveResourceCache的设计方案更是牛逼的一塌糊涂啊（值得好好体会）</li>
+<li>这种设计还有个好处：LruResourceCache中都是当前不在使用的资源，做整体的资源回收那叫一个酸爽。</li>
+</ul>
+<p>（本篇是Glide框架及源码解析的第三篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">原文链接</a>）</p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持XiaoDanChen</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="http://www.android-doc.com/"
+              target="_self"
+              >
+              Android Doc
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="http://www.jcodecraeer.com/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://yoursite.com/2016/08/22/跟着源码学设计：Glide框架及源码解析（三）/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
