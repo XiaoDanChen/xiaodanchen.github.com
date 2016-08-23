@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-08-23T01:27:16.632Z</updated>
+  <updated>2016-08-23T07:37:24.079Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,14 +20,13 @@
     <link href="http://yoursite.com/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89/"/>
     <id>http://yoursite.com/2016/08/22/跟着源码学设计：Glide框架及源码解析（三）/</id>
     <published>2016-08-22T07:30:25.000Z</published>
-    <updated>2016-08-23T01:27:16.632Z</updated>
+    <updated>2016-08-23T07:37:24.079Z</updated>
     
     <content type="html"><![CDATA[<p>前言</p>
 <p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。</p>
-<p>本篇是Glide框架及源码解析的第三篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。</p>
+<p>本篇是Glide框架及源码解析的第三篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> ）</p>
 <p>往期文章：</p>
 <p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（一）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（二）</a></p>
-<p>（版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> ）</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Glide内存缓存机制"><a href="#Glide内存缓存机制" class="headerlink" title="Glide内存缓存机制"></a>Glide内存缓存机制</h3><p>在之前的两篇中我们剖析了Glide的生命周期绑定机制和Glide的请求管理机制。接下来按说应该讲到request实际请求资源并回调刷新界面这一块了，但是为了更好的理解Glide在这一块的设计，我先大致的讲一讲Glide的内存缓存和管理机制。<br>不同于其他常见网络加载框架只有LruCatch一种缓存机制，Glide内存为三级缓存（非常牛逼巧妙的设计）：</p>
 <ul>
 <li>LruResourceCache： 缓存最近使用过但是当前未使用的资源，LRU算法</li>
@@ -69,8 +68,8 @@
 <h4 id="使用inbitmap后，内存占用情况"><a href="#使用inbitmap后，内存占用情况" class="headerlink" title="使用inbitmap后，内存占用情况"></a>使用inbitmap后，内存占用情况</h4><p><img src="/hello-world/img/inbitmap.png" alt="使用inbitmap后，内存占用情况"></p>
 <p>下面看一下核心代码：Downsampler的downsampleWithSize()方法</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">private Bitmap downsampleWithSize(MarkEnforcingInputStream is, RecyclableBufferedInputStream  bufferedStream,</div><div class="line">BitmapFactory.Options options, BitmapPool pool, int <span class="keyword">in</span>Width, int <span class="keyword">in</span>Height, int sampleSize,</div><div class="line">DecodeFormat decodeFormat) &#123;</div><div class="line">  // Prior to KitKat, the <span class="keyword">in</span>Bitmap size must exactly match the size of the bitmap we<span class="string">'re decoding.</span></div><div class="line">  Bitmap.Config config = getConfig(is, decodeFormat);</div><div class="line">  options.inSampleSize = sampleSize;</div><div class="line">  options.inPreferredConfig = config;</div><div class="line">  if ((options.inSampleSize == 1 || Build.VERSION_CODES.KITKAT &lt;= Build.VERSION.SDK_INT) &amp;&amp; shouldUsePool(is)) &#123;</div><div class="line">    int targetWidth = (int) Math.ceil(inWidth / (double) sampleSize);</div><div class="line">    int targetHeight = (int) Math.ceil(inHeight / (double) sampleSize);</div><div class="line">    // BitmapFactory will clear out the Bitmap before writing to it, so getDirty is safe.</div><div class="line">    setInBitmap(options, pool.getDirty(targetWidth, targetHeight, config));</div><div class="line">  &#125;</div><div class="line">  return decodeStream(is, bufferedStream, options);</div><div class="line">&#125;</div><div class="line"> </div><div class="line">@TargetApi(Build.VERSION_CODES.HONEYCOMB)</div><div class="line">private static void setInBitmap(BitmapFactory.Options options, Bitmap recycled) &#123;</div><div class="line">  if (Build.VERSION_CODES.HONEYCOMB &lt;= Build.VERSION.SDK_INT) &#123;</div><div class="line">  	options.inBitmap = recycled;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="ActiveResourceCache的设计（怎么做用？为什么采用弱引用？）"><a href="#ActiveResourceCache的设计（怎么做用？为什么采用弱引用？）" class="headerlink" title="ActiveResourceCache的设计（怎么做用？为什么采用弱引用？）"></a>ActiveResourceCache的设计（怎么做用？为什么采用弱引用？）</h3><ul>
-<li>从LruResourceCache找到的资源会被从LruResourceCache移除加入到ActiveResourceCache。这样就尽量将LruResourceCache中的资源从LRU算法中提高了优先级。</li>
+<h3 id="ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）"><a href="#ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）" class="headerlink" title="ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）"></a>ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）</h3><ul>
+<li>从LruResourceCache找到的资源会被从LruResourceCache移入到ActiveResourceCache。这样就尽量将LruResourceCache中的资源从LRU算法中提高了优先级。</li>
 <li>ActiveResourceCache缓存的是Resource的弱引用对象，这样在GC的时候就会被释放，从而避免了LruResourceCache内存的释放几率</li>
 </ul>
 <p>以上两点体现的设计思想非常巧妙，还请大家好好体会。体会不了？别急，博主再给你来张图：</p>
@@ -94,6 +93,10 @@
     </summary>
     
     
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Glide" scheme="http://yoursite.com/tags/Glide/"/>
+    
   </entry>
   
   <entry>
@@ -101,10 +104,10 @@
     <link href="http://yoursite.com/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
     <id>http://yoursite.com/2016/08/22/跟着源码学设计：Glide框架及源码解析（二）/</id>
     <published>2016-08-22T02:04:12.000Z</published>
-    <updated>2016-08-23T06:35:35.273Z</updated>
+    <updated>2016-08-23T07:38:07.371Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。<br>本篇是Glide框架及源码解析的第二篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。</p>
-<h4 id="往期文章："><a href="#往期文章：" class="headerlink" title="往期文章："></a>往期文章：</h4><p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external"> 跟着源码学设计：Glide框架及源码解析（一）</a><br>（版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> ）</p>
+    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。<br>本篇是Glide框架及源码解析的第二篇，更多文章敬请关注后续文章。<br>如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> ）</p>
+<h4 id="往期文章："><a href="#往期文章：" class="headerlink" title="往期文章："></a>往期文章：</h4><p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external"> 跟着源码学设计：Glide框架及源码解析（一）</a></p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Request管理机制"><a href="#Request管理机制" class="headerlink" title="Request管理机制"></a>Request管理机制</h3><p>在上一篇中我们剖析了Glide的生命周期绑定机制，这一篇我们紧接着Glide的处理流程来学习一下Glide的请求管理机制。<br>我们先来看一下Glide的最简单的使用代码示例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ImageView ivImage = (ImageView) findViewById(R.id.ivImage);</div><div class="line">Glide.with(ivImage.getContext()) //获取RequestManager对象</div><div class="line">     .load(url); //设置Request对象需要的资源链接</div><div class="line">     .into(ivImage); //获取Request对象并绑定viewTarget -&gt; 发起网络请求</div></pre></td></tr></table></figure></p>
 <p>该段代码十分简洁，但是内部实现的功能却十分的强大，比如：</p>
 <ul>
@@ -166,7 +169,7 @@
     <link href="http://yoursite.com/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/"/>
     <id>http://yoursite.com/2016/08/19/跟着源码学设计：Glide框架及源码解析（一）/</id>
     <published>2016-08-19T07:44:57.442Z</published>
-    <updated>2016-08-23T06:36:32.101Z</updated>
+    <updated>2016-08-23T07:38:31.513Z</updated>
     
     <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。<br>如果这篇文章对大家学习Glide有帮助，还望大家多多转载。<br>（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/" target="_blank" rel="external">https://xiaodanchen.github.io/</a> ）</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Glide-简介"><a href="#Glide-简介" class="headerlink" title="Glide 简介"></a>Glide 简介</h3><p>Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内存和快速流畅加载方面具有较好体现。究其内部机制，发现其优良性能得益于以下几点：</p>
@@ -227,6 +230,10 @@
     
     </summary>
     
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Glide" scheme="http://yoursite.com/tags/Glide/"/>
     
   </entry>
   

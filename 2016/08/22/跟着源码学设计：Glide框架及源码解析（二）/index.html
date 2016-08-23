@@ -15,20 +15,17 @@
     <meta name="keywords" content="Android,Glide," />
   
 
-  <meta name="description" content="前言近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。本篇是Glide框架及源码解析的第二篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
-往期文章： 跟着源码学设计：Glide框架及源码解析（一）（版权归作者所有，如有转发，请注明文章出">
+  <meta name="description" content="前言近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。本篇是Glide框架及源码解析的第二篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.i">
 <meta property="og:type" content="article">
 <meta property="og:title" content="跟着源码学设计：Glide框架及源码解析（二）">
 <meta property="og:url" content="http://yoursite.com/2016/08/22/跟着源码学设计：Glide框架及源码解析（二）/index.html">
 <meta property="og:site_name" content="Hello World!">
-<meta property="og:description" content="前言近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。本篇是Glide框架及源码解析的第二篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
-往期文章： 跟着源码学设计：Glide框架及源码解析（一）（版权归作者所有，如有转发，请注明文章出">
+<meta property="og:description" content="前言近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。本篇是Glide框架及源码解析的第二篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.i">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/GlideRequestManager.png">
-<meta property="og:updated_time" content="2016-08-23T06:35:35.273Z">
+<meta property="og:updated_time" content="2016-08-23T07:38:07.371Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跟着源码学设计：Glide框架及源码解析（二）">
-<meta name="twitter:description" content="前言近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。本篇是Glide框架及源码解析的第二篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
-往期文章： 跟着源码学设计：Glide框架及源码解析（一）（版权归作者所有，如有转发，请注明文章出">
+<meta name="twitter:description" content="前言近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。本篇是Glide框架及源码解析的第二篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.i">
 <meta name="twitter:image" content="http://yoursite.com/hello-world/img/GlideRequestManager.png">
 
   
@@ -186,8 +183,8 @@
 
   <div class="article-content">
     
-      <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。<br>本篇是Glide框架及源码解析的第二篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。</p>
-<h4 id="往期文章："><a href="#往期文章：" class="headerlink" title="往期文章："></a>往期文章：</h4><p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external"> 跟着源码学设计：Glide框架及源码解析（一）</a><br>（版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> ）</p>
+      <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。<br>本篇是Glide框架及源码解析的第二篇，更多文章敬请关注后续文章。<br>如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> ）</p>
+<h4 id="往期文章："><a href="#往期文章：" class="headerlink" title="往期文章："></a>往期文章：</h4><p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external"> 跟着源码学设计：Glide框架及源码解析（一）</a></p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Request管理机制"><a href="#Request管理机制" class="headerlink" title="Request管理机制"></a>Request管理机制</h3><p>在上一篇中我们剖析了Glide的生命周期绑定机制，这一篇我们紧接着Glide的处理流程来学习一下Glide的请求管理机制。<br>我们先来看一下Glide的最简单的使用代码示例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ImageView ivImage = (ImageView) findViewById(R.id.ivImage);</div><div class="line">Glide.with(ivImage.getContext()) //获取RequestManager对象</div><div class="line">     .load(url); //设置Request对象需要的资源链接</div><div class="line">     .into(ivImage); //获取Request对象并绑定viewTarget -&gt; 发起网络请求</div></pre></td></tr></table></figure></p>
 <p>该段代码十分简洁，但是内部实现的功能却十分的强大，比如：</p>
 <ul>
