@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-08-23T08:12:09.294Z</updated>
+  <updated>2016-08-23T12:12:19.002Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,67 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>跟着源码学设计：Glide框架及源码解析（四）</title>
+    <link href="http://yoursite.com/2016/08/23/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89/"/>
+    <id>http://yoursite.com/2016/08/23/跟着源码学设计：Glide框架及源码解析（四）/</id>
+    <published>2016-08-23T08:23:29.000Z</published>
+    <updated>2016-08-23T12:12:19.002Z</updated>
+    
+    <content type="html"><![CDATA[<p>前言</p>
+<p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。</p>
+<p>本篇是Glide框架及源码解析的第四篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> ）</p>
+<p>往期文章：</p>
+<p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（一）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（二）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（三）</a></p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><p>在之前的文章中，我们已经知道了Glide请求是如何被加载到请求队列中并执行的，也了解了资源是如何管理的。本篇文章我们将探究一下资源是如何获取并分发的。</p>
+<h3 id="资源请求和回调机制类图"><a href="#资源请求和回调机制类图" class="headerlink" title="资源请求和回调机制类图"></a>资源请求和回调机制类图</h3><p><img src="/hello-world/img/Engin.png" alt="资源请求和回调机制类图"></p>
+<h3 id="request开启请求"><a href="#request开启请求" class="headerlink" title="request开启请求"></a>request开启请求</h3><p>request被加载到requestTracker中统一管理启动获取资源，代码如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public void runRequest(Request request) &#123;</div><div class="line">  requests.add(request);</div><div class="line">  <span class="keyword">if</span> (!isPaused) &#123;</div><div class="line">  	request.begin();</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">  	pendingRequests.add(request);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ul>
+<li>request的执行从其begin()方法开始：<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public void runRequest(Request request) &#123;</div><div class="line">  requests.add(request);</div><div class="line">  <span class="keyword">if</span> (!isPaused) &#123;</div><div class="line">  	request.begin();</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">  	pendingRequests.add(request);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="获取Engin对象并封装任务"><a href="#获取Engin对象并封装任务" class="headerlink" title="获取Engin对象并封装任务"></a>获取Engin对象并封装任务</h3><ul>
+<li>获取engine对象，在load()方法中创建EnginJob任务</li>
+<li>为Enginjob创建异步线程EnginRunnable</li>
+<li>为EnginRunnable初始化资源获取解析任务DecodJob<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="执行任务获取数据并解析"><a href="#执行任务获取数据并解析" class="headerlink" title="执行任务获取数据并解析"></a>执行任务获取数据并解析</h3><ul>
+<li>DecodJob通过数据获取器DataFetcher获取数据文件（流）</li>
+<li>数据解析器对data数据解析生成resource资源对象</li>
+<li>resource资源进一步封装成为EnginResource对象</li>
+<li>通过监听接口回传EnginResource对象<br>request被加载到requestTracker中统一管理启动获取资源，代码如下：<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="监听任务和资源进展，回调相应接口以管理任务和资源"><a href="#监听任务和资源进展，回调相应接口以管理任务和资源" class="headerlink" title="监听任务和资源进展，回调相应接口以管理任务和资源"></a>监听任务和资源进展，回调相应接口以管理任务和资源</h3><ul>
+<li>通过监听接口回传EnginResource对象<br>request被加载到requestTracker中统一管理启动获取资源，代码如下：<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>（本篇是Glide框架及源码解析的第四篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89/" target="_blank" rel="external">原文链接</a>）</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;前言&lt;/p&gt;
+&lt;p&gt;近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。&lt;/p&gt;
+&lt;p&gt;本篇是Glide框架及源码解析的第四篇，更多文章敬请关注后续文章。
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Glide" scheme="http://yoursite.com/tags/Glide/"/>
+    
+  </entry>
+  
+  <entry>
     <title>跟着源码学设计：Glide框架及源码解析（三）</title>
     <link href="http://yoursite.com/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89/"/>
     <id>http://yoursite.com/2016/08/22/跟着源码学设计：Glide框架及源码解析（三）/</id>
     <published>2016-08-22T07:30:25.000Z</published>
-    <updated>2016-08-23T08:12:09.294Z</updated>
+    <updated>2016-08-23T08:16:36.592Z</updated>
     
     <content type="html"><![CDATA[<p>前言</p>
 <p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。</p>
@@ -95,6 +151,8 @@
       <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
     
     
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
       <category term="Glide" scheme="http://yoursite.com/tags/Glide/"/>
     
   </entry>
@@ -104,7 +162,7 @@
     <link href="http://yoursite.com/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
     <id>http://yoursite.com/2016/08/22/跟着源码学设计：Glide框架及源码解析（二）/</id>
     <published>2016-08-22T02:04:12.000Z</published>
-    <updated>2016-08-23T08:12:23.405Z</updated>
+    <updated>2016-08-23T08:15:04.809Z</updated>
     
     <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。<br>本篇是Glide框架及源码解析的第二篇，更多文章敬请关注后续文章。<br>如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> ）</p>
 <h4 id="往期文章："><a href="#往期文章：" class="headerlink" title="往期文章："></a>往期文章：</h4><p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external"> 跟着源码学设计：Glide框架及源码解析（一）</a></p>
@@ -160,6 +218,8 @@
       <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
     
     
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
       <category term="Glide" scheme="http://yoursite.com/tags/Glide/"/>
     
   </entry>
@@ -169,7 +229,7 @@
     <link href="http://yoursite.com/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/"/>
     <id>http://yoursite.com/2016/08/19/跟着源码学设计：Glide框架及源码解析（一）/</id>
     <published>2016-08-19T07:44:57.442Z</published>
-    <updated>2016-08-23T08:11:48.115Z</updated>
+    <updated>2016-08-23T08:16:49.578Z</updated>
     
     <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。<br>如果这篇文章对大家学习Glide有帮助，还望大家多多转载。<br>（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/" target="_blank" rel="external">https://xiaodanchen.github.io/</a> ）</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Glide-简介"><a href="#Glide-简介" class="headerlink" title="Glide 简介"></a>Glide 简介</h3><p>Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内存和快速流畅加载方面具有较好体现。究其内部机制，发现其优良性能得益于以下几点：</p>
@@ -232,6 +292,8 @@
     
       <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
     
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
     
       <category term="Glide" scheme="http://yoursite.com/tags/Glide/"/>
     

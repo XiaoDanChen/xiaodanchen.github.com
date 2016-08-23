@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>跟着源码学设计：Glide框架及源码解析（四） | Hello World!</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Android,Glide," />
+  
+
+  <meta name="description" content="前言
+近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。
+本篇是Glide框架及源码解析的第四篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跟着源码学设计：Glide框架及源码解析（四）">
+<meta property="og:url" content="http://yoursite.com/2016/08/23/跟着源码学设计：Glide框架及源码解析（四）/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="前言
+近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。
+本篇是Glide框架及源码解析的第四篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github">
+<meta property="og:image" content="http://yoursite.com/hello-world/img/Engin.png">
+<meta property="og:updated_time" content="2016-08-23T12:12:19.002Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跟着源码学设计：Glide框架及源码解析（四）">
+<meta name="twitter:description" content="前言
+近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。
+本篇是Glide框架及源码解析的第四篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github">
+<meta name="twitter:image" content="http://yoursite.com/hello-world/img/Engin.png">
+
+  
+    <link rel="alternate" href="/atom.xml" title="Hello World!" type="application/atom+xml">
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#资源请求和回调机制类图"><span class="toc-text">资源请求和回调机制类图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#request开启请求"><span class="toc-text">request开启请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取Engin对象并封装任务"><span class="toc-text">获取Engin对象并封装任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#执行任务获取数据并解析"><span class="toc-text">执行任务获取数据并解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#监听任务和资源进展，回调相应接口以管理任务和资源"><span class="toc-text">监听任务和资源进展，回调相应接口以管理任务和资源</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-跟着源码学设计：Glide框架及源码解析（四）" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">跟着源码学设计：Glide框架及源码解析（四）</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.08.23</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>行者</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="/about//2016/08/23/跟着源码学设计：Glide框架及源码解析（四）/#disqus_thread"></a>
+        </span>
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>前言</p>
+<p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。</p>
+<p>本篇是Glide框架及源码解析的第四篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> ）</p>
+<p>往期文章：</p>
+<p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（一）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（二）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（三）</a></p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><p>在之前的文章中，我们已经知道了Glide请求是如何被加载到请求队列中并执行的，也了解了资源是如何管理的。本篇文章我们将探究一下资源是如何获取并分发的。</p>
+<h3 id="资源请求和回调机制类图"><a href="#资源请求和回调机制类图" class="headerlink" title="资源请求和回调机制类图"></a>资源请求和回调机制类图</h3><p><img src="/hello-world/img/Engin.png" alt="资源请求和回调机制类图"></p>
+<h3 id="request开启请求"><a href="#request开启请求" class="headerlink" title="request开启请求"></a>request开启请求</h3><p>request被加载到requestTracker中统一管理启动获取资源，代码如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public void runRequest(Request request) &#123;</div><div class="line">  requests.add(request);</div><div class="line">  <span class="keyword">if</span> (!isPaused) &#123;</div><div class="line">  	request.begin();</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">  	pendingRequests.add(request);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ul>
+<li>request的执行从其begin()方法开始：<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public void runRequest(Request request) &#123;</div><div class="line">  requests.add(request);</div><div class="line">  <span class="keyword">if</span> (!isPaused) &#123;</div><div class="line">  	request.begin();</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">  	pendingRequests.add(request);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="获取Engin对象并封装任务"><a href="#获取Engin对象并封装任务" class="headerlink" title="获取Engin对象并封装任务"></a>获取Engin对象并封装任务</h3><ul>
+<li>获取engine对象，在load()方法中创建EnginJob任务</li>
+<li>为Enginjob创建异步线程EnginRunnable</li>
+<li>为EnginRunnable初始化资源获取解析任务DecodJob<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="执行任务获取数据并解析"><a href="#执行任务获取数据并解析" class="headerlink" title="执行任务获取数据并解析"></a>执行任务获取数据并解析</h3><ul>
+<li>DecodJob通过数据获取器DataFetcher获取数据文件（流）</li>
+<li>数据解析器对data数据解析生成resource资源对象</li>
+<li>resource资源进一步封装成为EnginResource对象</li>
+<li>通过监听接口回传EnginResource对象<br>request被加载到requestTracker中统一管理启动获取资源，代码如下：<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="监听任务和资源进展，回调相应接口以管理任务和资源"><a href="#监听任务和资源进展，回调相应接口以管理任务和资源" class="headerlink" title="监听任务和资源进展，回调相应接口以管理任务和资源"></a>监听任务和资源进展，回调相应接口以管理任务和资源</h3><ul>
+<li>通过监听接口回传EnginResource对象<br>request被加载到requestTracker中统一管理启动获取资源，代码如下：<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>（本篇是Glide框架及源码解析的第四篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89/" target="_blank" rel="external">原文链接</a>）</p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持XiaoDanChen</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://yoursite.com/2016/08/23/跟着源码学设计：Glide框架及源码解析（四）/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
