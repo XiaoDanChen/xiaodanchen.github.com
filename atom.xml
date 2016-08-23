@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-08-23T07:37:24.079Z</updated>
+  <updated>2016-08-23T08:12:09.294Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89/"/>
     <id>http://yoursite.com/2016/08/22/跟着源码学设计：Glide框架及源码解析（三）/</id>
     <published>2016-08-22T07:30:25.000Z</published>
-    <updated>2016-08-23T07:37:24.079Z</updated>
+    <updated>2016-08-23T08:12:09.294Z</updated>
     
     <content type="html"><![CDATA[<p>前言</p>
 <p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。</p>
@@ -92,8 +92,8 @@
     
     </summary>
     
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
     
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
     
       <category term="Glide" scheme="http://yoursite.com/tags/Glide/"/>
     
@@ -104,7 +104,7 @@
     <link href="http://yoursite.com/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
     <id>http://yoursite.com/2016/08/22/跟着源码学设计：Glide框架及源码解析（二）/</id>
     <published>2016-08-22T02:04:12.000Z</published>
-    <updated>2016-08-23T07:38:07.371Z</updated>
+    <updated>2016-08-23T08:12:23.405Z</updated>
     
     <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。<br>本篇是Glide框架及源码解析的第二篇，更多文章敬请关注后续文章。<br>如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> ）</p>
 <h4 id="往期文章："><a href="#往期文章：" class="headerlink" title="往期文章："></a>往期文章：</h4><p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external"> 跟着源码学设计：Glide框架及源码解析（一）</a></p>
@@ -157,8 +157,8 @@
     
     </summary>
     
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
     
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
     
       <category term="Glide" scheme="http://yoursite.com/tags/Glide/"/>
     
@@ -169,7 +169,7 @@
     <link href="http://yoursite.com/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/"/>
     <id>http://yoursite.com/2016/08/19/跟着源码学设计：Glide框架及源码解析（一）/</id>
     <published>2016-08-19T07:44:57.442Z</published>
-    <updated>2016-08-23T07:38:31.513Z</updated>
+    <updated>2016-08-23T08:11:48.115Z</updated>
     
     <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。<br>如果这篇文章对大家学习Glide有帮助，还望大家多多转载。<br>（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/" target="_blank" rel="external">https://xiaodanchen.github.io/</a> ）</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Glide-简介"><a href="#Glide-简介" class="headerlink" title="Glide 简介"></a>Glide 简介</h3><p>Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内存和快速流畅加载方面具有较好体现。究其内部机制，发现其优良性能得益于以下几点：</p>
@@ -230,8 +230,8 @@
     
     </summary>
     
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
     
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
     
       <category term="Glide" scheme="http://yoursite.com/tags/Glide/"/>
     
