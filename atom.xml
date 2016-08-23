@@ -101,7 +101,7 @@
     <link href="http://yoursite.com/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
     <id>http://yoursite.com/2016/08/22/跟着源码学设计：Glide框架及源码解析（二）/</id>
     <published>2016-08-22T02:04:12.000Z</published>
-    <updated>2016-08-23T01:28:21.014Z</updated>
+    <updated>2016-08-23T06:29:12.760Z</updated>
     
     <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。<br>本篇是Glide框架及源码解析的第二篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。</p>
 <h4 id="往期文章："><a href="#往期文章：" class="headerlink" title="往期文章："></a>往期文章：</h4><p><a href="https://xiaodanchen.github.io/2016/08/19/hello-world/" target="_blank" rel="external"> 跟着源码学设计：Glide框架及源码解析（一）</a><br>（版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> ）</p>
@@ -155,7 +155,9 @@
     </summary>
     
     
-      <category term="Android, Glide" scheme="http://yoursite.com/tags/Android-Glide/"/>
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Glide" scheme="http://yoursite.com/tags/Glide/"/>
     
   </entry>
   
