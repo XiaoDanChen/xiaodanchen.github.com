@@ -24,7 +24,7 @@
 <meta property="og:description" content="前言近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。本篇是Glide框架及源码解析的第二篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
 往期文章： 跟着源码学设计：Glide框架及源码解析（一）（版权归作者所有，如有转发，请注明文章出">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/GlideRequestManager.png">
-<meta property="og:updated_time" content="2016-08-22T06:45:20.481Z">
+<meta property="og:updated_time" content="2016-08-23T01:28:21.014Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跟着源码学设计：Glide框架及源码解析（二）">
 <meta name="twitter:description" content="前言近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。本篇是Glide框架及源码解析的第二篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
@@ -178,7 +178,7 @@
 <h3 id="request及其生命周期管理"><a href="#request及其生命周期管理" class="headerlink" title="request及其生命周期管理"></a>request及其生命周期管理</h3><ul>
 <li>通过上一篇的学习，我们知道了Glide内部生命周期接口为LifecycleListener</li>
 <li>RequestManager具有生命周期（实现了LifecycleListener接口）</li>
-<li>request由RequestManager的load()方法族获得</li>
+<li>request由RequestManager的into()方法族获得</li>
 <li>request的生命周期由RequestManager统一管理</li>
 </ul>
 <h3 id="RequestManager是如何生成request并管理request队列的？"><a href="#RequestManager是如何生成request并管理request队列的？" class="headerlink" title="RequestManager是如何生成request并管理request队列的？"></a>RequestManager是如何生成request并管理request队列的？</h3><p>老规矩，先上图：<br><img src="/hello-world/img/GlideRequestManager.png" alt="Glide请求管理机制类图"></p>
