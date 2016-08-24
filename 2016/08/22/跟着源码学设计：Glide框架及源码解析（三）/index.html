@@ -28,8 +28,9 @@
 <meta property="og:image" content="http://yoursite.com/hello-world/img/MemoryCacheManager.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/inbitmap_null.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/inbitmap.png">
-<meta property="og:image" content="http://yoursite.com/hello-world/img/ActiveCache.png">
-<meta property="og:updated_time" content="2016-08-23T08:16:36.592Z">
+<meta property="og:image" content="http://yoursite.com/hello-world/img/NormalLruMemory.png">
+<meta property="og:image" content="http://yoursite.com/hello-world/img/GlideMemoryResourceCache.png">
+<meta property="og:updated_time" content="2016-08-24T05:17:27.788Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跟着源码学设计：Glide框架及源码解析（三）">
 <meta name="twitter:description" content="前言
@@ -154,7 +155,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Glide内存缓存机制"><span class="toc-text">Glide内存缓存机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BitmapPool的内存复用机制"><span class="toc-text">BitmapPool的内存复用机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#使用inbitmap前，内存占用情况"><span class="toc-text">使用inbitmap前，内存占用情况</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用inbitmap后，内存占用情况"><span class="toc-text">使用inbitmap后，内存占用情况</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）"><span class="toc-text">ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Glide内存缓存机制"><span class="toc-text">Glide内存缓存机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BitmapPool的内存复用机制"><span class="toc-text">BitmapPool的内存复用机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#使用inbitmap前，内存占用情况"><span class="toc-text">使用inbitmap前，内存占用情况</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用inbitmap后，内存占用情况"><span class="toc-text">使用inbitmap后，内存占用情况</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）"><span class="toc-text">ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#让我们先看一下我们最常见到的LruMemoryCache机制"><span class="toc-text">让我们先看一下我们最常见到的LruMemoryCache机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#让我们再来看一下Glide的机制"><span class="toc-text">让我们再来看一下Glide的机制</span></a></li></ol></li></ol></li></ol>
   </div>
 
 
@@ -243,18 +244,20 @@
 <h4 id="使用inbitmap后，内存占用情况"><a href="#使用inbitmap后，内存占用情况" class="headerlink" title="使用inbitmap后，内存占用情况"></a>使用inbitmap后，内存占用情况</h4><p><img src="/hello-world/img/inbitmap.png" alt="使用inbitmap后，内存占用情况"></p>
 <p>下面看一下核心代码：Downsampler的downsampleWithSize()方法</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">private Bitmap downsampleWithSize(MarkEnforcingInputStream is, RecyclableBufferedInputStream  bufferedStream,</div><div class="line">BitmapFactory.Options options, BitmapPool pool, int <span class="keyword">in</span>Width, int <span class="keyword">in</span>Height, int sampleSize,</div><div class="line">DecodeFormat decodeFormat) &#123;</div><div class="line">  // Prior to KitKat, the <span class="keyword">in</span>Bitmap size must exactly match the size of the bitmap we<span class="string">'re decoding.</span></div><div class="line">  Bitmap.Config config = getConfig(is, decodeFormat);</div><div class="line">  options.inSampleSize = sampleSize;</div><div class="line">  options.inPreferredConfig = config;</div><div class="line">  if ((options.inSampleSize == 1 || Build.VERSION_CODES.KITKAT &lt;= Build.VERSION.SDK_INT) &amp;&amp; shouldUsePool(is)) &#123;</div><div class="line">    int targetWidth = (int) Math.ceil(inWidth / (double) sampleSize);</div><div class="line">    int targetHeight = (int) Math.ceil(inHeight / (double) sampleSize);</div><div class="line">    // BitmapFactory will clear out the Bitmap before writing to it, so getDirty is safe.</div><div class="line">    setInBitmap(options, pool.getDirty(targetWidth, targetHeight, config));</div><div class="line">  &#125;</div><div class="line">  return decodeStream(is, bufferedStream, options);</div><div class="line">&#125;</div><div class="line"> </div><div class="line">@TargetApi(Build.VERSION_CODES.HONEYCOMB)</div><div class="line">private static void setInBitmap(BitmapFactory.Options options, Bitmap recycled) &#123;</div><div class="line">  if (Build.VERSION_CODES.HONEYCOMB &lt;= Build.VERSION.SDK_INT) &#123;</div><div class="line">  	options.inBitmap = recycled;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）"><a href="#ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）" class="headerlink" title="ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）"></a>ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）</h3><ul>
-<li>从LruResourceCache找到的资源会被从LruResourceCache移入到ActiveResourceCache。这样就尽量将LruResourceCache中的资源从LRU算法中提高了优先级。</li>
-<li>ActiveResourceCache缓存的是Resource的弱引用对象，这样在GC的时候就会被释放，从而避免了LruResourceCache内存的释放几率</li>
-</ul>
-<p>以上两点体现的设计思想非常巧妙，还请大家好好体会。体会不了？别急，博主再给你来张图：</p>
-<p><img src="/hello-world/img/ActiveCache.png" alt="ActiveResourceCache的设计"></p>
-<p>此处应该有掌声（绝对是精华）！！</p>
-<p>最后总结一下：<br>Glide的内存管理设计非常巧妙，让博主我是叹为观止啊。</p>
+<h3 id="ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）"><a href="#ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）" class="headerlink" title="ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）"></a>ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）</h3><h4 id="让我们先看一下我们最常见到的LruMemoryCache机制"><a href="#让我们先看一下我们最常见到的LruMemoryCache机制" class="headerlink" title="让我们先看一下我们最常见到的LruMemoryCache机制"></a>让我们先看一下我们最常见到的LruMemoryCache机制</h4><p><img src="/hello-world/img/NormalLruMemory.png" alt="ActiveResourceCache的设计"></p>
 <ul>
-<li>BitmapPool对内存的复用，有效的减少了内吨抖动和内存操作带来的性能损耗（绝对精华！！）</li>
-<li>LruResourceCache + ActiveResourceCache的设计方案更是牛逼的一塌糊涂啊（值得好好体会）</li>
-<li>这种设计还有个好处：LruResourceCache中都是当前不在使用的资源，做整体的资源回收那叫一个酸爽。</li>
+<li>如图，当系统内存不足时，LruMemoryCache会根据LRU算法移除一些资源（bitmap）</li>
+<li>针对移除的资源，系统在GC时会回收资源(bitmap)以释放内存</li>
+<li>当应用再次需要次资源时，需要重新分配内存，重新对资源文件进行解析生成bitmap<br>1）这样会造成内存抖动；<br>2）比较耗费时间，影响流畅度（GC也比较频繁）</li>
+</ul>
+<h4 id="让我们再来看一下Glide的机制"><a href="#让我们再来看一下Glide的机制" class="headerlink" title="让我们再来看一下Glide的机制"></a>让我们再来看一下Glide的机制</h4><p><img src="/hello-world/img/GlideMemoryResourceCache.png" alt="ActiveResourceCache的设计"></p>
+<ul>
+<li>如图，当系统内存不足时，LruResourceCache会根据LRU算法移除一些资源（resource）到BitmapPool</li>
+<li>到BitmapPool会根据LRU算法移除一些资源（bitmap）</li>
+<li><p>当应用再次需要资源时，会优先复用到BitmapPool中的bitmap对象（复用其内存），只需刷新bitmap的像素数据<br>1）这样能有效地降低内存抖动；<br>2）由于很多情况下可以复用废弃bitmap的内存，因此避免了内存分配等造成的性能损耗，系统比较流畅<br>3）降低了系统GC的频率</p>
+</li>
+<li><p>这种设计还有个好处：LruResourceCache和BitmapPool中都是当前不在使用的资源，做整体的资源回收那叫一个酸爽。</p>
+</li>
 </ul>
 <p>（本篇是Glide框架及源码解析的第三篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89/" target="_blank" rel="external">原文链接</a>）</p>
 
