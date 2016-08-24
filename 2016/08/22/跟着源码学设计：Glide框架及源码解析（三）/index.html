@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://yoursite.com/hello-world/img/inbitmap.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/NormalLruMemory.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/GlideMemoryResourceCache.png">
-<meta property="og:updated_time" content="2016-08-24T05:17:27.788Z">
+<meta property="og:updated_time" content="2016-08-24T05:45:09.580Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跟着源码学设计：Glide框架及源码解析（三）">
 <meta name="twitter:description" content="前言
@@ -155,7 +155,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Glide内存缓存机制"><span class="toc-text">Glide内存缓存机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BitmapPool的内存复用机制"><span class="toc-text">BitmapPool的内存复用机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#使用inbitmap前，内存占用情况"><span class="toc-text">使用inbitmap前，内存占用情况</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用inbitmap后，内存占用情况"><span class="toc-text">使用inbitmap后，内存占用情况</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）"><span class="toc-text">ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#让我们先看一下我们最常见到的LruMemoryCache机制"><span class="toc-text">让我们先看一下我们最常见到的LruMemoryCache机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#让我们再来看一下Glide的机制"><span class="toc-text">让我们再来看一下Glide的机制</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Glide内存缓存机制"><span class="toc-text">Glide内存缓存机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BitmapPool的内存复用机制"><span class="toc-text">BitmapPool的内存复用机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#使用inbitmap前，内存占用情况"><span class="toc-text">使用inbitmap前，内存占用情况</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用inbitmap后，内存占用情况"><span class="toc-text">使用inbitmap后，内存占用情况</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#让我们先看一下我们最常见到的LruMemoryCache机制"><span class="toc-text">让我们先看一下我们最常见到的LruMemoryCache机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#让我们再来看一下Glide的机制"><span class="toc-text">让我们再来看一下Glide的机制</span></a></li></ol></li></ol>
   </div>
 
 
@@ -203,25 +203,26 @@
 <p>本篇是Glide框架及源码解析的第三篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。（版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> ）</p>
 <p>往期文章：</p>
 <p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（一）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（二）</a></p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Glide内存缓存机制"><a href="#Glide内存缓存机制" class="headerlink" title="Glide内存缓存机制"></a>Glide内存缓存机制</h3><p>在之前的两篇中我们剖析了Glide的生命周期绑定机制和Glide的请求管理机制。接下来按说应该讲到request实际请求资源并回调刷新界面这一块了，但是为了更好的理解Glide在这一块的设计，我先大致的讲一讲Glide的内存缓存和管理机制。<br>不同于其他常见网络加载框架只有LruCatch一种缓存机制，Glide内存为三级缓存（非常牛逼巧妙的设计）：</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Glide内存缓存机制"><a href="#Glide内存缓存机制" class="headerlink" title="Glide内存缓存机制"></a>Glide内存缓存机制</h3><p>在之前的两篇中我们剖析了Glide的生命周期绑定机制和Glide的请求管理机制。接下来按说应该讲到request实际请求资源并回调刷新界面这一块了，但是为了更好的理解Glide在这一块的设计，我先大致的讲一讲Glide的内存缓存和管理机制。<br>不同于其他常见网络加载框架只有LruCatch一种缓存机制，Glide内存为三块（非常牛逼巧妙的设计）：</p>
 <ul>
-<li>LruResourceCache： 缓存最近使用过但是当前未使用的资源，LRU算法</li>
 <li>ActiveResourceCache：缓存当前正在使用的资源（注意是弱引用）</li>
-<li><p>BitmapPool：缓存所有被释放的图片，内存复用，LRU算法</p>
-</li>
-<li><p>LruResourceCache和ActiveResourceCache设计是为了尽可能的资源复用</p>
-</li>
-<li>BitmapPool的设计是为了尽可能的内存复用</li>
-<li>这样的设计能够有效的避免内存的抖动和内存的开销，进一步减少了GC的频率，这也就是为啥Glide是一种体验流畅的加载框架。</li>
+<li>LruResourceCache： 缓存最近使用过但是当前未使用的资源，LRU算法</li>
+<li>BitmapPool：缓存所有被释放的图片，内存复用，LRU算法</li>
+</ul>
+<p>注意：</p>
+<ul>
+<li>LruResourceCache和ActiveResourceCache设计是为了尽可能的资源复用</li>
+<li>BitmapPool的设计目的是为了尽可能的内存复用</li>
 </ul>
 <p>说的比较抽象，是不是懵逼了？别急，上图：</p>
 <p><img src="/hello-world/img/MemoryCacheManager.png" alt="Glide内存缓存及管理机制"></p>
 <ul>
 <li>当我们需要显示某个资源时，Glide会先去查找LruResourceCache，找到了则将资源从LruResourceCache移除加入到ActiveResourceCache；</li>
-<li>LruResourceCache找不到资源则查找ActiveResourceCache，找不到则查找BitmapPool。</li>
-<li>如果在BitmapPool也找不到合适的资源，则会根据加载策略从硬盘或者网络加载资源。</li>
-<li>资源文件（流）数据会被转换封装为Resource缓存入ActiveResourceCache和Request对象中。</li>
-<li>Request的target会获取resource中引用的资源并展示。</li>
+<li>LruResourceCache找不到资源则查找ActiveResourceCache。</li>
+<li>如果在ActiveResourceCache也找不到合适的资源，则会根据加载策略从硬盘或者网络加载资源。</li>
+<li>获取数据后Glide会从BitmapPool中找寻合适的可供内存复用的废弃recycled bitmap（找不到则会重新创建bitmap对象），然后刷新bitmap的数据。</li>
+<li>bitmap被转换封装为Resource缓存入ActiveResourceCache和Request对象中。</li>
+<li>Request的target会获取resource中引用的bitmap并展示。</li>
 </ul>
 <ul>
 <li><p>当target的资源需要release时，resource会根据缓存策略被缓存到LruResourceCache，同时ActiveResourceCache中的弱引用会被删除。如果，该资源不能缓存到LruResourceCache，则资源将被recycle到BitmapPool。</p>
@@ -232,6 +233,7 @@
 </li>
 <li><p>BitmapPool会根据LRU算法和缓存池的尺寸来释放一些老旧资源。</p>
 </li>
+<li>当系统GC时，则会回收可回收的资源释放内存</li>
 </ul>
 <p>这样就完成了一个资源的完整的循环。</p>
 <h3 id="BitmapPool的内存复用机制"><a href="#BitmapPool的内存复用机制" class="headerlink" title="BitmapPool的内存复用机制"></a>BitmapPool的内存复用机制</h3><p>知识储备：</p>
@@ -244,13 +246,13 @@
 <h4 id="使用inbitmap后，内存占用情况"><a href="#使用inbitmap后，内存占用情况" class="headerlink" title="使用inbitmap后，内存占用情况"></a>使用inbitmap后，内存占用情况</h4><p><img src="/hello-world/img/inbitmap.png" alt="使用inbitmap后，内存占用情况"></p>
 <p>下面看一下核心代码：Downsampler的downsampleWithSize()方法</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">private Bitmap downsampleWithSize(MarkEnforcingInputStream is, RecyclableBufferedInputStream  bufferedStream,</div><div class="line">BitmapFactory.Options options, BitmapPool pool, int <span class="keyword">in</span>Width, int <span class="keyword">in</span>Height, int sampleSize,</div><div class="line">DecodeFormat decodeFormat) &#123;</div><div class="line">  // Prior to KitKat, the <span class="keyword">in</span>Bitmap size must exactly match the size of the bitmap we<span class="string">'re decoding.</span></div><div class="line">  Bitmap.Config config = getConfig(is, decodeFormat);</div><div class="line">  options.inSampleSize = sampleSize;</div><div class="line">  options.inPreferredConfig = config;</div><div class="line">  if ((options.inSampleSize == 1 || Build.VERSION_CODES.KITKAT &lt;= Build.VERSION.SDK_INT) &amp;&amp; shouldUsePool(is)) &#123;</div><div class="line">    int targetWidth = (int) Math.ceil(inWidth / (double) sampleSize);</div><div class="line">    int targetHeight = (int) Math.ceil(inHeight / (double) sampleSize);</div><div class="line">    // BitmapFactory will clear out the Bitmap before writing to it, so getDirty is safe.</div><div class="line">    setInBitmap(options, pool.getDirty(targetWidth, targetHeight, config));</div><div class="line">  &#125;</div><div class="line">  return decodeStream(is, bufferedStream, options);</div><div class="line">&#125;</div><div class="line"> </div><div class="line">@TargetApi(Build.VERSION_CODES.HONEYCOMB)</div><div class="line">private static void setInBitmap(BitmapFactory.Options options, Bitmap recycled) &#123;</div><div class="line">  if (Build.VERSION_CODES.HONEYCOMB &lt;= Build.VERSION.SDK_INT) &#123;</div><div class="line">  	options.inBitmap = recycled;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）"><a href="#ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）" class="headerlink" title="ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）"></a>ActiveResourceCache的设计（怎么工作？为什么采用弱引用？）</h3><h4 id="让我们先看一下我们最常见到的LruMemoryCache机制"><a href="#让我们先看一下我们最常见到的LruMemoryCache机制" class="headerlink" title="让我们先看一下我们最常见到的LruMemoryCache机制"></a>让我们先看一下我们最常见到的LruMemoryCache机制</h4><p><img src="/hello-world/img/NormalLruMemory.png" alt="ActiveResourceCache的设计"></p>
+<h3 id="让我们先看一下我们最常见到的LruMemoryCache机制"><a href="#让我们先看一下我们最常见到的LruMemoryCache机制" class="headerlink" title="让我们先看一下我们最常见到的LruMemoryCache机制"></a>让我们先看一下我们最常见到的LruMemoryCache机制</h3><p><img src="/hello-world/img/NormalLruMemory.png" alt="ActiveResourceCache的设计"></p>
 <ul>
 <li>如图，当系统内存不足时，LruMemoryCache会根据LRU算法移除一些资源（bitmap）</li>
 <li>针对移除的资源，系统在GC时会回收资源(bitmap)以释放内存</li>
 <li>当应用再次需要次资源时，需要重新分配内存，重新对资源文件进行解析生成bitmap<br>1）这样会造成内存抖动；<br>2）比较耗费时间，影响流畅度（GC也比较频繁）</li>
 </ul>
-<h4 id="让我们再来看一下Glide的机制"><a href="#让我们再来看一下Glide的机制" class="headerlink" title="让我们再来看一下Glide的机制"></a>让我们再来看一下Glide的机制</h4><p><img src="/hello-world/img/GlideMemoryResourceCache.png" alt="ActiveResourceCache的设计"></p>
+<h3 id="让我们再来看一下Glide的机制"><a href="#让我们再来看一下Glide的机制" class="headerlink" title="让我们再来看一下Glide的机制"></a>让我们再来看一下Glide的机制</h3><p><img src="/hello-world/img/GlideMemoryResourceCache.png" alt="ActiveResourceCache的设计"></p>
 <ul>
 <li>如图，当系统内存不足时，LruResourceCache会根据LRU算法移除一些资源（resource）到BitmapPool</li>
 <li>到BitmapPool会根据LRU算法移除一些资源（bitmap）</li>
