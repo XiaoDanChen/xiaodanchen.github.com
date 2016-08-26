@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>图解Android：Touch事件传递机制 | Hello World!</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Android," />
+  
+
+  <meta name="description" content="前言
+Android事件管理机制是一名专业Android研发工程师必须要了解的核心知识之一，深入了解一下该机制无论对我们日常开发还是找工作，乃至于对我们的架构思想都有很大的帮助。Android中我们用到的最多的事件是InputEvent，主要是两类：MotionEvent和KeyEvent。由于事件传递模型基本一致，我将以更常用到的MotionEvent为目标来讲解。
+根据实际开发的需要，本文仅讲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图解Android：Touch事件传递机制">
+<meta property="og:url" content="http://yoursite.com/2016/08/25/图解Android：事件传递机制/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="前言
+Android事件管理机制是一名专业Android研发工程师必须要了解的核心知识之一，深入了解一下该机制无论对我们日常开发还是找工作，乃至于对我们的架构思想都有很大的帮助。Android中我们用到的最多的事件是InputEvent，主要是两类：MotionEvent和KeyEvent。由于事件传递模型基本一致，我将以更常用到的MotionEvent为目标来讲解。
+根据实际开发的需要，本文仅讲">
+<meta property="og:image" content="http://yoursite.com/hello-world/img/viewgroup.png">
+<meta property="og:updated_time" content="2016-08-26T09:41:59.930Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="图解Android：Touch事件传递机制">
+<meta name="twitter:description" content="前言
+Android事件管理机制是一名专业Android研发工程师必须要了解的核心知识之一，深入了解一下该机制无论对我们日常开发还是找工作，乃至于对我们的架构思想都有很大的帮助。Android中我们用到的最多的事件是InputEvent，主要是两类：MotionEvent和KeyEvent。由于事件传递模型基本一致，我将以更常用到的MotionEvent为目标来讲解。
+根据实际开发的需要，本文仅讲">
+<meta name="twitter:image" content="http://yoursite.com/hello-world/img/viewgroup.png">
+
+  
+    <link rel="alternate" href="/atom.xml" title="Hello World!" type="application/atom+xml">
+  
+
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Touch事件的分发、传递、消费所涉及的类与函数"><span class="toc-text">Touch事件的分发、传递、消费所涉及的类与函数</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-图解Android：事件传递机制" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">图解Android：Touch事件传递机制</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.08.25</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>行者</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="/about//2016/08/25/图解Android：事件传递机制/#disqus_thread"></a>
+        </span>
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>前言</strong></p>
+<p>Android事件管理机制是一名专业Android研发工程师必须要了解的核心知识之一，深入了解一下该机制无论对我们日常开发还是找工作，乃至于对我们的架构思想都有很大的帮助。Android中我们用到的最多的事件是InputEvent，主要是两类：MotionEvent和KeyEvent。由于事件传递模型基本一致，我将以更常用到的MotionEvent为目标来讲解。</p>
+<p>根据实际开发的需要，本文仅讲解touch事件在viewTree中的传递机制，为广大开发者搞清原理、扫清障碍。文章参考了Kelin童鞋的<a href="http://www.jianshu.com/p/e99b5e8bd67b" target="_blank" rel="external">图解Android事件传递机制</a>，写的很好大家也可以去看看。</p>
+<p>本篇是<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">图解Android</a>系列第一篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Android有帮助，还望大家多多转载。有疑问的同学，也可以加博主QQ: 1404562848。</p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
+</blockquote>
+<p><strong>目录</strong><br>[TOC]</p>
+<h3 id="Touch事件的分发、传递、消费所涉及的类与函数"><a href="#Touch事件的分发、传递、消费所涉及的类与函数" class="headerlink" title="Touch事件的分发、传递、消费所涉及的类与函数"></a>Touch事件的分发、传递、消费所涉及的类与函数</h3><p>老规矩，让我们先来看一张类图：<br><img src="/hello-world/img/viewgroup.png" alt="Touch事件相关回调接口图谱"></p>
+<ul>
+<li>View类定义了两个Touch事件传递分发的函数：<ul>
+<li>public boolean dispatchTouchEvent(MotionEvent event)</li>
+<li>public boolean onTouchEvent(MotionEvent event)</li>
+</ul>
+</li>
+<li>ViewGroup继承自View类，其重写了定义了两个 Touch事件传递分发的函数<ul>
+<li>@Override public boolean dispatchTouchEvent(MotionEvent ev)</li>
+<li>public boolean onInterceptTouchEvent(MotionEvent ev) </li>
+</ul>
+</li>
+<li>Activity类定义了两个Touch事件传递分发的函数：<ul>
+<li>public boolean dispatchTouchEvent(MotionEvent event)</li>
+<li>public boolean onTouchEvent(MotionEvent event)</li>
+</ul>
+</li>
+<li>Activity类的viewRoot实际上是PhoneWindow的DecorView（ViewGroup）<ul>
+<li>DecorView维护了一个LinearLayout对象，这个对象包括两部分：TitleView和ContentViews（FrameLayout）</li>
+<li>我们定义的layout.xml其实是被加载到TitleView和ContentViews中的</li>
+</ul>
+</li>
+</ul>
+<p>(操，电脑卡死，重启后写的内容全都没有了，fuck！！！！！)</p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">打赏</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持XiaoDanChen</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://yoursite.com/2016/08/25/图解Android：事件传递机制/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
