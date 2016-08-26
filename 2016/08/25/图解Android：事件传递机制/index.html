@@ -26,7 +26,7 @@ Android事件管理机制是一名专业Android研发工程师必须要了解的
 Android事件管理机制是一名专业Android研发工程师必须要了解的核心知识之一，深入了解一下该机制无论对我们日常开发还是找工作，乃至于对我们的架构思想都有很大的帮助。Android中我们用到的最多的事件是InputEvent，主要是两类：MotionEvent和KeyEvent。由于事件传递模型基本一致，我将以更常用到的MotionEvent为目标来讲解。
 根据实际开发的需要，本文仅讲">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/viewgroup.png">
-<meta property="og:updated_time" content="2016-08-26T09:41:59.930Z">
+<meta property="og:updated_time" content="2016-08-26T09:48:47.916Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图解Android：Touch事件传递机制">
 <meta name="twitter:description" content="前言
@@ -201,7 +201,6 @@ Android事件管理机制是一名专业Android研发工程师必须要了解的
 <blockquote>
 <p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
 </blockquote>
-<p><strong>目录</strong><br>[TOC]</p>
 <h3 id="Touch事件的分发、传递、消费所涉及的类与函数"><a href="#Touch事件的分发、传递、消费所涉及的类与函数" class="headerlink" title="Touch事件的分发、传递、消费所涉及的类与函数"></a>Touch事件的分发、传递、消费所涉及的类与函数</h3><p>老规矩，让我们先来看一张类图：<br><img src="/hello-world/img/viewgroup.png" alt="Touch事件相关回调接口图谱"></p>
 <ul>
 <li>View类定义了两个Touch事件传递分发的函数：<ul>
@@ -236,9 +235,9 @@ Android事件管理机制是一名专业Android研发工程师必须要了解的
 
   <div class="text-center donation">
     <div class="inner-donation">
-      <span class="btn-donation">打赏</span>
+      <span class="btn-donation">￥打赏支持</span>
       <div class="donation-body">
-        <div class="tip text-center">扫一扫，支持XiaoDanChen</div>
+        <div class="tip text-center">如果觉得我的文章对您有用，请随意打赏！您的支持是我创作最大的动力。</div>
         <ul class="theme.donation.items.length">
         
           <li class="item">

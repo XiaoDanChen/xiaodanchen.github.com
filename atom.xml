@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-08-26T09:41:59.930Z</updated>
+  <updated>2016-08-26T09:48:47.916Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2016/08/25/%E5%9B%BE%E8%A7%A3Android%EF%BC%9A%E4%BA%8B%E4%BB%B6%E4%BC%A0%E9%80%92%E6%9C%BA%E5%88%B6/"/>
     <id>http://yoursite.com/2016/08/25/图解Android：事件传递机制/</id>
     <published>2016-08-25T02:26:18.000Z</published>
-    <updated>2016-08-26T09:41:59.930Z</updated>
+    <updated>2016-08-26T09:48:47.916Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong></p>
 <p>Android事件管理机制是一名专业Android研发工程师必须要了解的核心知识之一，深入了解一下该机制无论对我们日常开发还是找工作，乃至于对我们的架构思想都有很大的帮助。Android中我们用到的最多的事件是InputEvent，主要是两类：MotionEvent和KeyEvent。由于事件传递模型基本一致，我将以更常用到的MotionEvent为目标来讲解。</p>
@@ -29,7 +29,6 @@
 <blockquote>
 <p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
 </blockquote>
-<p><strong>目录</strong><br>[TOC]</p>
 <h3 id="Touch事件的分发、传递、消费所涉及的类与函数"><a href="#Touch事件的分发、传递、消费所涉及的类与函数" class="headerlink" title="Touch事件的分发、传递、消费所涉及的类与函数"></a>Touch事件的分发、传递、消费所涉及的类与函数</h3><p>老规矩，让我们先来看一张类图：<br><img src="/hello-world/img/viewgroup.png" alt="Touch事件相关回调接口图谱"></p>
 <ul>
 <li>View类定义了两个Touch事件传递分发的函数：<ul>
@@ -75,7 +74,7 @@
     <link href="http://yoursite.com/2016/08/23/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89/"/>
     <id>http://yoursite.com/2016/08/23/跟着源码学设计：Glide框架及源码解析（四）/</id>
     <published>2016-08-23T08:23:29.000Z</published>
-    <updated>2016-08-26T09:27:45.868Z</updated>
+    <updated>2016-08-26T09:56:25.759Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong></p>
 <p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。</p>
@@ -85,7 +84,6 @@
 </blockquote>
 <p><strong>往期文章：</strong></p>
 <p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（一）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（二）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（三）</a></p>
-<p><strong>目录</strong><br>[TOC]</p>
 <p>在之前的文章中，我们已经知道了Glide请求是如何被加载到请求队列中并执行的，也了解了资源是如何管理的。本篇文章我们将探究一下资源是如何获取并分发的。</p>
 <h3 id="资源请求和回调机制类图"><a href="#资源请求和回调机制类图" class="headerlink" title="资源请求和回调机制类图"></a>资源请求和回调机制类图</h3><p><img src="/hello-world/img/Engin.png" alt="资源请求和回调机制类图"></p>
 <h3 id="request开启请求"><a href="#request开启请求" class="headerlink" title="request开启请求"></a>request开启请求</h3><p>request被加载到requestTracker中统一管理启动获取资源，代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">runRequest</span><span class="params">(Request request)</span> </span>&#123;</div><div class="line">  requests.add(request);</div><div class="line">  <span class="keyword">if</span> (!isPaused) &#123;</div><div class="line">  	request.begin();</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">  	pendingRequests.add(request);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -138,7 +136,7 @@
     <link href="http://yoursite.com/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89/"/>
     <id>http://yoursite.com/2016/08/22/跟着源码学设计：Glide框架及源码解析（三）/</id>
     <published>2016-08-22T07:30:25.000Z</published>
-    <updated>2016-08-26T09:28:54.745Z</updated>
+    <updated>2016-08-26T09:56:50.000Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong></p>
 <p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。</p>
@@ -148,7 +146,6 @@
 </blockquote>
 <p><strong>往期文章：</strong></p>
 <p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（一）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（二）</a></p>
-<p><strong>目录</strong><br>[TOC]</p>
 <h3 id="Glide内存缓存机制"><a href="#Glide内存缓存机制" class="headerlink" title="Glide内存缓存机制"></a>Glide内存缓存机制</h3><p>在之前的两篇中我们剖析了Glide的生命周期绑定机制和Glide的请求管理机制。接下来按说应该讲到request实际请求资源并回调刷新界面这一块了，但是为了更好的理解Glide在这一块的设计，我先大致的讲一讲Glide的内存缓存和管理机制。<br>不同于其他常见网络加载框架只有LruCatch一种缓存机制，Glide内存为三块（非常牛逼巧妙的设计）：</p>
 <ul>
 <li>ActiveResourceCache：缓存当前正在使用的资源（注意是弱引用）</li>
@@ -225,7 +222,7 @@
     <link href="http://yoursite.com/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
     <id>http://yoursite.com/2016/08/22/跟着源码学设计：Glide框架及源码解析（二）/</id>
     <published>2016-08-22T02:04:12.000Z</published>
-    <updated>2016-08-26T09:32:11.620Z</updated>
+    <updated>2016-08-26T09:57:11.047Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong><br>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。</p>
 <p>本篇是Glide框架及源码解析的第二篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。</p>
@@ -233,7 +230,6 @@
 <p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
 </blockquote>
 <p><strong>往期文章：</strong><br><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external"> 跟着源码学设计：Glide框架及源码解析（一）</a></p>
-<p><strong>目录</strong><br>[TOC]</p>
 <h3 id="Request管理机制"><a href="#Request管理机制" class="headerlink" title="Request管理机制"></a>Request管理机制</h3><p>在上一篇中我们剖析了Glide的生命周期绑定机制，这一篇我们紧接着Glide的处理流程来学习一下Glide的请求管理机制。<br>我们先来看一下Glide的最简单的使用代码示例：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ImageView ivImage = (ImageView) findViewById(R.id.ivImage);</div><div class="line">Glide.with(ivImage.getContext()) <span class="comment">//获取RequestManager对象</span></div><div class="line">     .load(url); <span class="comment">//设置Request对象需要的资源链接</span></div><div class="line">     .into(ivImage); <span class="comment">//获取Request对象并绑定viewTarget -&gt; 发起网络请求</span></div></pre></td></tr></table></figure></p>
 <p>该段代码十分简洁，但是内部实现的功能却十分的强大，比如：</p>
 <ul>
@@ -298,13 +294,12 @@
     <link href="http://yoursite.com/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/"/>
     <id>http://yoursite.com/2016/08/19/跟着源码学设计：Glide框架及源码解析（一）/</id>
     <published>2016-08-19T07:44:57.442Z</published>
-    <updated>2016-08-26T09:24:37.627Z</updated>
+    <updated>2016-08-26T09:55:38.619Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong><br>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。有疑问的同学，可以加博主QQ: 1404562848。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。</p>
 <blockquote>
 <p>本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/" target="_blank" rel="external">https://xiaodanchen.github.io/</a> </p>
 </blockquote>
-<p><strong>目录</strong><br>[TOC]</p>
 <h3 id="Glide-简介"><a href="#Glide-简介" class="headerlink" title="Glide 简介"></a>Glide 简介</h3><p>Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内存和快速流畅加载方面具有较好体现。究其内部机制，发现其优良性能得益于以下几点：</p>
 <ul>
 <li>与使用环境生命周期相绑定：RequestManagerFragment &amp; SupportRequestManagerFragment</li>

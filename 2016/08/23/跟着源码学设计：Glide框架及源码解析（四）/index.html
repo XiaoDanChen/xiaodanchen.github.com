@@ -30,7 +30,7 @@
 
 版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.githu">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/Engin.png">
-<meta property="og:updated_time" content="2016-08-26T09:27:45.868Z">
+<meta property="og:updated_time" content="2016-08-26T09:56:25.759Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跟着源码学设计：Glide框架及源码解析（四）">
 <meta name="twitter:description" content="前言
@@ -208,7 +208,6 @@
 </blockquote>
 <p><strong>往期文章：</strong></p>
 <p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（一）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（二）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（三）</a></p>
-<p><strong>目录</strong><br>[TOC]</p>
 <p>在之前的文章中，我们已经知道了Glide请求是如何被加载到请求队列中并执行的，也了解了资源是如何管理的。本篇文章我们将探究一下资源是如何获取并分发的。</p>
 <h3 id="资源请求和回调机制类图"><a href="#资源请求和回调机制类图" class="headerlink" title="资源请求和回调机制类图"></a>资源请求和回调机制类图</h3><p><img src="/hello-world/img/Engin.png" alt="资源请求和回调机制类图"></p>
 <h3 id="request开启请求"><a href="#request开启请求" class="headerlink" title="request开启请求"></a>request开启请求</h3><p>request被加载到requestTracker中统一管理启动获取资源，代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">runRequest</span><span class="params">(Request request)</span> </span>&#123;</div><div class="line">  requests.add(request);</div><div class="line">  <span class="keyword">if</span> (!isPaused) &#123;</div><div class="line">  	request.begin();</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">  	pendingRequests.add(request);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -247,9 +246,9 @@
 
   <div class="text-center donation">
     <div class="inner-donation">
-      <span class="btn-donation">打赏</span>
+      <span class="btn-donation">￥打赏支持</span>
       <div class="donation-body">
-        <div class="tip text-center">扫一扫，支持XiaoDanChen</div>
+        <div class="tip text-center">如果觉得我的文章对您有用，请随意打赏！您的支持是我创作最大的动力。</div>
         <ul class="theme.donation.items.length">
         
           <li class="item">
