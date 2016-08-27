@@ -28,7 +28,7 @@ Android事件管理机制是一名专业Android研发工程师必须要了解的
 <meta property="og:image" content="http://yoursite.com/hello-world/img/viewgroup.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/touchevent.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/Utouchevent.png">
-<meta property="og:updated_time" content="2016-08-27T05:23:20.635Z">
+<meta property="og:updated_time" content="2016-08-27T07:10:01.264Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图解Android：Touch事件传递机制">
 <meta name="twitter:description" content="前言
@@ -246,7 +246,18 @@ Android事件管理机制是一名专业Android研发工程师必须要了解的
 <blockquote>
 <p>如果事件不被中断，整个事件流向是一个类U型图，我们来看下这张图，可能更能理解U型图的意思。</p>
 </blockquote>
-<p><img src="/hello-world/img/Utouchevent.png" alt="U型事件传递模型"><br>（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/2016/08/25/%E5%9B%BE%E8%A7%A3Android%EF%BC%9A%E4%BA%8B%E4%BB%B6%E4%BC%A0%E9%80%92%E6%9C%BA%E5%88%B6/" target="_blank" rel="external">原文链接</a>）</p>
+<p><img src="/hello-world/img/Utouchevent.png" alt="U型事件传递模型"><br><strong>注意</strong>：这张图只是一张事件的传递模型的示意图，其实现细节跟图中不太一致，但最终事件的传递方向是一致的。</p>
+<p>通过代码我们注意到，每一层的dispatchtouchevent（）都是该层的事件的入口，在每一层的逻辑都大致遵循如下调用规则：</p>
+<ul>
+<li>dispatchtouchevent捕获到上分发过来的事件</li>
+<li>调用oninterceptTouchevent用来逻辑判断该事件是否需要在本层处理</li>
+<li>如果oninterceptTouchevent 返回false，则调用下一层的viewtree的dispatchtouchevent（递归），子viewtree的处理结果会作为本层dispatchtouchevent的结果返回</li>
+<li>如果oninterceptTouchevent返回true，则调用本层的ontouchevent方法</li>
+<li>ontouchevent的逻辑处理结果会返回给dispatchtouchevent座位结果返回</li>
+<li>最终本层的dispatchtouchevent的处理结果会返回给父view</li>
+</ul>
+<p>整个viewtree其实都是在按照同样的逻辑进行着层层的递归。<br>希望读者能够好好的把握一下代码和递归逻辑，这样在我们的view中就可以根据实际需要灵活使用时间分发、拦截和处理的三种接口，灵活的控制事件的传递和消费。</p>
+<p>（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/2016/08/25/%E5%9B%BE%E8%A7%A3Android%EF%BC%9A%E4%BA%8B%E4%BB%B6%E4%BC%A0%E9%80%92%E6%9C%BA%E5%88%B6/" target="_blank" rel="external">原文链接</a>）</p>
 
     
   </div>
