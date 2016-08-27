@@ -27,7 +27,7 @@ Android事件管理机制是一名专业Android研发工程师必须要了解的
 根据实际开发的需要，本文仅讲">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/viewgroup.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/touchevent.png">
-<meta property="og:updated_time" content="2016-08-26T23:55:34.771Z">
+<meta property="og:updated_time" content="2016-08-27T00:24:39.074Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图解Android：Touch事件传递机制">
 <meta name="twitter:description" content="前言
@@ -142,7 +142,7 @@ Android事件管理机制是一名专业Android研发工程师必须要了解的
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#gt-版权归作者所有，如有转发，请注明文章出处：https-xiaodanchen-github-io-archives"><span class="toc-text">>版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ </span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Touch事件的分发、传递、消费所涉及的类与函数"><span class="toc-text">Touch事件的分发、传递、消费所涉及的类与函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#事件分发入口：Activity类的dispatchTouchEvent-方法"><span class="toc-text">事件分发入口：Activity类的dispatchTouchEvent()方法</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Touch事件的分发、传递、消费所涉及的类与函数"><span class="toc-text">Touch事件的分发、传递、消费所涉及的类与函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#事件分发入口：Activity类的dispatchTouchEvent-方法"><span class="toc-text">事件分发入口：Activity类的dispatchTouchEvent()方法</span></a></li></ol>
   </div>
 
 
@@ -184,7 +184,11 @@ Android事件管理机制是一名专业Android研发工程师必须要了解的
 <p>Android事件管理机制是一名专业Android研发工程师必须要了解的核心知识之一，深入了解一下该机制无论对我们日常开发还是找工作，乃至于对我们的架构思想都有很大的帮助。Android中我们用到的最多的事件是InputEvent，主要是两类：MotionEvent和KeyEvent。由于事件传递模型基本一致，我将以更常用到的MotionEvent为目标来讲解。</p>
 <p>根据实际开发的需要，本文仅讲解touch事件在viewTree中的传递机制，为广大开发者搞清原理、扫清障碍。文章参考了Kelin童鞋的<a href="http://www.jianshu.com/p/e99b5e8bd67b" target="_blank" rel="external">图解Android事件传递机制</a>，写的很好大家也可以去看看。</p>
 <p>本篇是<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">图解Android</a>系列第一篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Android有帮助，还望大家多多转载。有疑问的同学，也可以加博主QQ: 1404562848。</p>
-<h2 id="gt-版权归作者所有，如有转发，请注明文章出处：https-xiaodanchen-github-io-archives"><a href="#gt-版权归作者所有，如有转发，请注明文章出处：https-xiaodanchen-github-io-archives" class="headerlink" title="&gt;版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ "></a>&gt;版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </h2><h3 id="Touch事件的分发、传递、消费所涉及的类与函数"><a href="#Touch事件的分发、传递、消费所涉及的类与函数" class="headerlink" title="Touch事件的分发、传递、消费所涉及的类与函数"></a>Touch事件的分发、传递、消费所涉及的类与函数</h3><p>老规矩，让我们先来看一张类图：<br><img src="/hello-world/img/viewgroup.png" alt="Touch事件相关回调接口图谱"></p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
+</blockquote>
+<hr>
+<h3 id="Touch事件的分发、传递、消费所涉及的类与函数"><a href="#Touch事件的分发、传递、消费所涉及的类与函数" class="headerlink" title="Touch事件的分发、传递、消费所涉及的类与函数"></a>Touch事件的分发、传递、消费所涉及的类与函数</h3><p>老规矩，让我们先来看一张类图：<br><img src="/hello-world/img/viewgroup.png" alt="Touch事件相关回调接口图谱"></p>
 <ul>
 <li>View类定义了两个Touch事件传递分发的函数：<ul>
 <li>public boolean dispatchTouchEvent(MotionEvent event)</li>
