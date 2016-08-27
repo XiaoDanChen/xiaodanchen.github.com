@@ -28,7 +28,8 @@ Android事件管理机制是一名专业Android研发工程师必须要了解的
 <meta property="og:image" content="http://yoursite.com/hello-world/img/viewgroup.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/touchevent.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/Utouchevent.png">
-<meta property="og:updated_time" content="2016-08-27T07:14:55.426Z">
+<meta property="og:image" content="http://yoursite.com/hello-world/img/touchevent2.png">
+<meta property="og:updated_time" content="2016-08-27T07:27:33.162Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图解Android：Touch事件传递机制">
 <meta name="twitter:description" content="前言
@@ -143,7 +144,7 @@ Android事件管理机制是一名专业Android研发工程师必须要了解的
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Touch事件的分发、传递、消费所涉及的类与函数"><span class="toc-text">Touch事件的分发、传递、消费所涉及的类与函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#事件分发入口：Activity类的dispatchTouchEvent-方法"><span class="toc-text">事件分发入口：Activity类的dispatchTouchEvent()方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ViewGroup-中touch事件是如何传递的"><span class="toc-text">ViewGroup 中touch事件是如何传递的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#View-中touch事件是如何传递的"><span class="toc-text">View 中touch事件是如何传递的</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Touch事件的分发、传递、消费所涉及的类与函数"><span class="toc-text">Touch事件的分发、传递、消费所涉及的类与函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#事件分发入口：Activity类的dispatchTouchEvent-方法"><span class="toc-text">事件分发入口：Activity类的dispatchTouchEvent()方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ViewGroup-中touch事件是如何传递的"><span class="toc-text">ViewGroup 中touch事件是如何传递的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#View-中touch事件是如何传递的"><span class="toc-text">View 中touch事件是如何传递的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ACTION-MOVE和ACTION-UP事件"><span class="toc-text">ACTION_MOVE和ACTION_UP事件</span></a></li></ol>
   </div>
 
 
@@ -257,7 +258,12 @@ Android事件管理机制是一名专业Android研发工程师必须要了解的
 <li>最终本层的dispatchtouchevent的处理结果会返回给父view</li>
 </ul>
 <p>整个viewtree其实都是在按照同样的逻辑进行着层层的递归。<br>希望读者能够好好的把握一下代码和递归逻辑，这样在我们的view中就可以根据实际需要灵活使用时间分发、拦截和处理的三种接口，灵活的控制事件的传递和消费。</p>
-<p>（本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/2016/08/25/%E5%9B%BE%E8%A7%A3Android%EF%BC%9A%E4%BA%8B%E4%BB%B6%E4%BC%A0%E9%80%92%E6%9C%BA%E5%88%B6/" target="_blank" rel="external">原文链接</a>）</p>
+<h3 id="ACTION-MOVE和ACTION-UP事件"><a href="#ACTION-MOVE和ACTION-UP事件" class="headerlink" title="ACTION_MOVE和ACTION_UP事件"></a>ACTION_MOVE和ACTION_UP事件</h3><p>我们上文中讲到的事件传递流程是ACTION_DOWN的处理流程。<br>由于ACTION_DOWN事件是touch事件的第一个事件，所以其处理流程会相对复杂。而后续的一系列其他事件，其处理逻辑收到ACTION_DOWN事件的处理结果的影响而更加的智能。系统不会傻傻的把前人走过的死路让后人再走一遍。换句话说，一旦ACTION_DOWN事件找到了target，后续的一些列事件就会直达target，而不会再分发往更底层进行逻辑迭代。<br>还是那句话，看图（再次感谢kelin童鞋做出了这么优雅的图片）：<br><img src="/hello-world/img/touchevent2.png" alt="ACTION_MOVE和ACTION_UP事件"></p>
+<ul>
+<li>红色的箭头代表ACTION_DOWN 事件的流向</li>
+<li>蓝色的箭头代表ACTION_MOVE 和 ACTION_UP 事件的流向</li>
+</ul>
+<p>本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/2016/08/25/%E5%9B%BE%E8%A7%A3Android%EF%BC%9A%E4%BA%8B%E4%BB%B6%E4%BC%A0%E9%80%92%E6%9C%BA%E5%88%B6/" target="_blank" rel="external">原文链接</a>）</p>
 
     
   </div>
