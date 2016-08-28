@@ -7,7 +7,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>图解Android:View的绘制机制与源码解析 | Hello World!</title>
+  <title>图解Android：View的绘制机制与源码解析 | Hello World!</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -19,7 +19,7 @@
 Android的视图是如何绘制的？深入了解一下UI的绘制原理无论对我们APP的性能优化还是对我们的自定义view都有很大的帮助。下文将和大家一道探究一下Android的viewTree的绘制原理，希望对大家的开发和学习有所帮助。
 本篇是图解Android系列第二篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Android有帮助，还望大家多多转载。学习小组QQ群: 193765960。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="图解Android:View的绘制机制与源码解析">
+<meta property="og:title" content="图解Android：View的绘制机制与源码解析">
 <meta property="og:url" content="http://yoursite.com/2016/08/27/图解Android：View的绘制机制与源码解析/index.html">
 <meta property="og:site_name" content="Hello World!">
 <meta property="og:description" content="前言
@@ -29,9 +29,9 @@ Android的视图是如何绘制的？深入了解一下UI的绘制原理无论�
 <meta property="og:image" content="http://yoursite.com/hello-world/img/decorview.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/viewTree4.4.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/viewTree6.0.png">
-<meta property="og:updated_time" content="2016-08-28T07:29:43.655Z">
+<meta property="og:updated_time" content="2016-08-28T07:34:13.642Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="图解Android:View的绘制机制与源码解析">
+<meta name="twitter:title" content="图解Android：View的绘制机制与源码解析">
 <meta name="twitter:description" content="前言
 Android的视图是如何绘制的？深入了解一下UI的绘制原理无论对我们APP的性能优化还是对我们的自定义view都有很大的帮助。下文将和大家一道探究一下Android的viewTree的绘制原理，希望对大家的开发和学习有所帮助。
 本篇是图解Android系列第二篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Android有帮助，还望大家多多转载。学习小组QQ群: 193765960。">
@@ -152,7 +152,7 @@ Android的视图是如何绘制的？深入了解一下UI的绘制原理无论�
 <div class="content content-post CENTER">
    <article id="post-图解Android：View的绘制机制与源码解析" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">图解Android:View的绘制机制与源码解析</h1>
+    <h1 class="post-title">图解Android：View的绘制机制与源码解析</h1>
 
     <div class="article-meta">
       <span>
@@ -196,10 +196,10 @@ Android的视图是如何绘制的？深入了解一下UI的绘制原理无论�
 <li>Phonewindow含有一个DecorView，这是我们window的topview</li>
 <li>DecorView是继承自Framelayout，换言之其为整个ViewTree的根节点viewGroup</li>
 </ul>
-<p><strong>再看一下activity的类图</strong></p>
+<p><strong>再看一下Phonewindow的类图</strong></p>
 <p><img src="/hello-world/img/decorview.png" alt="Activity的视图结构"></p>
 <p><strong>接下来我们来看一下单个Activity的viewTree的结构，我选择了两版sdk来查看</strong></p>
-<p>1）Android4.4系统的activity：<br><img src="/hello-world/img/viewTree4.4.png" alt="Activity的视图结构"><br>2）Android4.4系统的activity：<br><img src="/hello-world/img/viewTree6.0.png" alt="Activity的视图结构"></p>
+<p>1）Android4.4系统的activity：<br><img src="/hello-world/img/viewTree4.4.png" alt="Activity的视图结构"><br>2）Android6.0系统的activity：<br><img src="/hello-world/img/viewTree6.0.png" alt="Activity的视图结构"></p>
 
     
   </div>
