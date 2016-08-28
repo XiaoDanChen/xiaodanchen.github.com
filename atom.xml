@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-08-27T07:53:58.758Z</updated>
+  <updated>2016-08-28T07:29:43.655Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,47 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>图解Android:View的绘制机制与源码解析</title>
+    <link href="http://yoursite.com/2016/08/27/%E5%9B%BE%E8%A7%A3Android%EF%BC%9AView%E7%9A%84%E7%BB%98%E5%88%B6%E6%9C%BA%E5%88%B6%E4%B8%8E%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
+    <id>http://yoursite.com/2016/08/27/图解Android：View的绘制机制与源码解析/</id>
+    <published>2016-08-27T15:01:48.000Z</published>
+    <updated>2016-08-28T07:29:43.655Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>前言</strong></p>
+<p>Android的视图是如何绘制的？深入了解一下UI的绘制原理无论对我们APP的性能优化还是对我们的自定义view都有很大的帮助。下文将和大家一道探究一下Android的viewTree的绘制原理，希望对大家的开发和学习有所帮助。</p>
+<p>本篇是<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">图解Android</a>系列第二篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Android有帮助，还望大家多多转载。<strong>学习小组QQ群: 193765960</strong>。</p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
+</blockquote>
+<hr>
+<h3 id="Activity的视图结构"><a href="#Activity的视图结构" class="headerlink" title="Activity的视图结构"></a>Activity的视图结构</h3><p><strong>先看一下activity的视图结构图</strong></p>
+<p><img src="/hello-world/img/activity_view.png" alt="Activity的视图结构"></p>
+<ul>
+<li>每个activity都有一个Window(实际是phonewindow)</li>
+<li>Phonewindow含有一个DecorView，这是我们window的topview</li>
+<li>DecorView是继承自Framelayout，换言之其为整个ViewTree的根节点viewGroup</li>
+</ul>
+<p><strong>再看一下activity的类图</strong></p>
+<p><img src="/hello-world/img/decorview.png" alt="Activity的视图结构"></p>
+<p><strong>接下来我们来看一下单个Activity的viewTree的结构，我选择了两版sdk来查看</strong></p>
+<p>1）Android4.4系统的activity：<br><img src="/hello-world/img/viewTree4.4.png" alt="Activity的视图结构"><br>2）Android4.4系统的activity：<br><img src="/hello-world/img/viewTree6.0.png" alt="Activity的视图结构"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;strong&gt;前言&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Android的视图是如何绘制的？深入了解一下UI的绘制原理无论对我们APP的性能优化还是对我们的自定义view都有很大的帮助。下文将和大家一道探究一下Android的viewTree的绘制原理，希望对大家的开发和学习有
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+  </entry>
   
   <entry>
     <title>图解Android：Touch事件传递机制</title>
