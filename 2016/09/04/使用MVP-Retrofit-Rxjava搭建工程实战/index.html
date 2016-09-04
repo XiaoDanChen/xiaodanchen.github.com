@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>使用MVP-Retrofit-Rxjava搭建工程实战 | Hello World!</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Android,MVP,Retrofit,Rxjava," />
+  
+
+  <meta name="description" content="前言最近使用MVP+Retrofit+Rxjava搭建了新项目的工程框架和网络请求回调框架。在网上也查看了一些资料，但是没有找到很贴合实际项目各自不同的请求及响应报文协议的解决方案。无奈，自己苦逼的一番摸索踩坑，终于搭建出了一个基本还算满意的解决方案，在这里和大家分享一下，希望能够帮助开发工程师们省去一些苦恼。随着深入地开发，这个方案肯定还会陆续暴露出一些坑，我会一直维护这篇文章，将对应的坑和解决">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用MVP-Retrofit-Rxjava搭建工程实战">
+<meta property="og:url" content="http://yoursite.com/2016/09/04/使用MVP-Retrofit-Rxjava搭建工程实战/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="前言最近使用MVP+Retrofit+Rxjava搭建了新项目的工程框架和网络请求回调框架。在网上也查看了一些资料，但是没有找到很贴合实际项目各自不同的请求及响应报文协议的解决方案。无奈，自己苦逼的一番摸索踩坑，终于搭建出了一个基本还算满意的解决方案，在这里和大家分享一下，希望能够帮助开发工程师们省去一些苦恼。随着深入地开发，这个方案肯定还会陆续暴露出一些坑，我会一直维护这篇文章，将对应的坑和解决">
+<meta property="og:updated_time" content="2016-09-04T07:58:21.654Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用MVP-Retrofit-Rxjava搭建工程实战">
+<meta name="twitter:description" content="前言最近使用MVP+Retrofit+Rxjava搭建了新项目的工程框架和网络请求回调框架。在网上也查看了一些资料，但是没有找到很贴合实际项目各自不同的请求及响应报文协议的解决方案。无奈，自己苦逼的一番摸索踩坑，终于搭建出了一个基本还算满意的解决方案，在这里和大家分享一下，希望能够帮助开发工程师们省去一些苦恼。随着深入地开发，这个方案肯定还会陆续暴露出一些坑，我会一直维护这篇文章，将对应的坑和解决">
+
+  
+    <link rel="alternate" href="/atom.xml" title="Hello World!" type="application/atom+xml">
+  
+
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#MVP部分"><span class="toc-text">MVP部分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#基类"><span class="toc-text">基类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#业务类：登录"><span class="toc-text">业务类：登录</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络通讯部分"><span class="toc-text">网络通讯部分</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-使用MVP-Retrofit-Rxjava搭建工程实战" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">使用MVP-Retrofit-Rxjava搭建工程实战</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.09.04</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>行者</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/Android/">Android</a> / <a class="article-category-link" href="/categories/Android/MVP/">MVP</a> / <a class="article-category-link" href="/categories/Android/MVP/Retrofit/">Retrofit</a> / <a class="article-category-link" href="/categories/Android/MVP/Retrofit/Rxjava/">Rxjava</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>前言</strong><br>最近使用MVP+Retrofit+Rxjava搭建了新项目的工程框架和网络请求回调框架。在网上也查看了一些资料，但是没有找到很贴合实际项目各自不同的请求及响应报文协议的解决方案。无奈，自己苦逼的一番摸索踩坑，终于搭建出了一个基本还算满意的解决方案，在这里和大家分享一下，希望能够帮助开发工程师们省去一些苦恼。<br>随着深入地开发，这个方案肯定还会陆续暴露出一些坑，我会一直维护这篇文章，将对应的坑和解决办法记录下来。决定使用我这个工程框架的同学还希望能够加<strong>学习小组QQ群</strong>: 193765960，将实际开发中遇到的坑在群中进行讨论和分享。<br>如果这篇文章对大家实际开发有所帮助，还望大家多多转发。</p>
+<p>在阅读这篇文章之前要求读者对MVP，retrofit，rxjava，Gson具有一定的了解。<br>我在这里帮大家整理了一些比较好的文章，需要的同学自行查看。<br><a href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0303/4029.html" target="_blank" rel="external">Retrofit使用教程(一)</a><br><a href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0323/4074.html" target="_blank" rel="external">Retrofit使用教程(二)</a><br><a href="http://www.jcodecraeer.com/a/anzhuokaifa/2016/0325/4082.html" target="_blank" rel="external">Retrofit使用教程(三) : Retrofit与RxJava初相逢</a><br><a href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0518/4270.html" target="_blank" rel="external">你真的会用Retrofit2吗?Retrofit2完全教程</a><br><a href="http://www.jianshu.com/p/e740196225a4" target="_blank" rel="external">你真的会用Gson吗?Gson使用指南</a><br><a href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/1012/3572.html" target="_blank" rel="external">给 Android 开发者的 RxJava 详解</a></p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/" target="_blank" rel="external">https://xiaodanchen.github.io/</a> </p>
+</blockquote>
+<h3 id="MVP部分"><a href="#MVP部分" class="headerlink" title="MVP部分"></a>MVP部分</h3><p>本篇不讲解什么是MVP，不懂MVP的童鞋请自行百度。</p>
+<h4 id="基类"><a href="#基类" class="headerlink" title="基类"></a>基类</h4><p><strong>BasePresenter.java</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BasePresenter</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * View的引用，使用弱引用，当弱引用所引用的对象被销毁，软引用也会被释放</div><div class="line">	 */</div><div class="line">	<span class="keyword">protected</span> WeakReference&lt;T&gt; mViewRef;</div><div class="line">		 </div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * Presenter与View关联</div><div class="line">	 * <span class="doctag">@param</span> view</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">attachView</span><span class="params">(T view)</span></span>&#123;</div><div class="line">		mViewRef = <span class="keyword">new</span> WeakReference&lt;T&gt;(view);</div><div class="line">	&#125;</div><div class="line">	 </div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * Presenter与View解除关联</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">detacheView</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">if</span>(mViewRef != <span class="keyword">null</span>)&#123;</div><div class="line">			mViewRef.clear();</div><div class="line">			mViewRef = <span class="keyword">null</span>;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	 </div><div class="line">	<span class="function"><span class="keyword">protected</span> T <span class="title">getView</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">if</span>(mViewRef != <span class="keyword">null</span>)&#123;</div><div class="line">			<span class="keyword">return</span> mViewRef.get();</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line">	 </div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * Presenter与View是否已关联</div><div class="line">	 * <span class="doctag">@return</span></div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isViewAttached</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> mViewRef != <span class="keyword">null</span> &amp;&amp; mViewRef.get() != <span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line">	 </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>.<br><strong>BaseActivity.java</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@param</span> &lt;V&gt; 子activity的view接口</div><div class="line"> * <span class="doctag">@param</span> &lt;T&gt; 子activity关联的presenter： T extends BasePresenter&lt;V&gt;</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseActivity</span>&lt;<span class="title">V</span>, <span class="title">T</span> <span class="keyword">extends</span> <span class="title">BasePresenter</span>&lt;<span class="title">V</span>&gt;&gt;  <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">protected</span> T mPresenter;</div><div class="line">	......</div><div class="line">	 </div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">		<span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line"></div><div class="line">		<span class="comment">//初始化Presenter</span></div><div class="line">		mPresenter = createPresenter();</div><div class="line">		<span class="comment">//presenter与View绑定</span></div><div class="line">		<span class="keyword">if</span>(<span class="keyword">null</span> != mPresenter)&#123;</div><div class="line">			mPresenter.attachView((V)<span class="keyword">this</span>);</div><div class="line">		&#125;</div><div class="line">		......</div><div class="line">	&#125;</div><div class="line">	 </div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 创建presenter</div><div class="line">	 * <span class="doctag">@return</span></div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> T <span class="title">createPresenter</span><span class="params">()</span></span>;</div><div class="line"> </div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span></span></div><div class="line">	&#123;</div><div class="line">		<span class="comment">//presenter与activity解绑定</span></div><div class="line">		<span class="keyword">if</span>(<span class="keyword">null</span> != mPresenter)&#123;</div><div class="line">			mPresenter.detacheView();</div><div class="line">			mPresenter = <span class="keyword">null</span>;</div><div class="line">		&#125;</div><div class="line">		......</div><div class="line">		<span class="keyword">super</span>.onDestroy();</div><div class="line">	&#125;</div><div class="line">	......</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>以上是我编写的两个基类，非本文重点，实际开发中大家也可以自己开发自己的基类。下面我将以登录界面做为业务类的demo讲解。由于项目原因，我会隐去部分细节，请谅解。</p>
+<h4 id="业务类：登录"><a href="#业务类：登录" class="headerlink" title="业务类：登录"></a>业务类：登录</h4><p>在我的login业务文件夹下，我将要完成三个类的编写：LoginContract.java, LoginPresenter.java, LoginActivity.java<br><strong>LoginContract.java</strong><br>契约类，将约束定义MVP中V，P的接口<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">LoginContract</span> </span>&#123;</div><div class="line"> </div><div class="line"> 	<span class="comment">//IBaseView定义了一些View的公共方法，根据实际需要可自行定义。</span></div><div class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">View</span> <span class="keyword">extends</span> <span class="title">IBaseView</span> </span>&#123;</div><div class="line">    	<span class="comment">//User：Model bean</span></div><div class="line">    	<span class="function"><span class="keyword">void</span> <span class="title">loginSucceed</span><span class="params">(User user)</span></span>;</div><div class="line">    	<span class="function"><span class="keyword">void</span> <span class="title">loginFailed</span><span class="params">(String errMessage)</span></span>;</div><div class="line">    &#125;</div><div class="line">  </div><div class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">Presenter</span></span>&#123;</div><div class="line">    	<span class="function"><span class="keyword">void</span> <span class="title">login</span><span class="params">(String name, String pwd)</span></span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>LoginPresenter.java</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginPresenter</span> <span class="keyword">extends</span> <span class="title">BasePresenter</span>&lt;<span class="title">LoginContract</span>.<span class="title">View</span>&gt; <span class="keyword">implements</span> <span class="title">LoginContract</span>.<span class="title">Presenter</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">LoginPresenter</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">super</span>();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">login</span><span class="params">(String name, String pwd)</span> </span>&#123;</div><div class="line">		<span class="comment">//因为login的业务逻辑比较简单，我就不再专门去定义Model的接口了</span></div><div class="line">		 </div><div class="line">		<span class="comment">//登录请求及回调（后面细讲）</span></div><div class="line">		......</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>LoginActivity.java</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginActivity</span> <span class="keyword">extends</span> <span class="title">BaseActivity</span>&lt;<span class="title">LoginContract</span>.<span class="title">View</span>,<span class="title">LoginPresenter</span>&gt; </span></div><div class="line"><span class="keyword">implements</span> <span class="title">LoginContract</span>.<span class="title">View</span>&#123;</div><div class="line">	</div><div class="line">	<span class="keyword">private</span> EditText Edt_name;</div><div class="line">	<span class="keyword">private</span> EditText Edt_pwd;</div><div class="line">	</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line">		<span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">		setContentView(R.layout.activity_login);</div><div class="line">		initData();</div><div class="line">		initView();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initData</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initView</span><span class="params">()</span> </span>&#123;</div><div class="line">		Edt_name = (EditText) findViewById(R.id.edt_name);</div><div class="line">		Edt_pwd = (EditText) findViewById(R.id.edt_pwd);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> LoginPresenter <span class="title">createPresenter</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">new</span> LoginPresenter();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLogin</span><span class="params">(View v)</span></span>&#123;</div><div class="line">		<span class="comment">//由于是Demo,所以逻辑上不会那么严格，主要讲清楚关键点，各种null检查啥的自己搞</span></div><div class="line">		mPresenter.login(Edt_name.getText().toString(),Edt_pwd.getText().toString());</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loginSucceed</span><span class="params">(User user)</span> </span>&#123;</div><div class="line">		BaseFun.makeToast(getApplicationContext(), <span class="string">"登录成功！"</span>+user.getNickName());</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loginFailed</span><span class="params">(String errMessage)</span> </span>&#123;</div><div class="line">		BaseFun.makeToast(getApplicationContext(), errMessage);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>好了，一个基本的MVP框架算是有了，Model的部分根据实际的业务可以灵活的去定义接口或业务类。</p>
+<h3 id="网络通讯部分"><a href="#网络通讯部分" class="headerlink" title="网络通讯部分"></a>网络通讯部分</h3><blockquote>
+<p>网络框架采用的是retrofit+okhttp+gson+rxjava来进行搭建。在搭建的过程中，请注意各个库之间的版本问题，这个比较让人蛋疼。使用eclipse开发的读者也可以加<strong>学习小组QQ群: 193765960</strong>去下载我提供的jar包。</p>
+</blockquote>
+<p><strong>构建获取Retrofit对象</strong><br>我封装了一个工具类RetrofitUtils.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> * Retrofit工具类</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RetrofitUtils</span> </span>&#123;</div><div class="line">	 </div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 获取retrofit对象</div><div class="line">	 * </div><div class="line">	 * retrofit对象默认使用我们自己的URL：DatasConfig.HOST</div><div class="line">	 * 如果想要指定具体的url,请调用build(baseUrl)方法</div><div class="line">	 * 设置了Rxjava的请求回调机制</div><div class="line">	 * 设置了Gson：json-Java bean的自动解析（序列化和反序列化）</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Retrofit <span class="title">build</span><span class="params">()</span> </span>&#123;</div><div class="line">		Retrofit retrofit = <span class="keyword">new</span> Retrofit.Builder()</div><div class="line">				.baseUrl(DatasConfig.HOST)</div><div class="line">				.addCallAdapterFactory(RxJavaCallAdapterFactory.create())</div><div class="line">				.addConverterFactory(GsonConverterFactory.create())</div><div class="line">				.client(RetrofitUtils.genericClient())</div><div class="line">				.build();</div><div class="line">		<span class="keyword">return</span> retrofit;</div><div class="line">	&#125;</div><div class="line"> </div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 获取retrofit对象</div><div class="line">	 * </div><div class="line">	 * <span class="doctag">@param</span> baseUrl </div><div class="line">	 * </div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Retrofit <span class="title">build</span><span class="params">(String baseUrl)</span> </span>&#123;</div><div class="line">		Retrofit retrofit = <span class="keyword">new</span> Retrofit.Builder().baseUrl(baseUrl)</div><div class="line">				.addCallAdapterFactory(RxJavaCallAdapterFactory.create())</div><div class="line">				.addConverterFactory(GsonConverterFactory.create()).client(RetrofitUtils.genericClient())<span class="comment">// 添加自定义的头信息</span></div><div class="line">				.build();</div><div class="line">		<span class="keyword">return</span> retrofit;</div><div class="line">	&#125;</div><div class="line"> </div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 定制client</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> OkHttpClient <span class="title">genericClient</span><span class="params">()</span> </span>&#123;</div><div class="line">		</div><div class="line">		<span class="comment">//日志打印：添加打印对我们开发非常重要哈，这个东西一定要有</span></div><div class="line">		HttpLoggingInterceptor logging = <span class="keyword">new</span> HttpLoggingInterceptor();</div><div class="line">		logging.setLevel(HttpLoggingInterceptor.Level.BODY);</div><div class="line">		</div><div class="line">		<span class="comment">//设置HTTP请求通用的协议头 </span></div><div class="line">		Interceptor proheaders = <span class="keyword">new</span> Interceptor() &#123;</div><div class="line">			<span class="meta">@Override</span></div><div class="line">			<span class="function"><span class="keyword">public</span> Response <span class="title">intercept</span><span class="params">(Chain chain)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">				Request request = chain.request().newBuilder()</div><div class="line">						.addHeader(<span class="string">"Content-Type"</span>, <span class="string">"application/x-www-form-urlencoded; charset=UTF-8"</span>)</div><div class="line">						.addHeader(<span class="string">"Accept-Encoding"</span>, <span class="string">"gzip, deflate"</span>)</div><div class="line">						.addHeader(<span class="string">"Connection"</span>, <span class="string">"keep-alive"</span>)</div><div class="line">						.addHeader(<span class="string">"Accept"</span>,<span class="string">"*/*"</span>)</div><div class="line">						.addHeader(<span class="string">"Cookie"</span>, <span class="string">"add cookies here"</span>)</div><div class="line">						.build();</div><div class="line">				</div><div class="line">				<span class="keyword">return</span> chain.proceed(request);</div><div class="line">			&#125;</div><div class="line">		&#125;;</div><div class="line">		 </div><div class="line">		<span class="comment">//设置OkHttpClient</span></div><div class="line">		OkHttpClient httpClient = <span class="keyword">new</span> OkHttpClient.Builder()</div><div class="line">				.addInterceptor(logging)<span class="comment">//添加日志打印功能</span></div><div class="line">				.addInterceptor(proheaders)<span class="comment">//自定义http headers设置</span></div><div class="line">				.readTimeout(<span class="number">60</span>, TimeUnit.SECONDS)<span class="comment">//设置超时</span></div><div class="line">				.connectTimeout(<span class="number">60</span>, TimeUnit.SECONDS)</div><div class="line">				.build();</div><div class="line"> </div><div class="line">		<span class="keyword">return</span> httpClient;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如代码，在开发中一定要加入日志<strong>logging功能</strong>，注意jar包的版本问题，你要是实在搞不定，就去加我的那个QQ群获取jar包吧。</p>
+<p><strong>定义登录业务的retrofit服务接口: LoginService.java</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">LoginService</span></span>&#123;</div><div class="line">	</div><div class="line">	<span class="comment">//使用retrofit的回调，返回的是User对象</span></div><div class="line">	<span class="meta">@POST</span>(DatasConfig.CMD_USER_LOGINYP)</div><div class="line">	Call&lt;BUResponse&lt;User&gt;&gt; login(<span class="meta">@Body</span> BURequset requset);</div><div class="line">	 </div><div class="line">	<span class="comment">//使用Rxjava的回调，返回的是User对象</span></div><div class="line">	<span class="meta">@POST</span>(DatasConfig.CMD_USER_LOGINYP)</div><div class="line">	Observable&lt;BUResponse&lt;User&gt;&gt; Rxlogin(<span class="meta">@Body</span> BURequset requset);</div><div class="line">	 </div><div class="line">	<span class="comment">//使用Rxjava的回调，但是返回的是原始的响应体数据</span></div><div class="line">	<span class="meta">@POST</span>(DatasConfig.CMD_USER_LOGINYP)</div><div class="line">	<span class="function">Observable&lt;ResponseBody&gt; <span class="title">RxJsonlogin</span><span class="params">(@Body BURequset requset)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我在上面给大家实例了三种写法。</p>
+<ul>
+<li>第一种不使用rxjava，返回的是Gson将响应报文反序列化后的User bean对象。</li>
+<li>第二种使用rxjava，返回的是Gson将响应报文反序列化后的User bean对象。</li>
+<li>第三种rxjava，返回的是okhttp的原始响应体ResponseBody，这样我们就可以获取原始的jsonString来自行解析。</li>
+</ul>
+<p>以上都不是重点，从网上都可以找到很多文章。我要说的<strong>重点是</strong>我们可能需要根据实际的请求和响应的报文协议来<strong>自定义BUResponse和BURequset</strong>这两个类。这一块在网上实在是没有很多讲到这一块的文章，搞不懂这一块，整个的请求和响应流程就无法打通，估计开发者会哭死。</p>
+<p>先来看一下示例的请求和响应的协议：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    “head”:&#123;”timestamp”:<span class="number">123456</span>,&#125;,</div><div class="line">    “body”:&#123;“name”:”abcd”,”pwd”:”<span class="number">123456</span>”&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>BURequset.java</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BURequset</span> </span>&#123;</div><div class="line"> </div><div class="line"> 	<span class="comment">//最重点的就是这里:为啥采用TreeMap来声明head和body?</span></div><div class="line">	<span class="keyword">private</span> TreeMap&lt;String, Object&gt; head;</div><div class="line">	<span class="keyword">private</span> TreeMap&lt;String, Object&gt; body;<span class="comment">//排序</span></div><div class="line">	 </div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">BURequset</span><span class="params">()</span> </span></div><div class="line">	&#123;</div><div class="line">		head = DemoApplication.reqHead;<span class="comment">//因为是统一的请求头，所以只定义一个就好了</span></div><div class="line">		body = <span class="keyword">new</span> TreeMap&lt;String, Object&gt;();</div><div class="line">	&#125;</div><div class="line">	 </div><div class="line">	<span class="function"><span class="keyword">public</span> TreeMap&lt;String, Object&gt; <span class="title">getHead</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> head;</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setHead</span><span class="params">(TreeMap&lt;String, Object&gt; head)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.head = head;</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> TreeMap&lt;String, Object&gt; <span class="title">getBody</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> body;</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBody</span><span class="params">(TreeMap&lt;String, Object&gt; body)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.body = body;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如代码所示，为啥要用TreeMap?<br>其实我最开始的时候设计这个类，使用的是JsonObject，但是通过查看log发现，请求报文的jsonString多了一层name_value_pairs的封装。啥意思？即我们希望的json结构是<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="string">"xxxx"</span>:<span class="string">"zzzzzzz"</span>,</div><div class="line">    <span class="string">"yyyy"</span>:<span class="string">"uuuuuuu"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>而实际生成的却是<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="string">"name_value_pairs"</span>: &#123;</div><div class="line">                        <span class="string">"xxxx"</span>:<span class="string">"zzzzzzz"</span>,</div><div class="line">                        <span class="string">"yyyy"</span>:<span class="string">"uuuuuuu"</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>为啥会这样呢？原来是因为JsonObject的结构是这样的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JSONObject</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; nameValuePairs;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>而retrofit采用<strong>Gson</strong>做json的序列化时，会将JSONObject的<strong>nameValuePairs</strong>封装进序列化结果中。<br>那咋办？我后来<strong>采用了Map来封装我的head，body。</strong>最终得到了我想要的结果，自己也暗自得意。<br>可是，后来<strong>为啥要改成TreeMap呢？</strong>因为我在请我们公司的技术大牛帮我审查这套框架的时候，大牛给指了出来很多的坑。其中一个便是不能用Map,因为Map中的键值对是按照添加顺序排序的，而JsonObject是按照key的升序排序的，而我们常常会用报文来参与生成我们的校验sign。如果用Map的话，我同样的两个参数，put的顺序不同，得到的sign也不同，这显然是不对的。所以，最后<strong>采用了TreeMap来封装head和body，因为TreeMap是默认升序排序的。</strong><br>大家如果要自己封装自己的请求和响应类的时候，一定要注意这个问题。</p>
+<p><strong>BUResponse.java</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BUResponse</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line">	 </div><div class="line">	<span class="keyword">private</span> ResHead head;</div><div class="line">	<span class="keyword">private</span> T body;<span class="comment">//使用泛型来应对我们各种类型的响应</span></div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">public</span> ResHead <span class="title">getHead</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> head;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setHead</span><span class="params">(ResHead head)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.head = head;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">getBody</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> body;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBody</span><span class="params">(T body)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.body = body;</div><div class="line">	&#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ResHead</span></span>&#123;</div><div class="line">		<span class="keyword">private</span> <span class="keyword">long</span> timestamp;</div><div class="line">		 </div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getTimestamp</span><span class="params">()</span> </span>&#123;</div><div class="line">			<span class="keyword">return</span> timestamp;</div><div class="line">		&#125;</div><div class="line">		 </div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTimestamp</span><span class="params">(<span class="keyword">long</span> timestamp)</span> </span>&#123;</div><div class="line">			<span class="keyword">this</span>.timestamp = timestamp;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>response采用泛型来设计实现通用（响应的结构都一样，特殊的响应结构就再单独处理吧）。</p>
+<p><strong>业务的调用和回调</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line">public class LoginPresenter extends BasePresenter&lt;LoginContract.View&gt; implements LoginContract.Presenter &#123;</div><div class="line"></div><div class="line">	public LoginPresenter() &#123;</div><div class="line">		super();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public void login(String name, String pwd) &#123;</div><div class="line">		//因为login的业务逻辑比较简单，我就不再专门去定义Model的接口了</div><div class="line">		//构建请求</div><div class="line">		BURequset request = new BURequset();</div><div class="line">		request.getBody().put("pwd", pwd);</div><div class="line">		request.getBody().put("name", name);</div><div class="line">		 </div><div class="line">		//获取接口服务</div><div class="line">		LoginService service = RetrofitUtils.build().create(LoginService.class);</div><div class="line">		//第二种方法：使用RxJava的调用</div><div class="line">		service.Rxlogin(request)</div><div class="line">				.subscribeOn(Schedulers.newThread()) // 子线程访问网络</div><div class="line">				.observeOn(AndroidSchedulers.mainThread()) // 回调到主线程</div><div class="line">				.subscribe(new Observer&lt;BUResponse&lt;User&gt;&gt;() &#123;</div><div class="line">					@Override</div><div class="line">					public void onCompleted() &#123;</div><div class="line">						// 所有任务执行完毕</div><div class="line">					&#125;</div><div class="line"></div><div class="line">					@Override</div><div class="line">					public void onError(Throwable e) &#123;</div><div class="line">						getView().loginFailed(e.toString());</div><div class="line">					&#125;</div><div class="line"></div><div class="line">					@Override</div><div class="line">					public void onNext(BUResponse&lt;User&gt; result) &#123;</div><div class="line">						if (result != null) &#123;</div><div class="line">							ResHead head = result.getHead();</div><div class="line">							User user = result.getBody();</div><div class="line">							getView().loginSucceed(user);</div><div class="line">						&#125;</div><div class="line">					&#125;</div><div class="line">				&#125;);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">####Gson的使用</div><div class="line">Gson实现Java Bean和JsonString之间的相互转化。但是现实往往是：</div><div class="line">* java bean 和jsonString不是完全匹配的，换句话说，我们的java bean中有很多的属性是额外的。</div><div class="line">* java bean的命名和报文的key是不匹配的，尤其是java bean在多个地方复用的时候。</div><div class="line"> </div><div class="line">不用担心，这些Gson都替你考虑到了，具体的请去参考[你真的会用Gson吗?Gson使用指南](http://www.jianshu.com/p/e740196225a4)</div><div class="line"> </div><div class="line">注意：</div><div class="line">这篇文章中所用到的代码项目原因可能具有版权问题，大家是在实际开发中还是以参考借鉴为主吧。最后，如果这篇文章对大家有帮助，还是希望多多转发，让更多的朋友能够参与进这个框架的讨论中来，彼此受益。</div></pre></td></tr></table></figure></p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">￥打赏支持</span>
+      <div class="donation-body">
+        <div class="tip text-center">请随意打赏，您的支持是我最大的动力！</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
