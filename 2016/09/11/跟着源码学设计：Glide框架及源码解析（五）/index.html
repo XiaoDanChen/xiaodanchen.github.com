@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>跟着源码学设计：Glide框架及源码解析（五） | Hello World!</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Android,Glide," />
+  
+
+  <meta name="description" content="前言
+近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。学习小组QQ群: 193765960。
+本篇是Glide框架及源码解析的第五篇，主要是总结记录Glide的一些使用技巧（会持续更新）。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跟着源码学设计：Glide框架及源码解析（五）">
+<meta property="og:url" content="http://yoursite.com/2016/09/11/跟着源码学设计：Glide框架及源码解析（五）/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="前言
+近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。学习小组QQ群: 193765960。
+本篇是Glide框架及源码解析的第五篇，主要是总结记录Glide的一些使用技巧（会持续更新）。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen">
+<meta property="og:updated_time" content="2016-09-11T06:50:04.824Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跟着源码学设计：Glide框架及源码解析（五）">
+<meta name="twitter:description" content="前言
+近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。学习小组QQ群: 193765960。
+本篇是Glide框架及源码解析的第五篇，主要是总结记录Glide的一些使用技巧（会持续更新）。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen">
+
+  
+    <link rel="alternate" href="/atom.xml" title="Hello World!" type="application/atom+xml">
+  
+
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#显示拍照或者相册中的照片：Uri"><span class="toc-text">显示拍照或者相册中的照片：Uri</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#将资源转换成base64数据"><span class="toc-text">将资源转换成base64数据</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-跟着源码学设计：Glide框架及源码解析（五）" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">跟着源码学设计：Glide框架及源码解析（五）</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.09.11</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>行者</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>前言</strong></p>
+<p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。<strong>学习小组QQ群: 193765960</strong>。</p>
+<p>本篇是Glide框架及源码解析的第五篇，主要是总结记录Glide的一些使用技巧（会持续更新）。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。</p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
+</blockquote>
+<p><strong>往期文章：</strong></p>
+<p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（一）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（二）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（三）</a><br><a href="https://xiaodanchen.github.io/2016/08/23/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（四）</a></p>
+<h3 id="显示拍照或者相册中的照片：Uri"><a href="#显示拍照或者相册中的照片：Uri" class="headerlink" title="显示拍照或者相册中的照片：Uri"></a>显示拍照或者相册中的照片：Uri</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Glide.with(<span class="keyword">this</span>).load(uri).into(im_car_pic);</div></pre></td></tr></table></figure>
+<h3 id="将资源转换成base64数据"><a href="#将资源转换成base64数据" class="headerlink" title="将资源转换成base64数据"></a>将资源转换成base64数据</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Glide.with(<span class="keyword">this</span>).load(datastr).asBitmap().toBytes().into(<span class="keyword">new</span> SimpleTarget&lt;<span class="keyword">byte</span>[]&gt;(<span class="number">320</span>,<span class="number">150</span>) &#123;</div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onResourceReady</span><span class="params">(<span class="keyword">byte</span>[] bytes, GlideAnimation&lt;? <span class="keyword">super</span> <span class="keyword">byte</span>[]&gt; arg1)</span> </span>&#123;</div><div class="line">    <span class="comment">// TODO Auto-generated method stub</span></div><div class="line">    System.out.println(bytes.length+<span class="string">""</span>);</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>更多用法，持续更新中……</p>
+</blockquote>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">￥打赏支持</span>
+      <div class="donation-body">
+        <div class="tip text-center">请随意打赏，您的支持是我最大的动力！</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
