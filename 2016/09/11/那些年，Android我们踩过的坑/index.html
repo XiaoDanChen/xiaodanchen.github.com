@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>那些年,Android我们踩过的坑 | Hello World!</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Android,Debug," />
+  
+
+  <meta name="description" content="前言
+笔记贴，记录平时开发遇到的一些值得总结的bug。欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ 
+
+ViewPager + fragment: 生命周期当viewpger和fragment搭配使用时，一定会遇到过各种各样的问题。诸如，二次进入界面，数据丢失了，界面空白等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="那些年,Android我们踩过的坑">
+<meta property="og:url" content="http://yoursite.com/2016/09/11/那些年，Android我们踩过的坑/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="前言
+笔记贴，记录平时开发遇到的一些值得总结的bug。欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ 
+
+ViewPager + fragment: 生命周期当viewpger和fragment搭配使用时，一定会遇到过各种各样的问题。诸如，二次进入界面，数据丢失了，界面空白等">
+<meta property="og:updated_time" content="2016-09-11T09:31:38.999Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="那些年,Android我们踩过的坑">
+<meta name="twitter:description" content="前言
+笔记贴，记录平时开发遇到的一些值得总结的bug。欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ 
+
+ViewPager + fragment: 生命周期当viewpger和fragment搭配使用时，一定会遇到过各种各样的问题。诸如，二次进入界面，数据丢失了，界面空白等">
+
+  
+    <link rel="alternate" href="/atom.xml" title="Hello World!" type="application/atom+xml">
+  
+
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#ViewPager-fragment-生命周期"><span class="toc-text">ViewPager + fragment: 生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Activity-fragment-二次进入fragment-某个button点击效果没有了"><span class="toc-text">Activity + fragment: 二次进入fragment 某个button点击效果没有了</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-那些年，Android我们踩过的坑" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">那些年,Android我们踩过的坑</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.09.11</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>行者</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>前言</strong></p>
+<p>笔记贴，记录平时开发遇到的一些值得总结的bug。欢迎加入<strong>学习小组QQ群: 193765960</strong>。</p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
+</blockquote>
+<h3 id="ViewPager-fragment-生命周期"><a href="#ViewPager-fragment-生命周期" class="headerlink" title="ViewPager + fragment: 生命周期"></a>ViewPager + fragment: 生命周期</h3><p>当viewpger和fragment搭配使用时，一定会遇到过各种各样的问题。<br>诸如，二次进入界面，数据丢失了，界面空白等等。<br><strong>但凡viepager+fragment的种种问题，都可以从此种情况下fragment的生命周期得到解释和解决。</strong><br>因为预加载的缘故，当现实<strong>当前fragment</strong>时，<strong>下一页fragment</strong>已预加载好（resume状态）。<strong>上一页fragment</strong>(如果当前页不是第一页)也处于resumed状态。<br><strong>简单粗暴点说，viewpager同时有三个页处于onresume状态，其中中间那个页处于可见状态。</strong><br>以现实页为中心的三页(三剑客)作为一个整体，这个整体的上一页和下一页都处于ondestroyview状态（之前已经加载过）。<br>“三剑客”的前一个或者下一个再次显示的时候，需要经oncreatview启动显示。所以，如果在oncreatview和ondestroyview中的UI和数据处理不合理，就会导致各种内存浪费，数据空指针等问题。</p>
+<p>我建议：<br><strong>在onAttach方法中来初始化context、adapter等</strong>，例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAttach</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">	mContext = context;</div><div class="line">	<span class="keyword">if</span>(<span class="keyword">null</span> == mAdapter)&#123;</div><div class="line">		mAdapter = <span class="keyword">new</span> HomePageListAdapter(mContext, data);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">super</span>.onAttach(context);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>在onDetach方法中来释放非view类资源</strong>，例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDetach</span><span class="params">()</span> </span>&#123;</div><div class="line">	mContext = <span class="keyword">null</span>;</div><div class="line">	jump2activity = <span class="keyword">null</span>;</div><div class="line">	mAdapter = <span class="keyword">null</span>;</div><div class="line">	data = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">super</span>.onDetach();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>在onCreateView方法中来初始化view类资源</strong>，例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">		View view = inflater.inflate(R.layout.fragment_xxxx, container,<span class="keyword">false</span>);</div><div class="line">		lv_orders = (ListView)view.findViewById(R.id.lv_orders);</div><div class="line">		lv_orders.setAdapter(mAdapter);</div><div class="line">		<span class="keyword">return</span> view;</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>在onCreateView方法中来初释放view类资源</strong>，例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroyView</span><span class="params">()</span> </span>&#123;</div><div class="line">	lv_orders = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">super</span>.onDestroyView();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="Activity-fragment-二次进入fragment-某个button点击效果没有了"><a href="#Activity-fragment-二次进入fragment-某个button点击效果没有了" class="headerlink" title="Activity + fragment: 二次进入fragment 某个button点击效果没有了"></a>Activity + fragment: 二次进入fragment 某个button点击效果没有了</h3><p><strong>Q: 通过replace方法，切换fragment，后来发现某个button的点击效果没有了。</strong><br><strong>A: </strong>通过private OnClickListener mListener  = new OnClickListener{…}方式声明的对象在第二次进入fragment的时候成为了null。<br>没有搞懂为啥，但是先把解决办法记录下来吧，很傻的方案：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> OnClickListener mListener  = <span class="keyword">null</span>;</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(LayoutInflater inflater, @Nullable ViewGroup container,</span></span></div><div class="line">		@Nullable Bundle savedInstanceState) &#123;</div><div class="line">	<span class="keyword">super</span>.onCreateView(inflater, container, savedInstanceState);</div><div class="line">	......</div><div class="line">	<span class="keyword">if</span>(<span class="keyword">null</span> == mListener)&#123;</div><div class="line">		mListener = <span class="keyword">new</span> OnClickListener() &#123;</div><div class="line">			</div><div class="line">			<span class="meta">@Override</span></div><div class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">				<span class="comment">//TODO</span></div><div class="line">			&#125;</div><div class="line">		&#125;;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> view;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>笔记贴，持续更新记录……</p>
+</blockquote>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">￥打赏支持</span>
+      <div class="donation-body">
+        <div class="tip text-center">请随意打赏，您的支持是我最大的动力！</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
