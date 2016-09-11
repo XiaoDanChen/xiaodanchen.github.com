@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-09-11T09:31:38.999Z</updated>
+  <updated>2016-09-11T09:33:47.291Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2016/09/11/%E9%82%A3%E4%BA%9B%E5%B9%B4%EF%BC%8CAndroid%E6%88%91%E4%BB%AC%E8%B8%A9%E8%BF%87%E7%9A%84%E5%9D%91/"/>
     <id>http://yoursite.com/2016/09/11/那些年，Android我们踩过的坑/</id>
     <published>2016-09-11T07:13:29.000Z</published>
-    <updated>2016-09-11T09:31:38.999Z</updated>
+    <updated>2016-09-11T09:33:47.291Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong></p>
 <p>笔记贴，记录平时开发遇到的一些值得总结的bug。欢迎加入<strong>学习小组QQ群: 193765960</strong>。</p>
@@ -52,7 +52,7 @@
     
       <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
     
-      <category term="Debug" scheme="http://yoursite.com/tags/Debug/"/>
+      <category term="Debugging" scheme="http://yoursite.com/tags/Debugging/"/>
     
   </entry>
   
