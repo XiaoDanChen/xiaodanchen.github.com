@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-09-25T14:41:34.199Z</updated>
+  <updated>2016-09-25T15:02:28.073Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2016/09/25/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%9A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%EF%BC%88%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AF%87%EF%BC%89/"/>
     <id>http://yoursite.com/2016/09/25/机器学习：数学基础（线性代数篇）/</id>
     <published>2016-09-25T05:08:14.000Z</published>
-    <updated>2016-09-25T14:41:34.199Z</updated>
+    <updated>2016-09-25T15:02:28.073Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong><br>近期在自学机器学习，把笔记做个整理，以方便查阅和整理知识框架。喜欢探讨机器学习或者Android开发技术的同学可以加<strong>学习小组QQ群: 193765960</strong>。</p>
 <p>本文是机器学习的第一篇，因为我本人对机器学习的整个理解有限，就不再给大家一本正经的胡说八道了，以免误人子弟，仅是根据自己的理解做一个学习笔记，如果有大牛发现我这个小菜鸟的学习路线跑偏了，还希望能够提醒一下哈，在此表示感谢。</p>
@@ -34,10 +34,10 @@
 <li>随机过程极其应用（陆大絟 清华大学）</li>
 </ul>
 <h3 id="线性代数"><a href="#线性代数" class="headerlink" title="线性代数"></a>线性代数</h3><h4 id="第一章-行列式"><a href="#第一章-行列式" class="headerlink" title="第一章 行列式"></a>第一章 行列式</h4><h4 id="概念："><a href="#概念：" class="headerlink" title="概念："></a>概念：</h4><ol>
-<li>行列式是一个<strong>算术表达式</strong>的矩阵式的表达方式，比如表达式<span>$a_{11}a_{22} - a_{12}a_{21}$</span><!-- Has MathJax -->的二阶行列式表示为：<span>$$\begin{bmatrix}
+<li>行列式是一个<strong>算术表达式</strong>的矩阵式的表达方式，比如表达式<span>$a_{11}a_{22} - a_{12}a_{21}$</span><!-- Has MathJax -->的二阶行列式表示为：<span>$$\begin{vmatrix}
 a_{11}\ \ a_{12} \\ 
 a_{21}\ \ a_{22} 
-\end{bmatrix}$$</span><!-- Has MathJax -->
+\end{vmatrix}$$</span><!-- Has MathJax -->
 $a_{ij}$称为行列式的元素或元</li>
 <li>全排列及其逆序数</li>
 </ol>
@@ -49,25 +49,25 @@ $a_{ij}$称为行列式的元素或元</li>
 </ul>
 <ol>
 <li><p>n阶行列式(t是$p_1，p_2，…，p_n$相对于自然数列1，2，…n的逆序数)</p>
-<span>$$\sum(-1)^ta_1p_1a_2p_2...a_np_n = \begin{bmatrix}
+<span>$$\sum(-1)^ta_1p_1a_2p_2...a_np_n = \begin{vmatrix}
 a_{11}\ \ a_{12}\ ... a_{1n}\\ 
 a_{21}\ \ a_{22}\ ... a_{2n}\\ 
 .....\\
 a_{n1}\ \ a_{n2}\ ... a_{nn}
-\end{bmatrix}= D$$</span><!-- Has MathJax -->
+\end{vmatrix}= D$$</span><!-- Has MathJax -->
 </li>
 <li><p>转置行列式$D^T$</p>
-<span>$$D = \begin{bmatrix}
+<span>$$D = \begin{vmatrix}
 a_{11}\ \ a_{12}\ ... a_{1n}\\ 
 a_{21}\ \ a_{22}\ ... a_{2n}\\ 
 .....\\
 a_{n1}\ \ a_{n2}\ ... a_{nn}
-\end{bmatrix},D^T = \begin{bmatrix}
+\end{vmatrix},D^T = \begin{vmatrix}
 a_{11}\ \ a_{21}\ ... a_{n1}\\ 
 a_{12}\ \ a_{22}\ ... a_{n2}\\ 
 .....\\
 a_{1n}\ \ a_{2n}\ ... a_{nn}
-\end{bmatrix}$$</span><!-- Has MathJax -->
+\end{vmatrix}$$</span><!-- Has MathJax -->
 </li>
 </ol>
 <h4 id="定理及推论"><a href="#定理及推论" class="headerlink" title="定理及推论"></a>定理及推论</h4><ol>
@@ -88,16 +88,32 @@ a_{1n}\ \ a_{2n}\ ... a_{nn}
 <li>行列式等于他的任意一行（列）的各个元素与其对应的代数余子式的乘积之和。（行列式的按行、按列展开）</li>
 </ol>
 <h4 id="克拉默法则"><a href="#克拉默法则" class="headerlink" title="克拉默法则"></a>克拉默法则</h4><p>含有n个未知数的n个线性方程的方程组<br><span>$$\left\{\begin{matrix}
-a_{11}x_1 +  a_{12}x_2 + ...+ a_{1n}x_n\\ 
-a_{21}x_1 +  a_{22}x_2 + ...+ a_{2n}x_n\\ 
+a_{11}x_1 +  a_{12}x_2 + ...+ a_{1n}x_n = b_1\\ 
+a_{21}x_1 +  a_{22}x_2 + ...+ a_{2n}x_n = b_2\\ 
 ......\\
-a_{n1}x_1 +  a_{n2}x_2 + ...+ a_{nn}x_n
-\end{matrix}\right.$$</span><!-- Has MathJax --><br>如果线性方程组的系数不等于零，即<br><span>$$D = \begin{bmatrix}
+a_{n1}x_1 +  a_{n2}x_2 + ...+ a_{nn}x_n = b_n
+\end{matrix}\right.$$</span><!-- Has MathJax --><br>如果线性方程组的系数不等于零，即<br><span>$$D = \begin{vmatrix}
 a_{11}\ \ a_{12}\ ... a_{1n}\\ 
 a_{21}\ \ a_{22}\ ... a_{2n}\\ 
 .....\\
 a_{n1}\ \ a_{n2}\ ... a_{nn}
-\end{bmatrix}\neq 0,$$</span><!-- Has MathJax --><br>那么，方程组有唯一解<br><span>$x_1 = \frac{D_1}{D}$</span><!-- Has MathJax --></p>
+\end{vmatrix}\neq 0,$$</span><!-- Has MathJax --><br>那么，方程组有唯一解<br><span>$x_1 = \frac{D_1}{D}, x_2 = \frac{D_2}{D},..., x_n = \frac{D_n}{D},$</span><!-- Has MathJax --><br>其中，<span>$D_j(j = 1,2,...,n)$</span><!-- Has MathJax -->是把系数行列式D中的第j列用方程式组右端的常数项替换后所得的n阶行列式。</p>
+<p>根据克拉默法则，可以得出如下定理，</p>
+<ol>
+<li>如果n阶线性方程组的系数行列式不等于0，则方程组一定有唯一解。</li>
+<li>如果n元线性方程组无解或者有两个不同的解，则它的系数行列式必为0</li>
+<li>如果n元齐次方程组（方程组右端为0）的系数行列式不等于0，则齐次方程组没有非零解。</li>
+<li>如果齐次方程组有非零解，则它的系数行列式必为0.</li>
+</ol>
+<h3 id="第二章：矩阵及其运算"><a href="#第二章：矩阵及其运算" class="headerlink" title="第二章：矩阵及其运算"></a>第二章：矩阵及其运算</h3><h4 id="矩阵定义"><a href="#矩阵定义" class="headerlink" title="矩阵定义"></a>矩阵定义</h4><ol>
+<li>由<span>$m \times n$</span><!-- Has MathJax -->个数排成的m行n列的数表称为m行n列矩阵，简称<span>$m \times n$</span><!-- Has MathJax -->矩阵,记作<span>$$A = \begin{bmatrix}
+a_{11}\ \ a_{12}\ ... a_{1n}\\ 
+a_{21}\ \ a_{22}\ ... a_{2n}\\ 
+.....\\
+a_{m1}\ \ a_{m2}\ ... a_{mn}
+\end{bmatrix}\neq 0,$$</span><!-- Has MathJax -->
+</li>
+</ol>
 <span>$$</span><!-- Has MathJax -->]]></content>
     
     <summary type="html">
