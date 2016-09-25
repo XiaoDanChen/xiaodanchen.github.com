@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-09-12T04:56:13.312Z</updated>
+  <updated>2016-09-25T06:03:43.303Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,46 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>机器学习：数学基础（线性代数篇）</title>
+    <link href="http://yoursite.com/2016/09/25/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%9A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%EF%BC%88%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AF%87%EF%BC%89/"/>
+    <id>http://yoursite.com/2016/09/25/机器学习：数学基础（线性代数篇）/</id>
+    <published>2016-09-25T05:08:14.000Z</published>
+    <updated>2016-09-25T06:03:43.303Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>前言</strong><br>近期在自学机器学习，把笔记做个整理，以方便查阅和整理知识框架。喜欢探讨机器学习或者Android开发技术的同学可以加<strong>学习小组QQ群: 193765960</strong>。</p>
+<p>本文是机器学习的第一篇，因为我本人对机器学习的整个理解有限，就不再给大家一本正经的胡说八道了，以免误人子弟，仅是根据自己的理解做一个学习笔记，如果有大牛发现我这个小菜鸟的学习路线跑偏了，还希望能够提醒一下哈，在此表示感谢。</p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
+</blockquote>
+<h3 id="数学基础教材名目（我自己根据理解指定的，不一定准确）"><a href="#数学基础教材名目（我自己根据理解指定的，不一定准确）" class="headerlink" title="数学基础教材名目（我自己根据理解指定的，不一定准确）"></a>数学基础教材名目（我自己根据理解指定的，不一定准确）</h3><ul>
+<li>线性代数（同济大学 第四版）</li>
+<li>概率论与数理统计（浙江大学 第三版）</li>
+<li>复变函数（西安交通大学 第四版）</li>
+<li>随机过程极其应用（陆大絟 清华大学）</li>
+</ul>
+<h3 id="线性代数"><a href="#线性代数" class="headerlink" title="线性代数"></a>线性代数</h3><h4 id="第一章-行列式"><a href="#第一章-行列式" class="headerlink" title="第一章 行列式"></a>第一章 行列式</h4><h4 id="概念："><a href="#概念：" class="headerlink" title="概念："></a>概念：</h4><ol>
+<li>行列式是一个算术表达式的矩阵式的表达方式，比如二阶行列式：</li>
+</ol>
+<p><img src="http://latex.codecogs.com/gif.latex?\begin{bmatrix}&space;a_1_1\&amp;space;\&amp;space;a_1_2&space;\\&space;a_2_1\&amp;space;\&amp;space;a_2_2&space;\end{bmatrix}" title="\begin{bmatrix} a_1_1\ \ a_1_2 \\ a_2_1\ \ a_2_2 \end{bmatrix}"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;strong&gt;前言&lt;/strong&gt;&lt;br&gt;近期在自学机器学习，把笔记做个整理，以方便查阅和整理知识框架。喜欢探讨机器学习或者Android开发技术的同学可以加&lt;strong&gt;学习小组QQ群: 193765960&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;本文是机器学习的第一篇，
+    
+    </summary>
+    
+      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="线性代数" scheme="http://yoursite.com/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/"/>
+    
+  </entry>
   
   <entry>
     <title>Android APP更换字体策略精要</title>
@@ -144,7 +184,7 @@
     <link href="http://yoursite.com/2016/09/11/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89/"/>
     <id>http://yoursite.com/2016/09/11/跟着源码学设计：Glide框架及源码解析（五）/</id>
     <published>2016-09-11T06:32:09.000Z</published>
-    <updated>2016-09-20T06:10:45.533Z</updated>
+    <updated>2016-09-20T06:11:08.226Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong></p>
 <p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。<strong>学习小组QQ群: 193765960</strong>。</p>

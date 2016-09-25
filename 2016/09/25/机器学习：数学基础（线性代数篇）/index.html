@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>机器学习：数学基础（线性代数篇） | Hello World!</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="机器学习,线性代数," />
+  
+
+  <meta name="description" content="前言近期在自学机器学习，把笔记做个整理，以方便查阅和整理知识框架。喜欢探讨机器学习或者Android开发技术的同学可以加学习小组QQ群: 193765960。
+本文是机器学习的第一篇，因为我本人对机器学习的整个理解有限，就不再给大家一本正经的胡说八道了，以免误人子弟，仅是根据自己的理解做一个学习笔记，如果有大牛发现我这个小菜鸟的学习路线跑偏了，还希望能够提醒一下哈，在此表示感谢。
+
+版权归作者所有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习：数学基础（线性代数篇）">
+<meta property="og:url" content="http://yoursite.com/2016/09/25/机器学习：数学基础（线性代数篇）/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="前言近期在自学机器学习，把笔记做个整理，以方便查阅和整理知识框架。喜欢探讨机器学习或者Android开发技术的同学可以加学习小组QQ群: 193765960。
+本文是机器学习的第一篇，因为我本人对机器学习的整个理解有限，就不再给大家一本正经的胡说八道了，以免误人子弟，仅是根据自己的理解做一个学习笔记，如果有大牛发现我这个小菜鸟的学习路线跑偏了，还希望能够提醒一下哈，在此表示感谢。
+
+版权归作者所有">
+<meta property="og:image" content="http://latex.codecogs.com/gif.latex?\begin{bmatrix}&space;a_1_1\&space;\&space;a_1_2&space;\\&space;a_2_1\&space;\&space;a_2_2&space;\end{bmatrix}">
+<meta property="og:updated_time" content="2016-09-25T06:03:43.303Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="机器学习：数学基础（线性代数篇）">
+<meta name="twitter:description" content="前言近期在自学机器学习，把笔记做个整理，以方便查阅和整理知识框架。喜欢探讨机器学习或者Android开发技术的同学可以加学习小组QQ群: 193765960。
+本文是机器学习的第一篇，因为我本人对机器学习的整个理解有限，就不再给大家一本正经的胡说八道了，以免误人子弟，仅是根据自己的理解做一个学习笔记，如果有大牛发现我这个小菜鸟的学习路线跑偏了，还希望能够提醒一下哈，在此表示感谢。
+
+版权归作者所有">
+<meta name="twitter:image" content="http://latex.codecogs.com/gif.latex?\begin{bmatrix}&space;a_1_1\&space;\&space;a_1_2&space;\\&space;a_2_1\&space;\&space;a_2_2&space;\end{bmatrix}">
+
+  
+    <link rel="alternate" href="/atom.xml" title="Hello World!" type="application/atom+xml">
+  
+
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#数学基础教材名目（我自己根据理解指定的，不一定准确）"><span class="toc-text">数学基础教材名目（我自己根据理解指定的，不一定准确）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线性代数"><span class="toc-text">线性代数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#第一章-行列式"><span class="toc-text">第一章 行列式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#概念："><span class="toc-text">概念：</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-机器学习：数学基础（线性代数篇）" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">机器学习：数学基础（线性代数篇）</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.09.25</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>行者</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>前言</strong><br>近期在自学机器学习，把笔记做个整理，以方便查阅和整理知识框架。喜欢探讨机器学习或者Android开发技术的同学可以加<strong>学习小组QQ群: 193765960</strong>。</p>
+<p>本文是机器学习的第一篇，因为我本人对机器学习的整个理解有限，就不再给大家一本正经的胡说八道了，以免误人子弟，仅是根据自己的理解做一个学习笔记，如果有大牛发现我这个小菜鸟的学习路线跑偏了，还希望能够提醒一下哈，在此表示感谢。</p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
+</blockquote>
+<h3 id="数学基础教材名目（我自己根据理解指定的，不一定准确）"><a href="#数学基础教材名目（我自己根据理解指定的，不一定准确）" class="headerlink" title="数学基础教材名目（我自己根据理解指定的，不一定准确）"></a>数学基础教材名目（我自己根据理解指定的，不一定准确）</h3><ul>
+<li>线性代数（同济大学 第四版）</li>
+<li>概率论与数理统计（浙江大学 第三版）</li>
+<li>复变函数（西安交通大学 第四版）</li>
+<li>随机过程极其应用（陆大絟 清华大学）</li>
+</ul>
+<h3 id="线性代数"><a href="#线性代数" class="headerlink" title="线性代数"></a>线性代数</h3><h4 id="第一章-行列式"><a href="#第一章-行列式" class="headerlink" title="第一章 行列式"></a>第一章 行列式</h4><h4 id="概念："><a href="#概念：" class="headerlink" title="概念："></a>概念：</h4><ol>
+<li>行列式是一个算术表达式的矩阵式的表达方式，比如二阶行列式：</li>
+</ol>
+<p><img src="http://latex.codecogs.com/gif.latex?\begin{bmatrix}&space;a_1_1\&amp;space;\&amp;space;a_1_2&space;\\&space;a_2_1\&amp;space;\&amp;space;a_2_2&space;\end{bmatrix}" title="\begin{bmatrix} a_1_1\ \ a_1_2 \\ a_2_1\ \ a_2_2 \end{bmatrix}"></p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">扫描加群</span>
+      <div class="donation-body">
+        <div class="tip text-center">好好学习，天天向上！</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qun.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
