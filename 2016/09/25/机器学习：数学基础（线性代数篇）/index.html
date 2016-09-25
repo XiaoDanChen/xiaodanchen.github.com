@@ -27,7 +27,7 @@
 本文是机器学习的第一篇，因为我本人对机器学习的整个理解有限，就不再给大家一本正经的胡说八道了，以免误人子弟，仅是根据自己的理解做一个学习笔记，如果有大牛发现我这个小菜鸟的学习路线跑偏了，还希望能够提醒一下哈，在此表示感谢。
 
 版权归作者所有">
-<meta property="og:updated_time" content="2016-09-25T14:09:35.330Z">
+<meta property="og:updated_time" content="2016-09-25T14:41:34.199Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习：数学基础（线性代数篇）">
 <meta name="twitter:description" content="前言近期在自学机器学习，把笔记做个整理，以方便查阅和整理知识框架。喜欢探讨机器学习或者Android开发技术的同学可以加学习小组QQ群: 193765960。
@@ -142,7 +142,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#数学基础教材名目（我自己根据理解指定的，不一定准确）"><span class="toc-text">数学基础教材名目（我自己根据理解指定的，不一定准确）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线性代数"><span class="toc-text">线性代数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#第一章-行列式"><span class="toc-text">第一章 行列式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#概念："><span class="toc-text">概念：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#定理及推论"><span class="toc-text">定理及推论</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#数学基础教材名目（我自己根据理解指定的，不一定准确）"><span class="toc-text">数学基础教材名目（我自己根据理解指定的，不一定准确）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线性代数"><span class="toc-text">线性代数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#第一章-行列式"><span class="toc-text">第一章 行列式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#概念："><span class="toc-text">概念：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#定理及推论"><span class="toc-text">定理及推论</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#克拉默法则"><span class="toc-text">克拉默法则</span></a></li></ol></li></ol>
   </div>
 
 
@@ -243,8 +243,20 @@ a_{1n}\ \ a_{2n}\ ... a_{nn}
 </blockquote>
 <ol>
 <li>一个行列式，如果其中第i行所有元素除<span>$a_{ij}$</span><!-- Has MathJax -->之外全为零，那么这个行列式等于<span>$a_{ij}$</span><!-- Has MathJax -->与他的代数余子式<span>$A_{ij}$</span><!-- Has MathJax -->的乘积。</li>
+<li>行列式等于他的任意一行（列）的各个元素与其对应的代数余子式的乘积之和。（行列式的按行、按列展开）</li>
 </ol>
-
+<h4 id="克拉默法则"><a href="#克拉默法则" class="headerlink" title="克拉默法则"></a>克拉默法则</h4><p>含有n个未知数的n个线性方程的方程组<br><span>$$\left\{\begin{matrix}
+a_{11}x_1 +  a_{12}x_2 + ...+ a_{1n}x_n\\ 
+a_{21}x_1 +  a_{22}x_2 + ...+ a_{2n}x_n\\ 
+......\\
+a_{n1}x_1 +  a_{n2}x_2 + ...+ a_{nn}x_n
+\end{matrix}\right.$$</span><!-- Has MathJax --><br>如果线性方程组的系数不等于零，即<br><span>$$D = \begin{bmatrix}
+a_{11}\ \ a_{12}\ ... a_{1n}\\ 
+a_{21}\ \ a_{22}\ ... a_{2n}\\ 
+.....\\
+a_{n1}\ \ a_{n2}\ ... a_{nn}
+\end{bmatrix}\neq 0,$$</span><!-- Has MathJax --><br>那么，方程组有唯一解<br><span>$x_1 = \frac{D_1}{D}$</span><!-- Has MathJax --></p>
+<span>$$</span><!-- Has MathJax -->
     
   </div>
 </article>
