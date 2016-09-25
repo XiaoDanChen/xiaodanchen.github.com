@@ -27,7 +27,7 @@
 本文是机器学习的第一篇，因为我本人对机器学习的整个理解有限，就不再给大家一本正经的胡说八道了，以免误人子弟，仅是根据自己的理解做一个学习笔记，如果有大牛发现我这个小菜鸟的学习路线跑偏了，还希望能够提醒一下哈，在此表示感谢。
 
 版权归作者所有">
-<meta property="og:updated_time" content="2016-09-25T14:00:13.855Z">
+<meta property="og:updated_time" content="2016-09-25T14:02:19.443Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习：数学基础（线性代数篇）">
 <meta name="twitter:description" content="前言近期在自学机器学习，把笔记做个整理，以方便查阅和整理知识框架。喜欢探讨机器学习或者Android开发技术的同学可以加学习小组QQ群: 193765960。
@@ -206,8 +206,16 @@ $a_{ij}$称为行列式的元素或元</li>
 <li>逆序数为奇数的排列称为奇排列，为偶数的排列称为偶排列。</li>
 </ul>
 <ol>
-<li>n阶行列式(t是$p_1，p_2，…，pn$相对于自然数列1，2，…n的逆序数)<br>$$<br>\sum(-1)^ta_1p_1a_2p_2…a_np<em>n = \begin{bmatrix}<br>a</em>{11}\ \ a<em>{12}\ … a</em>{1n}\<br>a<em>{21}\ \ a</em>{22}\ … a<em>{2n}\<br>…..\<br>a</em>{n1}\ \ a<em>{n2}\ … a</em>{nn}<br>\end{bmatrix}= D<br>$$</li>
-<li>转置行列式$D^T$<br>$$<br>D = \begin{bmatrix}<br>a<em>{11}\ \ a</em>{12}\ … a<em>{1n}\<br>a</em>{21}\ \ a<em>{22}\ … a</em>{2n}\<br>…..\<br>a<em>{n1}\ \ a</em>{n2}\ … a<em>{nn}<br>\end{bmatrix},D^T = \begin{bmatrix}<br>a</em>{11}\ \ a<em>{21}\ … a</em>{n1}\<br>a<em>{12}\ \ a</em>{22}\ … a<em>{n2}\<br>…..\<br>a</em>{1n}\ \ a<em>{2n}\ … a</em>{nn}<br>\end{bmatrix}<br>$$</li>
+<li><p>n阶行列式(t是$p_1，p_2，…，pn$相对于自然数列1，2，…n的逆序数)</p>
+<span>$$\sum(-1)^ta_1p_1a_2p_2...a_np_n = \begin{bmatrix}
+a_{11}\ \ a_{12}\ ... a_{1n}\\ 
+a_{21}\ \ a_{22}\ ... a_{2n}\\ 
+.....\\
+a_{n1}\ \ a_{n2}\ ... a_{nn}
+\end{bmatrix}= D$$</span><!-- Has MathJax -->
+</li>
+<li><p>转置行列式$D^T$<br>$$<br>D = \begin{bmatrix}<br>a<em>{11}\ \ a</em>{12}\ … a<em>{1n}\<br>a</em>{21}\ \ a<em>{22}\ … a</em>{2n}\<br>…..\<br>a<em>{n1}\ \ a</em>{n2}\ … a<em>{nn}<br>\end{bmatrix},D^T = \begin{bmatrix}<br>a</em>{11}\ \ a<em>{21}\ … a</em>{n1}\<br>a<em>{12}\ \ a</em>{22}\ … a<em>{n2}\<br>…..\<br>a</em>{1n}\ \ a<em>{2n}\ … a</em>{nn}<br>\end{bmatrix}<br>$$</p>
+</li>
 </ol>
 <h4 id="定理及推论"><a href="#定理及推论" class="headerlink" title="定理及推论"></a>定理及推论</h4><ol>
 <li>主对角线以下（上）的元素全为零的行列式叫做上（下）三角行列式，其算术表达式为对角线元素乘积。</li>
