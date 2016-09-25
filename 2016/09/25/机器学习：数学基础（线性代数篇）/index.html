@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>机器学习：数学基础（线性代数篇） | Hello World!</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="机器学习,线性代数," />
+  
+
+  <meta name="description" content="前言近期在自学机器学习，把笔记做个整理，以方便查阅和整理知识框架。喜欢探讨机器学习或者Android开发技术的同学可以加学习小组QQ群: 193765960。
+本文是机器学习的第一篇，因为我本人对机器学习的整个理解有限，就不再给大家一本正经的胡说八道了，以免误人子弟，仅是根据自己的理解做一个学习笔记，如果有大牛发现我这个小菜鸟的学习路线跑偏了，还希望能够提醒一下哈，在此表示感谢。
+
+版权归作者所有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习：数学基础（线性代数篇）">
+<meta property="og:url" content="http://yoursite.com/2016/09/25/机器学习：数学基础（线性代数篇）/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="前言近期在自学机器学习，把笔记做个整理，以方便查阅和整理知识框架。喜欢探讨机器学习或者Android开发技术的同学可以加学习小组QQ群: 193765960。
+本文是机器学习的第一篇，因为我本人对机器学习的整个理解有限，就不再给大家一本正经的胡说八道了，以免误人子弟，仅是根据自己的理解做一个学习笔记，如果有大牛发现我这个小菜鸟的学习路线跑偏了，还希望能够提醒一下哈，在此表示感谢。
+
+版权归作者所有">
+<meta property="og:updated_time" content="2016-09-25T08:37:24.234Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="机器学习：数学基础（线性代数篇）">
+<meta name="twitter:description" content="前言近期在自学机器学习，把笔记做个整理，以方便查阅和整理知识框架。喜欢探讨机器学习或者Android开发技术的同学可以加学习小组QQ群: 193765960。
+本文是机器学习的第一篇，因为我本人对机器学习的整个理解有限，就不再给大家一本正经的胡说八道了，以免误人子弟，仅是根据自己的理解做一个学习笔记，如果有大牛发现我这个小菜鸟的学习路线跑偏了，还希望能够提醒一下哈，在此表示感谢。
+
+版权归作者所有">
+
+  
+    <link rel="alternate" href="/atom.xml" title="Hello World!" type="application/atom+xml">
+  
+
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+  
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#数学基础教材名目（我自己根据理解指定的，不一定准确）"><span class="toc-text">数学基础教材名目（我自己根据理解指定的，不一定准确）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线性代数"><span class="toc-text">线性代数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#第一章-行列式"><span class="toc-text">第一章 行列式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#概念："><span class="toc-text">概念：</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-机器学习：数学基础（线性代数篇）" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">机器学习：数学基础（线性代数篇）</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.09.25</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>行者</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>前言</strong><br>近期在自学机器学习，把笔记做个整理，以方便查阅和整理知识框架。喜欢探讨机器学习或者Android开发技术的同学可以加<strong>学习小组QQ群: 193765960</strong>。</p>
+<p>本文是机器学习的第一篇，因为我本人对机器学习的整个理解有限，就不再给大家一本正经的胡说八道了，以免误人子弟，仅是根据自己的理解做一个学习笔记，如果有大牛发现我这个小菜鸟的学习路线跑偏了，还希望能够提醒一下哈，在此表示感谢。</p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
+</blockquote>
+<h3 id="数学基础教材名目（我自己根据理解指定的，不一定准确）"><a href="#数学基础教材名目（我自己根据理解指定的，不一定准确）" class="headerlink" title="数学基础教材名目（我自己根据理解指定的，不一定准确）"></a>数学基础教材名目（我自己根据理解指定的，不一定准确）</h3><ul>
+<li>线性代数（同济大学 第四版）</li>
+<li>概率论与数理统计（浙江大学 第三版）</li>
+<li>复变函数（西安交通大学 第四版）</li>
+<li>随机过程极其应用（陆大絟 清华大学）</li>
+</ul>
+<h3 id="线性代数"><a href="#线性代数" class="headerlink" title="线性代数"></a>线性代数</h3><h4 id="第一章-行列式"><a href="#第一章-行列式" class="headerlink" title="第一章 行列式"></a>第一章 行列式</h4><h4 id="概念："><a href="#概念：" class="headerlink" title="概念："></a>概念：</h4><ol>
+<li>行列式是一个<strong>算术表达式</strong>的矩阵式的表达方式，比如表达式$a<em>{11}a</em>{22} - a<em>{12}a</em>{21}$的二阶行列式表示为：<br>$$<br>\begin{bmatrix}<br>a<em>{11}\ \ a</em>{12} \<br>a<em>{21}\ \ a</em>{22}<br>\end{bmatrix}<br>$$<br>$a_{ij}$称为行列式的元素或元</li>
+<li>全排列及其逆序数</li>
+</ol>
+<ul>
+<li>把n个元素排成一列就叫这n个元素的一个全排列，简称排列。</li>
+<li>对n个元素规定好一个标准的次序，对于这n个元素的任何一个排列，如果任意两个元素相互的先后次序与标准排列中的次序不一致，就说有一个逆序。</li>
+<li>一个排列中的逆序总数称为这个排列的逆序数</li>
+<li>逆序数为奇数的排列称为奇排列，为偶数的排列称为偶排列。</li>
+</ul>
+<ol>
+<li>n阶行列式(t是$p_1，p_2，…，pn$相对于自然数列1，2，…n的逆序数)<br>$$<br>\sum(-1)^ta_1p_1a_2p_2…a_np<em>n = \begin{bmatrix}<br>a</em>{11}\ \ a<em>{12}\ … a</em>{1n}\<br>a<em>{21}\ \ a</em>{22}\ … a<em>{2n}\<br>…..\<br>a</em>{n1}\ \ a<em>{n2}\ … a</em>{nn}<br>\end{bmatrix}= D<br>$$</li>
+<li>转置行列式$D^T$<br>$$<br>D = \begin{bmatrix}<br>a<em>{11}\ \ a</em>{12}\ … a<em>{1n}\<br>a</em>{21}\ \ a<em>{22}\ … a</em>{2n}\<br>…..\<br>a<em>{n1}\ \ a</em>{n2}\ … a<em>{nn}<br>\end{bmatrix},D^T = \begin{bmatrix}<br>a</em>{11}\ \ a<em>{21}\ … a</em>{n1}\<br>a<em>{12}\ \ a</em>{22}\ … a<em>{n2}\<br>…..\<br>a</em>{1n}\ \ a<em>{2n}\ … a</em>{nn}<br>\end{bmatrix}<br>$$<br>####定理及推论</li>
+<li>主对角线以下（上）的元素全为零的行列式叫做上（下）三角行列式，其算术表达式为对角线元素乘积。</li>
+<li>一个排列中，任意两个元素对换，排列改变奇偶性。</li>
+<li>奇数排列变成标准排列的对换次数为奇数，偶数排列对换成标准排列的次数为偶数。</li>
+<li>行列式与他的转置行列式相等</li>
+<li>互换行列式的两行（列）,行列式变号。</li>
+<li>行列式中如果有两行或两列成比例，则次行列式等于零。</li>
+<li>把行列式的某一行（列）的元素各自拆分成2个数字的和，则行列式的值等于拆分的两个子行列式的和</li>
+<li><strong>把行列式的某一行（列）的各个元素乘以同一个数加到另一行（列）对应的元素上去，行列式不变。</strong></li>
+</ol>
+<blockquote>
+<p><strong>余子式</strong>：在行列式中，把第$a<em>{ij}$元素所在的行和列删除后，剩余的行列式称为$a</em>{ij}$的余子式，计做$M<em>{ij}$。$A</em>{ij} = (-1)^{i+j}M<em>{ij}$称为$a</em>{ij}$的代数余子式。</p>
+</blockquote>
+<ol>
+<li>一个行列式，如果其中第i行所有元素除$a<em>{ij}$之外全为零，那么这个行列式等于$a</em>{ij}$与他的代数余子式$A_{ij}$的乘积。</li>
+</ol>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">扫描加群</span>
+      <div class="donation-body">
+        <div class="tip text-center">好好学习，天天向上！</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qun.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>
