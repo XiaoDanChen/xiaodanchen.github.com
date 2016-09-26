@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-09-26T05:40:57.010Z</updated>
+  <updated>2016-09-26T05:44:13.827Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2016/09/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%9A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%EF%BC%88%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1%EF%BC%89/"/>
     <id>http://yoursite.com/2016/09/26/机器学习：数学基础（概率论与数理统计）/</id>
     <published>2016-09-26T04:49:01.000Z</published>
-    <updated>2016-09-26T05:40:57.010Z</updated>
+    <updated>2016-09-26T05:44:13.827Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong><br>近期在自学机器学习，把笔记做个整理，以方便查阅和整理知识框架。喜欢探讨机器学习或者Android开发技术的同学可以加<strong>学习小组QQ群: 193765960</strong>。</p>
 <p>本文是机器学习的第二篇，仅是根据自己的理解做一个学习笔记，如果有大牛发现我这个小菜鸟的学习路线跑偏了，还希望能够提醒一下哈，在此表示感谢。</p>
@@ -47,8 +47,8 @@
 <li>若<span>$A\subset B$</span><!-- Has MathJax --> 且<span>$B\subset A$</span><!-- Has MathJax -->即A=B,责称事件B等于事件A</li>
 <li><span>$A\cup B = \left \{ x\mid x\in A或  x\in B\right \}$</span><!-- Has MathJax --> 称为事件A与事件B的<strong>和事件</strong>。类似的<span>$\bigcup_{k=1}^{n}A_k$</span><!-- Has MathJax -->称为n个事件<span>$A_1，A_2，...,A_n$</span><!-- Has MathJax -->的和事件。<span>$\bigcup_{k=1}^{\infty }A_k$</span><!-- Has MathJax -->称为可列事件<span>$A_1，A_2，...$</span><!-- Has MathJax -->的和事件。</li>
 <li><span>$A\cap B = \left \{ x\mid x\in A且  x\in B\right \}$</span><!-- Has MathJax --> 称为事件A与事件B的<strong>积事件</strong>。<span>$A\cap B$</span><!-- Has MathJax -->也记作AB。类似的<span>$\bigcap_{k=1}^{n}A_k$</span><!-- Has MathJax -->称为n个事件<span>$A_1，A_2，...,A_n$</span><!-- Has MathJax -->的积事件。<span>$\bigcap_{k=1}^{\infty }A_k$</span><!-- Has MathJax -->称为可列事件<span>$A_1，A_2，...$</span><!-- Has MathJax -->的积事件。</li>
-<li><span>$A-B = \left \{ x\mid x\in A或  x\out B\right \} 称为事件A与B的**差事件**。$</span><!-- Has MathJax --></li>
-<li><span>$若A\capB = \varnothing 则称事件A与B**互不相容**或者**互斥**。$</span><!-- Has MathJax -->
+<li><span>$A-B = \left \{ x\mid x\in A或  x\out B\right \}$</span><!-- Has MathJax --> 称为事件A与B的<strong>差事件</strong>。</li>
+<li><p>若<span>$A\cap B = \varnothing$</span><!-- Has MathJax -->则称事件A与B<strong>互不相容</strong>或者**互斥。</p>
  <span>$$</span><!-- Has MathJax --></li>
 </ul>
 ]]></content>
