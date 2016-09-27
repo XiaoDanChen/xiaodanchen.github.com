@@ -27,7 +27,7 @@
 本文是机器学习的第二篇，仅是根据自己的理解做一个学习笔记，如果有大牛发现我这个小菜鸟的学习路线跑偏了，还希望能够提醒一下哈，在此表示感谢。
 
 版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.i">
-<meta property="og:updated_time" content="2016-09-26T05:46:48.521Z">
+<meta property="og:updated_time" content="2016-09-27T05:35:00.388Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习：数学基础（概率论与数理统计）">
 <meta name="twitter:description" content="前言近期在自学机器学习，把笔记做个整理，以方便查阅和整理知识框架。喜欢探讨机器学习或者Android开发技术的同学可以加学习小组QQ群: 193765960。
@@ -206,7 +206,18 @@
 <li><span>$A\cup B = \left \{ x\mid x\in A或  x\in B\right \}$</span><!-- Has MathJax --> 称为事件A与事件B的<strong>和事件</strong>。类似的<span>$\bigcup_{k=1}^{n}A_k$</span><!-- Has MathJax -->称为n个事件<span>$A_1，A_2，...,A_n$</span><!-- Has MathJax -->的和事件。<span>$\bigcup_{k=1}^{\infty }A_k$</span><!-- Has MathJax -->称为可列事件<span>$A_1，A_2，...$</span><!-- Has MathJax -->的和事件。</li>
 <li><span>$A\cap B = \left \{ x\mid x\in A且  x\in B\right \}$</span><!-- Has MathJax --> 称为事件A与事件B的<strong>积事件</strong>。<span>$A\cap B$</span><!-- Has MathJax -->也记作AB。类似的<span>$\bigcap_{k=1}^{n}A_k$</span><!-- Has MathJax -->称为n个事件<span>$A_1，A_2，...,A_n$</span><!-- Has MathJax -->的积事件。<span>$\bigcap_{k=1}^{\infty }A_k$</span><!-- Has MathJax -->称为可列事件<span>$A_1，A_2，...$</span><!-- Has MathJax -->的积事件。</li>
 <li><span>$A-B = \left \{ x\mid x\in A或  x\notin B\right \}$</span><!-- Has MathJax --> 称为事件A与B的<strong>差事件</strong>。</li>
-<li><p>若<span>$A\cap B = \varnothing$</span><!-- Has MathJax -->则称事件A与B<strong>互不相容</strong>或者<strong>互斥</strong>。</p>
+<li>若<span>$A\cap B = \varnothing$</span><!-- Has MathJax -->则称事件A与B<strong>互不相容</strong>或者<strong>互斥</strong>。</li>
+<li>若<span>$A\cup B = S且A\cap B = \varnothing$</span><!-- Has MathJax -->则称事件A与B<strong>互为逆事件</strong>或者互为<strong>对立事件</strong>。</li>
+</ul>
+<p><strong>时间运算</strong></p>
+<ul>
+<li><strong>交换律</strong>：<span>$A\cup B = b\cup A; A\cap B = B\cap A$</span><!-- Has MathJax --></li>
+<li><strong>结合律</strong>：<span>$$A\cup (B\cup C) = (A\cup B)\cup C;
+A\cap (B\cap C) = (A\cap B)\cap C;$$</span><!-- Has MathJax --></li>
+<li><strong>分配律</strong>：<span>$$A\cup (B\cap C) = (A\cup B)\cap (A\cup C);
+A\cap (B\cup C) = (A\cap B)\cup (A\cap C);$$</span><!-- Has MathJax --></li>
+<li><p><strong>德.摩根律</strong>：<span>$$\bar{A\cup B} = \bar{A} \cap \bar{B};
+\bar{A\cap B} = \bar{A} \cup \bar{B};$$</span><!-- Has MathJax --></p>
  <span>$$</span><!-- Has MathJax --></li>
 </ul>
 

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-09-26T05:46:48.521Z</updated>
+  <updated>2016-09-27T05:35:00.388Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2016/09/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%9A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%EF%BC%88%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1%EF%BC%89/"/>
     <id>http://yoursite.com/2016/09/26/机器学习：数学基础（概率论与数理统计）/</id>
     <published>2016-09-26T04:49:01.000Z</published>
-    <updated>2016-09-26T05:46:48.521Z</updated>
+    <updated>2016-09-27T05:35:00.388Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong><br>近期在自学机器学习，把笔记做个整理，以方便查阅和整理知识框架。喜欢探讨机器学习或者Android开发技术的同学可以加<strong>学习小组QQ群: 193765960</strong>。</p>
 <p>本文是机器学习的第二篇，仅是根据自己的理解做一个学习笔记，如果有大牛发现我这个小菜鸟的学习路线跑偏了，还希望能够提醒一下哈，在此表示感谢。</p>
@@ -48,7 +48,18 @@
 <li><span>$A\cup B = \left \{ x\mid x\in A或  x\in B\right \}$</span><!-- Has MathJax --> 称为事件A与事件B的<strong>和事件</strong>。类似的<span>$\bigcup_{k=1}^{n}A_k$</span><!-- Has MathJax -->称为n个事件<span>$A_1，A_2，...,A_n$</span><!-- Has MathJax -->的和事件。<span>$\bigcup_{k=1}^{\infty }A_k$</span><!-- Has MathJax -->称为可列事件<span>$A_1，A_2，...$</span><!-- Has MathJax -->的和事件。</li>
 <li><span>$A\cap B = \left \{ x\mid x\in A且  x\in B\right \}$</span><!-- Has MathJax --> 称为事件A与事件B的<strong>积事件</strong>。<span>$A\cap B$</span><!-- Has MathJax -->也记作AB。类似的<span>$\bigcap_{k=1}^{n}A_k$</span><!-- Has MathJax -->称为n个事件<span>$A_1，A_2，...,A_n$</span><!-- Has MathJax -->的积事件。<span>$\bigcap_{k=1}^{\infty }A_k$</span><!-- Has MathJax -->称为可列事件<span>$A_1，A_2，...$</span><!-- Has MathJax -->的积事件。</li>
 <li><span>$A-B = \left \{ x\mid x\in A或  x\notin B\right \}$</span><!-- Has MathJax --> 称为事件A与B的<strong>差事件</strong>。</li>
-<li><p>若<span>$A\cap B = \varnothing$</span><!-- Has MathJax -->则称事件A与B<strong>互不相容</strong>或者<strong>互斥</strong>。</p>
+<li>若<span>$A\cap B = \varnothing$</span><!-- Has MathJax -->则称事件A与B<strong>互不相容</strong>或者<strong>互斥</strong>。</li>
+<li>若<span>$A\cup B = S且A\cap B = \varnothing$</span><!-- Has MathJax -->则称事件A与B<strong>互为逆事件</strong>或者互为<strong>对立事件</strong>。</li>
+</ul>
+<p><strong>时间运算</strong></p>
+<ul>
+<li><strong>交换律</strong>：<span>$A\cup B = b\cup A; A\cap B = B\cap A$</span><!-- Has MathJax --></li>
+<li><strong>结合律</strong>：<span>$$A\cup (B\cup C) = (A\cup B)\cup C;
+A\cap (B\cap C) = (A\cap B)\cap C;$$</span><!-- Has MathJax --></li>
+<li><strong>分配律</strong>：<span>$$A\cup (B\cap C) = (A\cup B)\cap (A\cup C);
+A\cap (B\cup C) = (A\cap B)\cup (A\cap C);$$</span><!-- Has MathJax --></li>
+<li><p><strong>德.摩根律</strong>：<span>$$\bar{A\cup B} = \bar{A} \cap \bar{B};
+\bar{A\cap B} = \bar{A} \cup \bar{B};$$</span><!-- Has MathJax --></p>
  <span>$$</span><!-- Has MathJax --></li>
 </ul>
 ]]></content>
@@ -281,7 +292,7 @@ a_{m1}\ \ a_{m2}\ ... a_{mn}
     <link href="http://yoursite.com/2016/09/11/%E9%82%A3%E4%BA%9B%E5%B9%B4%EF%BC%8CAndroid%E6%88%91%E4%BB%AC%E8%B8%A9%E8%BF%87%E7%9A%84%E5%9D%91/"/>
     <id>http://yoursite.com/2016/09/11/那些年，Android我们踩过的坑/</id>
     <published>2016-09-11T07:13:29.000Z</published>
-    <updated>2016-09-11T09:37:10.336Z</updated>
+    <updated>2016-09-26T06:52:31.220Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong></p>
 <p>笔记贴，记录平时开发遇到的一些值得总结的bug。欢迎加入<strong>学习小组QQ群: 193765960</strong>。</p>
@@ -294,6 +305,7 @@ a_{m1}\ \ a_{m2}\ ... a_{mn}
 <p><strong>在onCreateView方法中来初始化view类资源</strong>，例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">		View view = inflater.inflate(R.layout.fragment_xxxx, container,<span class="keyword">false</span>);</div><div class="line">		lv_orders = (ListView)view.findViewById(R.id.lv_orders);</div><div class="line">		lv_orders.setAdapter(mAdapter);</div><div class="line">		<span class="keyword">return</span> view;</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
 <p><strong>在onCreateView方法中来初释放view类资源</strong>，例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroyView</span><span class="params">()</span> </span>&#123;</div><div class="line">	lv_orders = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">super</span>.onDestroyView();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h2 id="Activity-fragment-二次进入fragment-某个button点击效果没有了"><a href="#Activity-fragment-二次进入fragment-某个button点击效果没有了" class="headerlink" title="Activity + fragment: 二次进入fragment 某个button点击效果没有了"></a>Activity + fragment: 二次进入fragment 某个button点击效果没有了</h2><p><strong>Q: 通过replace方法，切换fragment，后来发现某个button的点击效果没有了。</strong><br><strong>A: </strong>通过private OnClickListener mListener  = new OnClickListener{…}方式声明的对象在第二次进入fragment的时候成为了null。<br>没有搞懂为啥，但是先把解决办法记录下来吧，很傻的方案：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> OnClickListener mListener  = <span class="keyword">null</span>;</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(LayoutInflater inflater, @Nullable ViewGroup container,</span></span></div><div class="line">		@Nullable Bundle savedInstanceState) &#123;</div><div class="line">	<span class="keyword">super</span>.onCreateView(inflater, container, savedInstanceState);</div><div class="line">	......</div><div class="line">	<span class="keyword">if</span>(<span class="keyword">null</span> == mListener)&#123;</div><div class="line">		mListener = <span class="keyword">new</span> OnClickListener() &#123;</div><div class="line">			</div><div class="line">			<span class="meta">@Override</span></div><div class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">				<span class="comment">//TODO</span></div><div class="line">			&#125;</div><div class="line">		&#125;;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> view;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="TabLayout-ViewPager-fragment"><a href="#TabLayout-ViewPager-fragment" class="headerlink" title="TabLayout+ViewPager + fragment:"></a>TabLayout+ViewPager + fragment:</h2><p>滑动page的时候不要将fragment 干掉，否则会存在异步刷新界面出现问题。<br>因为将fragment干掉后，再次创建fragment后，从视图上看不出区别来，但是fragment的对象已经变了，此时如果存在异步刷新界面的情况，就会存在问题。<br>正确的办法是，判断fragment是否存在，如果存在的话，就想办法让界面单纯的刷新数据。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//在界面的回调中需要刷新viewpager的数据时</span></div><div class="line"><span class="comment">//判断界面fragment已经初始化</span></div><div class="line"><span class="keyword">if</span>(<span class="keyword">null</span> == mViewPager.getAdapter())&#123;</div><div class="line">	setupViewPager(mViewPager);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//通过广播通知fragment去刷新界面（fragment中注册reciver）</span></div><div class="line">Intent intent = <span class="keyword">new</span> Intent(CFTGlobal.HOME_UPDATE_MESSAGE_ACTION);</div><div class="line">sendBroadcast(intent);</div></pre></td></tr></table></figure></p>
 <blockquote>
 <p>笔记贴，持续更新记录……</p>
 </blockquote>
@@ -361,7 +373,7 @@ a_{m1}\ \ a_{m2}\ ... a_{mn}
     <link href="http://yoursite.com/2016/09/04/%E4%BD%BF%E7%94%A8MVP-Retrofit-Rxjava%E6%90%AD%E5%BB%BA%E5%B7%A5%E7%A8%8B%E5%AE%9E%E6%88%98/"/>
     <id>http://yoursite.com/2016/09/04/使用MVP-Retrofit-Rxjava搭建工程实战/</id>
     <published>2016-09-04T00:29:52.000Z</published>
-    <updated>2016-09-04T08:54:36.822Z</updated>
+    <updated>2016-09-26T06:43:29.849Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong><br>最近使用MVP+Retrofit+Rxjava搭建了新项目的工程框架和网络请求回调框架。在网上也查看了一些资料，但是没有找到很贴合实际项目各自不同的请求及响应报文协议的解决方案。无奈，自己苦逼的一番摸索踩坑，终于搭建出了一个基本还算满意的解决方案，在这里和大家分享一下，希望能够帮助开发工程师们省去一些苦恼。<br>随着深入地开发，这个方案肯定还会陆续暴露出一些坑，我会一直维护这篇文章，将对应的坑和解决办法记录下来。决定使用我这个工程框架的同学还希望能够加<strong>学习小组QQ群</strong>: 193765960，将实际开发中遇到的坑在群中进行讨论和分享。<br>如果这篇文章对大家实际开发有所帮助，还望大家多多转发。</p>
 <p>在阅读这篇文章之前要求读者对MVP，retrofit，rxjava，Gson具有一定的了解。<br>我在这里帮大家整理了一些比较好的文章，需要的同学自行查看。<br><a href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0303/4029.html" target="_blank" rel="external">《Retrofit使用教程(一)》</a><br><a href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0323/4074.html" target="_blank" rel="external">《Retrofit使用教程(二)》</a><br><a href="http://www.jcodecraeer.com/a/anzhuokaifa/2016/0325/4082.html" target="_blank" rel="external">《Retrofit使用教程(三) : Retrofit与RxJava初相逢》</a><br><a href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0518/4270.html" target="_blank" rel="external">《你真的会用Retrofit2吗?Retrofit2完全教程》</a><br><a href="http://www.jianshu.com/p/e740196225a4" target="_blank" rel="external">《你真的会用Gson吗?Gson使用指南》</a><br><a href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/1012/3572.html" target="_blank" rel="external">《给 Android 开发者的 RxJava 详解》</a></p>
@@ -403,7 +415,10 @@ a_{m1}\ \ a_{m2}\ ... a_{mn}
 <li>java bean 和jsonString不是完全匹配的，换句话说，我们的java bean中有很多的属性是额外的。</li>
 <li>java bean的命名和报文的key是不匹配的，尤其是java bean在多个地方复用的时候。</li>
 </ul>
-<p>不用担心，这些Gson都替你考虑到了，具体的请去参考<a href="http://www.jianshu.com/p/e740196225a4" target="_blank" rel="external">《你真的会用Gson吗?Gson使用指南》</a></p>
+<p>不用担心，这些Gson都替你考虑到了，具体的请去参考<a href="http://www.jianshu.com/p/e740196225a4" target="_blank" rel="external">《你真的会用Gson吗?Gson使用指南》</a><br><strong>需要注意的坑</strong>：</p>
+<ul>
+<li>retrofit中使用gosn做java bean和json报文的转化时，入参和出参（请求和响应）中如果涉及同一类java bean对象，则要保持字段名的一致，java bean的属性名要和入参中的一致。</li>
+</ul>
 <p>注意：<br>这篇文章中所用到的代码项目原因可能具有版权问题，大家是在实际开发中还是以参考借鉴为主吧。最后，如果这篇文章对大家有帮助，还是希望多多转发，让更多的朋友能够参与进这个框架的讨论中来，彼此受益。</p>
 ]]></content>
     

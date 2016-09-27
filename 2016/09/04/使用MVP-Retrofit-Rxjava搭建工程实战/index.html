@@ -21,7 +21,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/09/04/使用MVP-Retrofit-Rxjava搭建工程实战/index.html">
 <meta property="og:site_name" content="Hello World!">
 <meta property="og:description" content="前言最近使用MVP+Retrofit+Rxjava搭建了新项目的工程框架和网络请求回调框架。在网上也查看了一些资料，但是没有找到很贴合实际项目各自不同的请求及响应报文协议的解决方案。无奈，自己苦逼的一番摸索踩坑，终于搭建出了一个基本还算满意的解决方案，在这里和大家分享一下，希望能够帮助开发工程师们省去一些苦恼。随着深入地开发，这个方案肯定还会陆续暴露出一些坑，我会一直维护这篇文章，将对应的坑和解决">
-<meta property="og:updated_time" content="2016-09-04T08:54:36.822Z">
+<meta property="og:updated_time" content="2016-09-26T06:43:29.849Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用MVP-Retrofit-Rxjava搭建工程实战">
 <meta name="twitter:description" content="前言最近使用MVP+Retrofit+Rxjava搭建了新项目的工程框架和网络请求回调框架。在网上也查看了一些资料，但是没有找到很贴合实际项目各自不同的请求及响应报文协议的解决方案。无奈，自己苦逼的一番摸索踩坑，终于搭建出了一个基本还算满意的解决方案，在这里和大家分享一下，希望能够帮助开发工程师们省去一些苦恼。随着深入地开发，这个方案肯定还会陆续暴露出一些坑，我会一直维护这篇文章，将对应的坑和解决">
@@ -211,7 +211,10 @@
 <li>java bean 和jsonString不是完全匹配的，换句话说，我们的java bean中有很多的属性是额外的。</li>
 <li>java bean的命名和报文的key是不匹配的，尤其是java bean在多个地方复用的时候。</li>
 </ul>
-<p>不用担心，这些Gson都替你考虑到了，具体的请去参考<a href="http://www.jianshu.com/p/e740196225a4" target="_blank" rel="external">《你真的会用Gson吗?Gson使用指南》</a></p>
+<p>不用担心，这些Gson都替你考虑到了，具体的请去参考<a href="http://www.jianshu.com/p/e740196225a4" target="_blank" rel="external">《你真的会用Gson吗?Gson使用指南》</a><br><strong>需要注意的坑</strong>：</p>
+<ul>
+<li>retrofit中使用gosn做java bean和json报文的转化时，入参和出参（请求和响应）中如果涉及同一类java bean对象，则要保持字段名的一致，java bean的属性名要和入参中的一致。</li>
+</ul>
 <p>注意：<br>这篇文章中所用到的代码项目原因可能具有版权问题，大家是在实际开发中还是以参考借鉴为主吧。最后，如果这篇文章对大家有帮助，还是希望多多转发，让更多的朋友能够参与进这个框架的讨论中来，彼此受益。</p>
 
     
