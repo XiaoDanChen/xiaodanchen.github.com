@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>基于PtrFrameLayout实现自定义仿京东下拉刷新控件 | Hello World!</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Android,pull-to-refresh,PtrFrameLayout,下拉刷新," />
+  
+
+  <meta name="description" content="前言最近基于项目需要，使用PtrFrameLayout框架实现了自定义的下拉刷新控件，大体效果类似于京东APP的下拉刷新动态效果。在这里和大家分享一下具体的思路和需要注意的地方，以便帮助有类似开发和学习需求的同学省点时间。如果这篇文章对大家实际开发有所帮助，还望大家多多转发。
+由于项目原因，本文不会涉及详细的具体实现，主要是提供思路和关键点。感兴趣的欢迎大家加入学习小组QQ群: 193765960">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于PtrFrameLayout实现自定义仿京东下拉刷新控件">
+<meta property="og:url" content="http://yoursite.com/2016/10/13/基于PtrFrameLayout实现自定义仿京东下拉刷新控件/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="前言最近基于项目需要，使用PtrFrameLayout框架实现了自定义的下拉刷新控件，大体效果类似于京东APP的下拉刷新动态效果。在这里和大家分享一下具体的思路和需要注意的地方，以便帮助有类似开发和学习需求的同学省点时间。如果这篇文章对大家实际开发有所帮助，还望大家多多转发。
+由于项目原因，本文不会涉及详细的具体实现，主要是提供思路和关键点。感兴趣的欢迎大家加入学习小组QQ群: 193765960">
+<meta property="og:updated_time" content="2016-10-13T11:41:14.727Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于PtrFrameLayout实现自定义仿京东下拉刷新控件">
+<meta name="twitter:description" content="前言最近基于项目需要，使用PtrFrameLayout框架实现了自定义的下拉刷新控件，大体效果类似于京东APP的下拉刷新动态效果。在这里和大家分享一下具体的思路和需要注意的地方，以便帮助有类似开发和学习需求的同学省点时间。如果这篇文章对大家实际开发有所帮助，还望大家多多转发。
+由于项目原因，本文不会涉及详细的具体实现，主要是提供思路和关键点。感兴趣的欢迎大家加入学习小组QQ群: 193765960">
+
+  
+    <link rel="alternate" href="/atom.xml" title="Hello World!" type="application/atom+xml">
+  
+
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+  
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#实现的目标和效果"><span class="toc-text">实现的目标和效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关键类"><span class="toc-text">关键类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码精要"><span class="toc-text">代码精要</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MyPtrAnimationDrawable-java"><span class="toc-text">MyPtrAnimationDrawable.java</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MyPtrHeaderView-java"><span class="toc-text">MyPtrHeaderView.java</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MyPtrFrameLayout-java"><span class="toc-text">MyPtrFrameLayout.java</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一个重要的知识点（-）"><span class="toc-text">一个重要的知识点（*）</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-基于PtrFrameLayout实现自定义仿京东下拉刷新控件" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">基于PtrFrameLayout实现自定义仿京东下拉刷新控件</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.10.13</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>行者</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/Android/">Android</a> / <a class="article-category-link" href="/categories/Android/pull-to-refresh/">pull-to-refresh</a> / <a class="article-category-link" href="/categories/Android/pull-to-refresh/下拉刷新/">下拉刷新</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>前言</strong><br>最近基于项目需要，使用PtrFrameLayout框架实现了自定义的下拉刷新控件，大体效果类似于京东APP的下拉刷新动态效果。在这里和大家分享一下具体的思路和需要注意的地方，以便帮助有类似开发和学习需求的同学省点时间。如果这篇文章对大家实际开发有所帮助，还望大家多多转发。</p>
+<p>由于项目原因，本文不会涉及详细的具体实现，主要是提供思路和关键点。感兴趣的欢迎大家加入<strong>学习小组QQ群</strong>: 193765960，该群是技术分享和讨论群，还请遵守小组纪律。</p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/" target="_blank" rel="external">https://xiaodanchen.github.io/</a> </p>
+</blockquote>
+<p><a href="https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh" target="_blank" rel="external">PtrFrameLayout开源项目下载地址</a></p>
+<h3 id="实现的目标和效果"><a href="#实现的目标和效果" class="headerlink" title="实现的目标和效果"></a>实现的目标和效果</h3><p>1，尽可能的能够包裹各类布局和控件，不要仅仅适用于listview。<br>2，通过animation-list的xml作为动画的来源，方便替换<br>3，head部分通过layout xml定义，包括至少三部分：动画部分，刷新状态提示，上次刷新时间提示<br>（注：控件不支持上拉加载，其实按照逻辑，加载部分应该由子view自己实现比较好）</p>
+<h3 id="关键类"><a href="#关键类" class="headerlink" title="关键类"></a>关键类</h3><ul>
+<li><strong>MyPtrFrameLayout.java</strong>：最终控件，在我们的layout xml中用来包裹我们需要下拉刷新的布局。该类主要参照官方的<strong>PtrClassicFrameLayout.java</strong>实现。</li>
+<li><strong>MyPtrHeaderView.java</strong>：MyPtrFrameLayout的头部，布局由<strong>layout_header_view.xml</strong>定义。该类主要参照官方的<strong>PtrClassicDefaultHeader.java</strong>实现。</li>
+<li><strong>MyPtrAnimationDrawable.java</strong>：MyPtrHeaderView的动画部分，动画来源于自定义的<strong>res/drawable/xxx_animation.xml</strong></li>
+</ul>
+<h3 id="代码精要"><a href="#代码精要" class="headerlink" title="代码精要"></a>代码精要</h3><h4 id="MyPtrAnimationDrawable-java"><a href="#MyPtrAnimationDrawable-java" class="headerlink" title="MyPtrAnimationDrawable.java"></a>MyPtrAnimationDrawable.java</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyPtrAnimationDrawable</span> <span class="keyword">extends</span> <span class="title">Drawable</span> <span class="keyword">implements</span> <span class="title">Animatable</span> </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">MyPtrAnimationDrawable</span><span class="params">(Context context, View parent)</span> </span>&#123;</div><div class="line">        mContext = context;</div><div class="line">        mParent = parent;</div><div class="line">        initAnimations();</div><div class="line">    &#125;</div><div class="line">     </div><div class="line">    ......</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> </span>&#123;</div><div class="line">		mAnimation.start();</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stop</span><span class="params">()</span> </span>&#123;</div><div class="line">        mAnimation.stop();</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initAnimations</span><span class="params">()</span> </span>&#123;</div><div class="line">    	mParent.setBackgroundResource(R.drawable.xxx_animation);</div><div class="line">    	mAnimation = (AnimationDrawable) mParent.getBackground();</div><div class="line">    &#125;</div><div class="line">     </div><div class="line">    ......</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="MyPtrHeaderView-java"><a href="#MyPtrHeaderView-java" class="headerlink" title="MyPtrHeaderView.java"></a>MyPtrHeaderView.java</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyPtrHeaderView</span> <span class="keyword">extends</span> <span class="title">FrameLayout</span> <span class="keyword">implements</span> <span class="title">PtrUIHandler</span> </span>&#123;</div><div class="line">  ......</div><div class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initViews</span><span class="params">()</span> </span>&#123;</div><div class="line">        View header = LayoutInflater.from(getContext()).inflate(R.layout.layout_header_view, <span class="keyword">this</span>);</div><div class="line">        </div><div class="line">        mAnimaView = header.findViewById(R.id.xxx);</div><div class="line">        mDrawable = <span class="keyword">new</span> MyPtrAnimationDrawable(mContext, mAnimaView);</div><div class="line">        mDrawable.start();</div><div class="line">        mRefreshTextView = (TextView) header.findViewById(R.id.yyy);</div><div class="line">        mLastUpdateTextView = (TextView) header.findViewById(R.id.zzz);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    ......</div><div class="line">    <span class="comment">//主要逻辑参照官方的**PtrClassicDefaultHeader.java**实现，代码官方类都有。这里不方便多写，但是不难，基本逻辑都一样。说白了就是替换，窗户纸一层。</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="MyPtrFrameLayout-java"><a href="#MyPtrFrameLayout-java" class="headerlink" title="MyPtrFrameLayout.java"></a>MyPtrFrameLayout.java</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//该类主要参照官方的**PtrClassicFrameLayout.java**实现。代码总共没有多少行，纯替换。非重点就不啰嗦的贴代码了。</span></div></pre></td></tr></table></figure>
+<h3 id="一个重要的知识点（-）"><a href="#一个重要的知识点（-）" class="headerlink" title="一个重要的知识点（*）"></a>一个重要的知识点（<strong><strong>*</strong></strong>）</h3><p>当我们的下拉刷新控件包裹了可滑动的视图布局时，当视图上滑出屏幕一部分时再下拉视图，会发现我们的视图滑出去的部分没有滑回来，而是出现了被下来控件headerview遮盖的情况。</p>
+<p>这个经查资料，发现官方早已给我们封装好了默认的处理类。不废话，直接上代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//加入在MainActivity中使用了MyPtrFrameLayout下拉刷新控件布局</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">void</span> initView（）&#123;</div><div class="line">  frame = (PtrCarFrameLayout) view.findViewById(R.id.my_ptr_framelayout);</div><div class="line">  frame.setPullToRefresh(<span class="keyword">true</span>);</div><div class="line">  frame.setLastUpdateTimeKey(HomePageService.class.getName());</div><div class="line">  <span class="comment">//以下代码是解决滑出视图被遮盖的关键：</span></div><div class="line">  <span class="comment">//1. 使用官方提供的PtrDefaultHandler类</span></div><div class="line">  frame.setPtrHandler(<span class="keyword">new</span> PtrDefaultHandler() &#123;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">checkCanDoRefresh</span><span class="params">(PtrFrameLayout frame, View content, View header)</span> </span>&#123;</div><div class="line">        	<span class="comment">//2. 使用这个代码可以解决滑动冲突（*****）,切记</span></div><div class="line">        	<span class="keyword">return</span> PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header)&amp;&amp;!frame.isRefreshing();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRefreshBegin</span><span class="params">(PtrFrameLayout frame)</span> </span>&#123;</div><div class="line">        	<span class="comment">//加载数据，回调刷新界面的代码</span></div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>这篇文章中所用到的代码项目原因可能具有版权问题，大家是在实际开发中还是以参考借鉴为主吧。最后，如果这篇文章对大家有帮助，大家就偷偷看吧，项目原因就不要太扩散了。</p>
+</blockquote>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">扫描加群</span>
+      <div class="donation-body">
+        <div class="tip text-center">好好学习，天天向上！</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qun.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+    <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+    
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>
