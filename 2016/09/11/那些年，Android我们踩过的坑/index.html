@@ -31,7 +31,7 @@ ViewPager + fragment: 生命周期当viewpger和fragment搭配使用时，一定
 版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ 
 
 ViewPager + fragment: 生命周期当viewpger和fragment搭配使用时，一定会遇到过各种各样的问题。诸如，二次进入界面，数据丢失了，界面空白等">
-<meta property="og:updated_time" content="2016-10-19T13:10:39.594Z">
+<meta property="og:updated_time" content="2016-10-19T13:14:43.626Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="那些年,Android我们踩过的坑">
 <meta name="twitter:description" content="前言
@@ -212,6 +212,7 @@ ViewPager + fragment: 生命周期当viewpger和fragment搭配使用时，一定
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//JS端主要代码</span></div><div class="line">jsFun1 = <span class="keyword">new</span> function()&#123;</div><div class="line">  window.location.href=<span class="string">"app:fun1"</span>;<span class="comment">//"app:"是和服务器约定好的前缀，fun1是移动端定义的名为fun1的js回调接口</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">jsFun2 = <span class="keyword">new</span> function()&#123;</div><div class="line">  window.location.href=<span class="string">"app:fun2"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Html端主要代码</span></div><div class="line">......(通过href或者onclick调用js的jsFun*)</div></pre></td></tr></table></figure>
+<p><strong>需要注意的几点：</strong><br>1，采用方式一，一定要注意别名的首字母小写（是不是需要全部小写没有验证）<br>2，小米系列的手机可能对webview和Android的交互存在一些问题，如果发现交互怎么都不起作用，试试把APP卸载后重新安装（有缓存）。<br>3，使用方式二，一定要注意使用反射时，要调用反射类的构造函数实例化，否则会报告一堆的异常。</p>
 <blockquote>
 <p>笔记贴，持续更新记录……</p>
 </blockquote>
