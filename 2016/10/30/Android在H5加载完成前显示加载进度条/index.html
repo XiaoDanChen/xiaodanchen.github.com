@@ -31,7 +31,7 @@ H5加载慢，想要在移动端显示加载进度？答案就是这么简单！
 版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ 
 
 实现方案：1234567891011121314151617181920@Overridepublic void onCreate(Bundle savedIns">
-<meta property="og:updated_time" content="2016-10-30T05:27:56.442Z">
+<meta property="og:updated_time" content="2016-10-30T05:38:10.179Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android在H5加载完成前显示加载进度条">
 <meta name="twitter:description" content="前言
@@ -192,7 +192,7 @@ H5加载慢，想要在移动端显示加载进度？答案就是这么简单！
 <p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
 </blockquote>
 <h3 id="实现方案："><a href="#实现方案：" class="headerlink" title="实现方案："></a>实现方案：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">    setContentView(R.layout.activity_webpage);</div><div class="line">    initData();</div><div class="line">    initView();</div><div class="line">	<span class="comment">//注意：不要在mWebView loadUrl的时候显示进度条，因为这时候有可能你的webActivity的view还没有初始化，造成activity 的content view覆盖了进度条。</span></div><div class="line">    showLoading();</div><div class="line">&#125;</div><div class="line"></div><div class="line">mWebView.setWebChromeClient(<span class="keyword">new</span> WebPageChromeClient()&#123;</div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onProgressChanged</span><span class="params">(WebView view, <span class="keyword">int</span> newProgress)</span> </span>&#123;</div><div class="line"> </div><div class="line">    <span class="keyword">if</span>(newProgress == <span class="number">100</span>)&#123;</div><div class="line">    	cancelLoading();<span class="comment">//取消进度条显示</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">super</span>.onProgressChanged(view, newProgress);</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<h3 id="错误方案："><a href="#错误方案：" class="headerlink" title="错误方案："></a>错误方案：</h3><p>加入你使用了<strong>onPageFinished()方案</strong>，那么恭喜你，你很有可能掉坑里了。因为url如果存在重定向等情况，onPageFinished会多次调用，而且很有可能，H5的界面还没有真正加载显示，你的loading界面就取消掉了。</p>
+<h3 id="错误方案："><a href="#错误方案：" class="headerlink" title="错误方案："></a>错误方案：</h3><p>假如你使用了<strong>onPageFinished()方案</strong>，那么恭喜你，你很有可能掉坑里了。因为url如果存在重定向等情况，onPageFinished会多次调用，而且很有可能，H5的界面还没有真正加载显示，你的loading界面就取消掉了。</p>
 
     
   </div>
