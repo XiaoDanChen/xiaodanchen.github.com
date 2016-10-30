@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>HTML与Android、IOS的JS调用 | Hello World!</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Android,IOS,HTML," />
+  
+
+  <meta name="description" content="前言
+近期研究了H5界面与移动端（Android，IOS）的交互方案，记录一下以飨众友。学习小组QQ群: 193765960。
+本篇重点介绍H5调用移动端接口的通用方案，其他方案或者移动端调用H5接口的方法请自行研究。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ 
+
+应用场景：
+移动端使用H5自带的标题栏，通过点击H5">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTML与Android、IOS的JS调用">
+<meta property="og:url" content="http://yoursite.com/2016/10/30/HTML与Android、IOS的JS调用/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="前言
+近期研究了H5界面与移动端（Android，IOS）的交互方案，记录一下以飨众友。学习小组QQ群: 193765960。
+本篇重点介绍H5调用移动端接口的通用方案，其他方案或者移动端调用H5接口的方法请自行研究。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ 
+
+应用场景：
+移动端使用H5自带的标题栏，通过点击H5">
+<meta property="og:updated_time" content="2016-10-30T05:04:12.120Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTML与Android、IOS的JS调用">
+<meta name="twitter:description" content="前言
+近期研究了H5界面与移动端（Android，IOS）的交互方案，记录一下以飨众友。学习小组QQ群: 193765960。
+本篇重点介绍H5调用移动端接口的通用方案，其他方案或者移动端调用H5接口的方法请自行研究。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ 
+
+应用场景：
+移动端使用H5自带的标题栏，通过点击H5">
+
+  
+    <link rel="alternate" href="/atom.xml" title="Hello World!" type="application/atom+xml">
+  
+
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+  
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#应用场景："><span class="toc-text">应用场景：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案（Android-amp-IOS）"><span class="toc-text">解决方案（Android & IOS）</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-HTML与Android、IOS的JS调用" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">HTML与Android、IOS的JS调用</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.10.30</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>行者</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/Android/">Android</a> / <a class="article-category-link" href="/categories/Android/HTML/">HTML</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>前言</strong></p>
+<p>近期研究了H5界面与移动端（Android，IOS）的交互方案，记录一下以飨众友。<strong>学习小组QQ群: 193765960</strong>。</p>
+<p>本篇重点介绍H5调用移动端接口的通用方案，其他方案或者移动端调用H5接口的方法请自行研究。</p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
+</blockquote>
+<h3 id="应用场景："><a href="#应用场景：" class="headerlink" title="应用场景："></a>应用场景：</h3><ul>
+<li>移动端使用H5自带的标题栏，通过点击H5标题栏返回按钮回退或者跳转到移动端的某个原生界面。</li>
+<li>点击H5的电话号码，本地拨打电话<h3 id="解决方案（Android-amp-IOS）"><a href="#解决方案（Android-amp-IOS）" class="headerlink" title="解决方案（Android &amp; IOS）"></a>解决方案（Android &amp; IOS）</h3><strong>1，定义接口</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AndroidJsInterface</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> Context mContext;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">AndroidJsInterface</span><span class="params">(Context activity)</span> </span>&#123;</div><div class="line">		mContext = activity;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@JavascriptInterface</span><span class="comment">//系统sdk 版本在v4.2以上时，必须加这个注解（安全性）</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="comment">//点击H5的某个区域，实现APP的跳转（退出WebpageActivity）</span></div><div class="line">		Intent intent = <span class="keyword">new</span> Intent(mContext, MainActivity.class);</div><div class="line">		mContext.startActivity(intent);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>2，activity处理</strong></p>
+<ul>
+<li><strong>方式一：向webview注册js接口–存在安全隐患（适用于Android，IOS是否适用待确认）</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Android端主要代码</span></div><div class="line">WebSettings webSettings = mWebView.getSettings();</div><div class="line">webSettings.setJavaScriptEnabled(<span class="keyword">true</span>);</div><div class="line">mWebView.addJavascriptInterface(<span class="keyword">new</span> AndroidJsInterface(context), <span class="string">"android"</span>);<span class="comment">//注意：这里一定要让别名的首字母为小写，因为JS端实际调用中会将别名处理成小写。</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//JS端主要代码</span></div><div class="line">jsFun = <span class="keyword">new</span> function()&#123;</div><div class="line">  <span class="keyword">if</span>(app.isIOS())&#123;</div><div class="line">    ......</div><div class="line">  &#125;<span class="keyword">else</span> <span class="keyword">if</span>(app.isAndroid())&#123;</div><div class="line">    android.fun1();<span class="comment">//别名首字母默认会被处理成小写，所以为了避免调用出错，最好统一采用小写字母</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Html端主要代码</span></div><div class="line">......(通过href或者onclick调用js的jsFun)</div></pre></td></tr></table></figure>
+<ul>
+<li><strong>方式二：h5重定向URL，移动端捕获（Android，IOS均可）</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Android端主要代码</span></div><div class="line">mWebView.setWebViewClient(<span class="keyword">new</span> WebViewClient() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">shouldOverrideUrlLoading</span><span class="params">(WebView view, String url)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (url.length() != <span class="number">0</span> &amp;&amp; url.startsWith(<span class="string">"app:"</span>)) &#123;<span class="comment">//和后台约定好移动端js交互接口重定向URL的前缀：例如“app:”</span></div><div class="line">        <span class="comment">// 获得方法名</span></div><div class="line">        String methodName = url.substring(<span class="string">"app:"</span>.length());</div><div class="line">        <span class="comment">// 通过方法名反射获得方法</span></div><div class="line">        Method method;</div><div class="line">        Class&lt;?&gt; c;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">        c = Class.forName(<span class="string">"com.base.web.AndroidJsInterface"</span>);</div><div class="line">        Constructor&lt;?&gt;[] constructors = c.getDeclaredConstructors();</div><div class="line">        Constructor&lt;?&gt; constructor = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; constructors.length; i++) &#123;</div><div class="line">            constructor = constructors[i];</div><div class="line">            <span class="keyword">if</span> (constructor.getGenericParameterTypes().length == <span class="number">0</span>)</div><div class="line">        	<span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">        constructor.setAccessible(<span class="keyword">true</span>);</div><div class="line">        Object clazz = constructor.newInstance(context);</div><div class="line"></div><div class="line">        method = clazz.getClass().getDeclaredMethod(methodName);</div><div class="line">        <span class="comment">// 执行该方法</span></div><div class="line">        <span class="keyword">if</span>(<span class="keyword">null</span> != method)&#123;</div><div class="line">            method.setAccessible(<span class="keyword">true</span>);</div><div class="line">            method.invoke(clazz);</div><div class="line">        &#125;</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">        	e.printStackTrace();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">        	view.loadUrl(url);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//JS端主要代码</span></div><div class="line">jsFun1 = <span class="keyword">new</span> function()&#123;</div><div class="line">  window.location.href=<span class="string">"app:fun1"</span>;<span class="comment">//"app:"是和服务器约定好的前缀，fun1是移动端定义的名为fun1的js回调接口</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">jsFun2 = <span class="keyword">new</span> function()&#123;</div><div class="line">  window.location.href=<span class="string">"app:fun2"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Html端主要代码</span></div><div class="line">......(通过href或者onclick调用js的jsFun*)</div></pre></td></tr></table></figure>
+<p><strong>需要注意的几点：</strong><br>1，采用方式一，一定要注意别名的首字母小写（是不是需要全部小写没有验证）<br>2，小米系列的手机可能对webview和Android的交互存在一些问题，如果发现交互怎么都不起作用，试试把APP卸载后重新安装（有缓存）。<br>3，使用方式二，一定要注意使用反射时，要调用反射类的构造函数实例化，否则会报告一堆的异常。</p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">扫描加群</span>
+      <div class="donation-body">
+        <div class="tip text-center">好好学习，天天向上！</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qun.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+    <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+    
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>
