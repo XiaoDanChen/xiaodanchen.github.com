@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-11-05T09:42:52.213Z</updated>
+  <updated>2016-11-05T14:27:25.885Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,40 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android WebView加载地图HTML设置</title>
+    <link href="http://yoursite.com/2016/11/05/Android-WebView%E5%8A%A0%E8%BD%BD%E5%9C%B0%E5%9B%BEHTML%E8%AE%BE%E7%BD%AE/"/>
+    <id>http://yoursite.com/2016/11/05/Android-WebView加载地图HTML设置/</id>
+    <published>2016-11-05T14:23:04.000Z</published>
+    <updated>2016-11-05T14:27:25.885Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>前言</strong></p>
+<p>本篇将要介绍Android 通过webview加载地图相关的URL需要的相关设置。<br>欢迎加入<strong>学习小组QQ群: 193765960</strong>。</p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
+</blockquote>
+<h3 id="适配地图显示所需要的设置"><a href="#适配地图显示所需要的设置" class="headerlink" title="适配地图显示所需要的设置"></a>适配地图显示所需要的设置</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">webSettings.setDomStorageEnabled(<span class="keyword">true</span>); </div><div class="line">webSettings.setDatabaseEnabled(<span class="keyword">true</span>);</div><div class="line">String dir = getApplicationContext().getDir(<span class="string">"database"</span>, Context.MODE_PRIVATE).getPath();</div><div class="line">webSettings.setGeolocationEnabled(<span class="keyword">true</span>);</div><div class="line">webSettings.setGeolocationDatabasePath(dir);</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;strong&gt;前言&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;本篇将要介绍Android 通过webview加载地图相关的URL需要的相关设置。&lt;br&gt;欢迎加入&lt;strong&gt;学习小组QQ群: 193765960&lt;/strong&gt;。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;版权归作
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+      <category term="HTML" scheme="http://yoursite.com/categories/Android/HTML/"/>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="HTML" scheme="http://yoursite.com/tags/HTML/"/>
+    
+  </entry>
   
   <entry>
     <title>Android在断网时本地化显示H5错误页</title>
