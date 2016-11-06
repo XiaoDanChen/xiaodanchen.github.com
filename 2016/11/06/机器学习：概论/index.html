@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>机器学习：概论 | Hello World!</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Android,Glide,Java,Material Design,用户体验,设计模式,减肥,MVP" />
+  
+
+  <meta name="description" content="前言本文是对“从机器学习谈起.pdf”的笔记。感兴趣的朋友欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ 
+
+一个故事说明什么是机器学习等人问题：
+机器学习的定义机器学习就是计算机利用已有数据，得出某种模型，然后利用该模型预测未来的一种方法。区别于我们常见的计算机程序基于因果">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习：概论">
+<meta property="og:url" content="http://yoursite.com/2016/11/06/机器学习：概论/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="前言本文是对“从机器学习谈起.pdf”的笔记。感兴趣的朋友欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ 
+
+一个故事说明什么是机器学习等人问题：
+机器学习的定义机器学习就是计算机利用已有数据，得出某种模型，然后利用该模型预测未来的一种方法。区别于我们常见的计算机程序基于因果">
+<meta property="og:image" content="http://yoursite.com/hello-world/img/simple_ann.png">
+<meta property="og:updated_time" content="2016-11-06T06:57:53.349Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="机器学习：概论">
+<meta name="twitter:description" content="前言本文是对“从机器学习谈起.pdf”的笔记。感兴趣的朋友欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ 
+
+一个故事说明什么是机器学习等人问题：
+机器学习的定义机器学习就是计算机利用已有数据，得出某种模型，然后利用该模型预测未来的一种方法。区别于我们常见的计算机程序基于因果">
+<meta name="twitter:image" content="http://yoursite.com/hello-world/img/simple_ann.png">
+
+  
+    <link rel="alternate" href="/atom.xml" title="Hello World!" type="application/atom+xml">
+  
+
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+  
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一个故事说明什么是机器学习"><span class="toc-text">一个故事说明什么是机器学习</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#机器学习的定义"><span class="toc-text">机器学习的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#机器学习的范围"><span class="toc-text">机器学习的范围</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#机器学习的方法"><span class="toc-text">机器学习的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#回归算法"><span class="toc-text">回归算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#神经网络："><span class="toc-text">神经网络：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#支持向量机（SVM）算法："><span class="toc-text">支持向量机（SVM）算法：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#机器学习的应用–大数据"><span class="toc-text">机器学习的应用–大数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#机器学习的子类–深度学习"><span class="toc-text">机器学习的子类–深度学习</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-机器学习：概论" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">机器学习：概论</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.11.06</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>行者</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>前言</strong><br>本文是对“从机器学习谈起.pdf”的笔记。<br>感兴趣的朋友欢迎加入<strong>学习小组QQ群: 193765960</strong>。</p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
+</blockquote>
+<h2 id="一个故事说明什么是机器学习"><a href="#一个故事说明什么是机器学习" class="headerlink" title="一个故事说明什么是机器学习"></a>一个故事说明什么是机器学习</h2><p>等人问题：</p>
+<h2 id="机器学习的定义"><a href="#机器学习的定义" class="headerlink" title="机器学习的定义"></a>机器学习的定义</h2><p>机器学习就是计算机利用已有数据，得出某种模型，然后利用该模型预测未来的一种方法。<br>区别于我们常见的计算机程序基于因果（固定程序方法）的，机器学习是基于经验（数据）的算法。</p>
+<h2 id="机器学习的范围"><a href="#机器学习的范围" class="headerlink" title="机器学习的范围"></a>机器学习的范围</h2><ul>
+<li>模式识别：模式识别=机器学习。模式识别源于工业界，机器学习源于计算机科学，二者是统一问题在两个领域的不同体现。</li>
+<li>数据挖掘：数据挖掘=机器学习+数据库。</li>
+<li>统计学习：统计学习近似于机器学习。机器学习的大量方法来自于统计学，区别是，前者偏重于数学领域，后者偏重于实践。</li>
+<li>计算机视觉：计算机视觉=图像处理+机器学习。图像处理技术将图片处理成时候机器学习算法适用的输入数据，学习算法则根据机器学习模型从输入图像中识别出相关的模式。例如：百度识图，手写输入，车牌识别等。</li>
+<li>语音识别：语音处理+机器学习。</li>
+<li>自然语言处理：文本处理+机器学习。</li>
+</ul>
+<h2 id="机器学习的方法"><a href="#机器学习的方法" class="headerlink" title="机器学习的方法"></a>机器学习的方法</h2><h3 id="回归算法"><a href="#回归算法" class="headerlink" title="回归算法"></a>回归算法</h3><pre><code>- 线性回归：数值问题。最小二乘法；数值计算：梯度下降法，牛顿法
+  例子：预测房价问题。
+- 逻辑回归：分类问题。
+  例子：预测肿瘤问题。
+</code></pre><h3 id="神经网络："><a href="#神经网络：" class="headerlink" title="神经网络："></a>神经网络：</h3><p>  ANN（人工神经网络）算法，BP算法（加速神经网络训练过程的数值算法）。神经网络学习的机理简单来说就是“分解与组合”。<br>  下面让我们来看一个简单的神经网络模型：输入层 -&gt; 隐藏层 -&gt; 输出层。输入层负责接收信号数据。隐藏层负责数据的分析和处理，最后将结果整合输出到输出层。<br>  <img src="/hello-world/img/simple_ann.png" alt="简单神经网络模型"><br>  如图：每层中的一个元代表了一个处理单元，模拟了一个神经元。若干个处理单元组成一个层，若干个层组成一个简单的“神经网络”。<br>  在神经网络中，每个处理单元实际上就是一个“逻辑回归模型”。逻辑回归模型接收上一层的输入，把模型的预测结果作为输出传递给下一层。通过这样的过程，神经网络可以实现非常复杂的非线性分类。</p>
+<p>  进入90年代，神经网络算法进入一个瓶颈期，原因是虽然具有BP算法的加速，神经网络的训练过程仍然很困难。因此90年代后期支持向量机算法（SVM）取代了神经网络的地位。</p>
+<h3 id="支持向量机（SVM）算法："><a href="#支持向量机（SVM）算法：" class="headerlink" title="支持向量机（SVM）算法："></a>支持向量机（SVM）算法：</h3><p>  支持向量机算法是但是与统计学习界，同时在机器学习界大放光彩的经典算法。<br>  SVM从某种意义上来说是逻辑回归算法的强化：通过给与逻辑回归算法更加严格的优化条件，SVM可以获得比逻辑回归算法更好的分类界限，从而达成很好的效果。<br>  通过和高斯“核“的结合，SVM可以表达出非常复杂的分类界线。”核”实际上是一种特殊的函数，最典型的特征就是可以将低维的空间映射到高维的空间。</p>
+<h2 id="机器学习的应用–大数据"><a href="#机器学习的应用–大数据" class="headerlink" title="机器学习的应用–大数据"></a>机器学习的应用–大数据</h2><h2 id="机器学习的子类–深度学习"><a href="#机器学习的子类–深度学习" class="headerlink" title="机器学习的子类–深度学习"></a>机器学习的子类–深度学习</h2>
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">扫描加群</span>
+      <div class="donation-body">
+        <div class="tip text-center">好好学习，天天向上！</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qun.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+    <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+    
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>
