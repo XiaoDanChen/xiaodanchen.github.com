@@ -31,7 +31,7 @@
 版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ 
 
 接口版本技术：为了兼容不同的软件版本或者业务版本，在">
-<meta property="og:updated_time" content="2016-10-31T06:33:44.756Z">
+<meta property="og:updated_time" content="2016-11-08T10:08:38.640Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="架构师之路（一）：门外汉的杂想">
 <meta name="twitter:description" content="前言
@@ -148,7 +148,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#接口版本技术："><span class="toc-text">接口版本技术：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据同步技术："><span class="toc-text">数据同步技术：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据备份技术："><span class="toc-text">数据备份技术：</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#接口版本技术："><span class="toc-text">接口版本技术：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据同步技术："><span class="toc-text">数据同步技术：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#唯一标识方案："><span class="toc-text">唯一标识方案：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据同步方案："><span class="toc-text">数据同步方案：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据备份技术："><span class="toc-text">数据备份技术：</span></a></li></ol>
   </div>
 
 
@@ -192,7 +192,17 @@
 <p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
 </blockquote>
 <h3 id="接口版本技术："><a href="#接口版本技术：" class="headerlink" title="接口版本技术："></a>接口版本技术：</h3><p>为了兼容不同的软件版本或者业务版本，在后台接口设计的时候加入版本信息字段。后台根据版本信息做逻辑处理。</p>
-<h3 id="数据同步技术："><a href="#数据同步技术：" class="headerlink" title="数据同步技术："></a>数据同步技术：</h3><p>唯一标识方案：<br>1、服务器端产生GUID作为数据的唯一标识同步到本地（优点：唯一性；缺点：需要存储多终端oldGUID，数据处理逻辑稍复杂。）<br>2、使用几个特殊字段拼出一个字符串做加密（MD5?），使用密文作为唯一标识（优点：同步逻辑简单。缺点：字段如果有变化，数据不会作为修改数据而是作为新增数据）</p>
+<h3 id="数据同步技术："><a href="#数据同步技术：" class="headerlink" title="数据同步技术："></a>数据同步技术：</h3><h4 id="唯一标识方案："><a href="#唯一标识方案：" class="headerlink" title="唯一标识方案："></a>唯一标识方案：</h4><p>1、服务器端产生GUID作为数据的唯一标识同步到本地（优点：唯一性；缺点：需要存储多终端oldGUID，数据处理逻辑稍复杂。）</p>
+<p>2、使用几个特殊字段拼出一个字符串做加密（MD5?），使用密文作为唯一标识（优点：同步逻辑简单。缺点：字段如果有变化，数据不会作为修改数据而是作为新增数据）</p>
+<p>3、业务ID与物理ID：<br>使用GUID作为物理ID；使用某些业务数据拼出的MD5加密字符串作为业务ID。<br>新增、修改、删除数据在向服务器同步时，服务器需要校验业务ID。<br>如果服务器已存在业务ID，根据物理ID来进行数据是新增还是合并。如果数据存在合并，服务器需要向客户端返回合并后的物理ID和客户端原来的物理ID，客户端接收到合并信息后，对本地的数据的物理ID进行修改。</p>
+<h4 id="数据同步方案："><a href="#数据同步方案：" class="headerlink" title="数据同步方案："></a>数据同步方案：</h4><p>方案一：<br>1，同步方法：<br>对所有需要同步的数据按新增、修改、删除进行分类。<br>按照修改 -&gt; 删除 -&gt; 新增 -&gt; 查询的流程逐条同步。在每一条同步结束后，回调同步方法。</p>
+<p>2，缺点：<br>如果在某条数据同步失败，容易使整个同步流程陷入死循环或者卡壳。<br>死循环：造成应用卡顿，同步失败。<br>卡壳：数据同步失败。</p>
+<p>3，解决办法：<br>客户端和服务端要协定好各种业务异常的通知机制。</p>
+<p>方案二：<br>1，同步方法：<br>设定初始同步起始物理ID（最小比如“0000”）<br>根据同步起始物理ID，检出本地所有需要同步的数据，数据按物理ID从小到大排序。<br>取出第一条数据，判断数据是新增、修改还是删除。<br>将该条数据的物理ID设置为同步起始物理ID。<br>对该条数据调用相应的同步接口。<br>该条数据返回后，不论是否出现异常，继续回调同步方法（本条数据的物理ID为同步起始ID）。</p>
+<p>当所有同步数据同步完成后，清零化同步起始物理ID，查询服务器数据到本地。</p>
+<p>2，优点：<br>不会死循环和卡壳</p>
+<p>3，缺点：<br>失败的数据不会同步到服务器，除非服务器做特定的兼容和适配。</p>
+<p>注意：<br>以上两种方案，在获取到批量数据更新到本地数据库时，需要判断本地数据的状态，本地未同步的数据不允许被服务器的数据覆盖。</p>
 <h3 id="数据备份技术："><a href="#数据备份技术：" class="headerlink" title="数据备份技术："></a>数据备份技术：</h3><p>双机热备份技术</p>
 <blockquote>
 <p>未完，待续</p>
