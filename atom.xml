@@ -151,13 +151,14 @@
     <link href="http://yoursite.com/2016/10/31/%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B9%8B%E8%B7%AF%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E9%97%A8%E5%A4%96%E6%B1%89%E7%9A%84%E6%9D%82%E6%83%B3/"/>
     <id>http://yoursite.com/2016/10/31/架构师之路（一）：门外汉的杂想/</id>
     <published>2016-10-31T03:34:48.000Z</published>
-    <updated>2016-11-08T10:08:38.640Z</updated>
+    <updated>2016-11-09T03:48:43.799Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong></p>
 <p>作为Android移动端的一枚小菜鸟，时不时的也会想想自己未来的路该如何走。架构师是个不错的方向，作为一个门外汉，仅以此篇记录下自己那些七零八碎靠谱或者不靠谱的想法。<br>欢迎加入<strong>学习小组QQ群: 193765960</strong>。</p>
 <blockquote>
 <p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
 </blockquote>
+<h3 id="通讯协议和数据格式"><a href="#通讯协议和数据格式" class="headerlink" title="通讯协议和数据格式"></a>通讯协议和数据格式</h3><p>request、response<br>head、body<br>error code、error message<br>客户端、服务端统一参数定义格式，统一大小写，统一编码格式</p>
 <h3 id="接口版本技术："><a href="#接口版本技术：" class="headerlink" title="接口版本技术："></a>接口版本技术：</h3><p>为了兼容不同的软件版本或者业务版本，在后台接口设计的时候加入版本信息字段。后台根据版本信息做逻辑处理。</p>
 <h3 id="数据同步技术："><a href="#数据同步技术：" class="headerlink" title="数据同步技术："></a>数据同步技术：</h3><h4 id="唯一标识方案："><a href="#唯一标识方案：" class="headerlink" title="唯一标识方案："></a>唯一标识方案：</h4><p>1、服务器端产生GUID作为数据的唯一标识同步到本地（优点：唯一性；缺点：需要存储多终端oldGUID，数据处理逻辑稍复杂。）</p>
 <p>2、使用几个特殊字段拼出一个字符串做加密（MD5?），使用密文作为唯一标识（优点：同步逻辑简单。缺点：字段如果有变化，数据不会作为修改数据而是作为新增数据）</p>
@@ -169,7 +170,7 @@
 <p>当所有同步数据同步完成后，清零化同步起始物理ID，查询服务器数据到本地。</p>
 <p>2，优点：<br>不会死循环和卡壳</p>
 <p>3，缺点：<br>失败的数据不会同步到服务器，除非服务器做特定的兼容和适配。</p>
-<p>注意：<br>以上两种方案，在获取到批量数据更新到本地数据库时，需要判断本地数据的状态，本地未同步的数据不允许被服务器的数据覆盖。</p>
+<p>注意：<br>以上两种方案，在获取到批量数据更新到本地数据库时，需要判断本地数据的状态，本地未同步的数据不允许被服务器的数据覆盖。<br>增量更新。</p>
 <h3 id="数据备份技术："><a href="#数据备份技术：" class="headerlink" title="数据备份技术："></a>数据备份技术：</h3><p>双机热备份技术</p>
 <blockquote>
 <p>未完，待续</p>
