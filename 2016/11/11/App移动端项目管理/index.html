@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>App移动端项目管理 | Hello World!</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Android,Glide,Java,Material Design,用户体验,设计模式,减肥,MVP" />
+  
+
+  <meta name="description" content="前言
+刚刚做完一个项目，值得总结，在此记录一下。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ 。 欢迎加入学习小组QQ群: 193765960。
+
+项目流程一款应用的开发大体流程如下：1、项目立项：产品经理2、需求确认：产品经理3、业务确认：产品经理，技术经理，架构师4、业务架构：技术经理，架构师5、UI确认：产品经理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="App移动端项目管理">
+<meta property="og:url" content="http://yoursite.com/2016/11/11/App移动端项目管理/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="前言
+刚刚做完一个项目，值得总结，在此记录一下。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ 。 欢迎加入学习小组QQ群: 193765960。
+
+项目流程一款应用的开发大体流程如下：1、项目立项：产品经理2、需求确认：产品经理3、业务确认：产品经理，技术经理，架构师4、业务架构：技术经理，架构师5、UI确认：产品经理">
+<meta property="og:updated_time" content="2016-11-11T03:24:45.876Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="App移动端项目管理">
+<meta name="twitter:description" content="前言
+刚刚做完一个项目，值得总结，在此记录一下。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ 。 欢迎加入学习小组QQ群: 193765960。
+
+项目流程一款应用的开发大体流程如下：1、项目立项：产品经理2、需求确认：产品经理3、业务确认：产品经理，技术经理，架构师4、业务架构：技术经理，架构师5、UI确认：产品经理">
+
+  
+    <link rel="alternate" href="/atom.xml" title="Hello World!" type="application/atom+xml">
+  
+
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+  
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#项目流程"><span class="toc-text">项目流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#项目管理"><span class="toc-text">项目管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#文档管理：SVN服务器"><span class="toc-text">文档管理：SVN服务器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#流程管理："><span class="toc-text">流程管理：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#开发："><span class="toc-text">开发：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#测试：mantis-bug-tracker"><span class="toc-text">测试：mantis bug tracker</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#上线："><span class="toc-text">上线：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#项目总结："><span class="toc-text">项目总结：</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-App移动端项目管理" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">App移动端项目管理</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.11.11</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>行者</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/项目管理/">项目管理</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>前言</strong></p>
+<p>刚刚做完一个项目，值得总结，在此记录一下。</p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> 。 欢迎加入<strong>学习小组QQ群: 193765960</strong>。</p>
+</blockquote>
+<h3 id="项目流程"><a href="#项目流程" class="headerlink" title="项目流程"></a>项目流程</h3><p>一款应用的开发大体流程如下：<br>1、项目立项：产品经理<br>2、需求确认：产品经理<br>3、业务确认：产品经理，技术经理，架构师<br>4、业务架构：技术经理，架构师<br>5、UI确认：产品经理，设计人员，开发人员全体<br>6、UI交互确认：产品经理，移动端，前段开发人员<br>7、接口确认：架构师，接口开发人员，移动端、前端开发人员<br>8.1、UI工时评估：产品经理，设计人员<br>8.2、接口工时评估：架构师，接口开发人员<br>8.3、移动端、前端工时评估：相关开发人员，技术经理<br>9、工时确认：产品经理，技术经理，设计人员<br>10、项目开发<br>11、测试用例及流程设计：产品经理、测试组<br>12、测试用例及流程确认：开发人员，测试组<br>13、测试及debug：产品经理，测试组，开发<br>14、产品定版，release</p>
+<h3 id="项目管理"><a href="#项目管理" class="headerlink" title="项目管理"></a>项目管理</h3><h4 id="文档管理：SVN服务器"><a href="#文档管理：SVN服务器" class="headerlink" title="文档管理：SVN服务器"></a>文档管理：SVN服务器</h4><p>1、需求文档：需求列表，交互文件<br>2、UI交互文档：交互逻辑<br>3、技术文档：业务逻辑的技术实现流程<br>4、接口文档：数据格式，通讯协议，数据结构<br>5、设计文档：效果图，切图，标注图<br>6、代码：<br>7、上线资料<br>8、测试用例</p>
+<h4 id="流程管理："><a href="#流程管理：" class="headerlink" title="流程管理："></a>流程管理：</h4><p>1、需求变更：原则上可以中前期增加需求；原则上不允许频繁变更需求；原则上不允许修改业务逻辑。需求变更必须经过技术产品经理、技术经理共同确认后才可变更。<br>2、业务逻辑变更：原则上不允许更改业务逻辑。<br>3、技术逻辑变更：架构师，接口开发人员，移动端开发人员共同确认<br>4、测试流程变更：产品经理确认</p>
+<h4 id="开发："><a href="#开发：" class="headerlink" title="开发："></a>开发：</h4><p>1、开发人员：明确需求和业务、交互逻辑。开发以需求和业务逻辑为准。<br>2、发现业务缺陷：需与产品经理，技术经理汇报。如要变更业务逻辑：必须重新评估开发工时和工期。<br>3、如没有明确要求，UI在细节和使用习惯上，请尽量遵守各自系统的设计规范。<br>4、协同开发：需分工明确，工作量尽量均衡。分工应报与技术经理知晓。<br>5、变更需求，开发人员需向技术经理确认。<br>6、当前的bug,当日尽量解决。<br>7、优化性、新需求性bug：请分发产品经理。<br>8、优化性、新需求性修改：请知会其他平台开发人员。</p>
+<h4 id="测试：mantis-bug-tracker"><a href="#测试：mantis-bug-tracker" class="headerlink" title="测试：mantis bug tracker"></a>测试：mantis bug tracker</h4><p>1、新需求性bug：提交产品经理，产品经理作为新需求提出，不分发bug。<br>2、优化型bug：提交产品经理，产品经理作为新需求提出，不分发bug。<br>3、开发bug：提交开发人员。</p>
+<p>注：<br>1、明确bug等级，非业务性bug、非严重缺陷bug、非崩溃性bug谨慎提交为严重缺陷等级。<br>2、重点把握测试流程，明确测试方向：前期重点为功能性测试，业务逻辑测试。中后期加入交互性测试。<br>3、谨慎使用边开发边测试的开发测试流程：这种模式下，请明确测试重点（开发完毕前侧重功能性、业务性测试）<br>4、开发没有结束前的测试：测试人员禁止频繁交涉开发人员，所有bug只需提交服务器。<br>5、测试人员发起的需求性、优化性bug，请提交产品经理，产品经理请严格遵守需求变更流程。</p>
+<h4 id="上线："><a href="#上线：" class="headerlink" title="上线："></a>上线：</h4><p>1、测试发布测试完结，产品达到上线要求报告。<br>2、技术经理发布上线申请。<br>3、产品经理确认可以上线，发布上线请求。<br>4、上线人员release应用到各个渠道，上线后邮件知会相关人员产品上线情况。</p>
+<h3 id="项目总结："><a href="#项目总结：" class="headerlink" title="项目总结："></a>项目总结：</h3><p>1、产品经理：追加新需求列表，追加优化性需求列表。<br>2、设计人员：改版明细<br>3、开发人员：改版明细，开发模块，代码量及技术点总结报告。<br>4、测试报告，测试数据统计。<br>5、项目总结</p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">扫描加群</span>
+      <div class="donation-body">
+        <div class="tip text-center">好好学习，天天向上！</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qun.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+    <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+    
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>
