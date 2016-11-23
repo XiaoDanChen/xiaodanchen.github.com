@@ -32,7 +32,7 @@ Mat-基本图像容器Mat官方解释教">
 《openCV中文教程》
 Mat-基本图像容器Mat官方解释教">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/sum_H.png">
-<meta property="og:updated_time" content="2016-11-23T07:13:14.500Z">
+<meta property="og:updated_time" content="2016-11-23T07:16:45.481Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="opencv api 笔记">
 <meta name="twitter:description" content="前言opencv在图像处理中使用广泛，许多常见的应用场景例如人脸识别，车牌识别等都是基于opencv开发的。本文是学习opencv api的一些笔记。感兴趣的朋友欢迎加入学习小组QQ群: 193765960。
@@ -202,9 +202,9 @@ Mat-基本图像容器Mat官方解释教">
 <li>赋值运算符和拷贝构造函数（ ctor ）只拷贝信息头。</li>
 <li>使用函数 clone() 或者 copyTo() 来拷贝一副图像的矩阵。</li>
 </ul>
-<h4 id="Mat-ptr"><a href="#Mat-ptr" class="headerlink" title="Mat::ptr"></a><strong>Mat::ptr</strong></h4><p><a href="http://docs.opencv.org/2.4/modules/core/doc/basic_structures.html#mat-ptr" target="_blank" rel="external">ptr官方解释</a><br>Returns a pointer to the specified matrix row<br>返回指向指定矩阵行的指针</p>
-<h4 id="Mat-channels"><a href="#Mat-channels" class="headerlink" title="Mat::channels"></a><strong>Mat::channels</strong></h4><p><a href="http://docs.opencv.org/2.4/modules/core/doc/basic_structures.html#mat-channels" target="_blank" rel="external">ptr官方解释</a><br>Returns the number of matrix channels.</p>
-<h2 id="API"><a href="#API" class="headerlink" title="API"></a><strong>API</strong></h2><h3 id="imread"><a href="#imread" class="headerlink" title="imread"></a><strong>imread</strong></h3><p><a href="http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html#imread" target="_blank" rel="external">imread官方解释</a><br>imread：读取图片文件，并按照一定的格式将其返回（Mat对象）<br><strong>C++: Mat imread(const string&amp; filename, int flags=1 )</strong><br>Python: cv2.imread(filename[, flags]) → retval<br>C: IplImage<em> cvLoadImage(const char</em> filename, int iscolor=CV_LOAD_IMAGE_COLOR )<br>C: CvMat<em> cvLoadImageM(const char</em> filename, int iscolor=CV_LOAD_IMAGE_COLOR )<br>Python: cv.LoadImage(filename, iscolor=CV_LOAD_IMAGE_COLOR) → None<br>Python: cv.LoadImageM(filename, iscolor=CV_LOAD_IMAGE_COLOR) → None</p>
+<h4 id="Mat-ptr"><a href="#Mat-ptr" class="headerlink" title="Mat::ptr"></a><strong>Mat::ptr</strong></h4><p><a href="http://docs.opencv.org/2.4/modules/core/doc/basic_structures.html#mat-ptr" target="_blank" rel="external">ptr API文档</a><br>Returns a pointer to the specified matrix row<br>返回指向指定矩阵行的指针</p>
+<h4 id="Mat-channels"><a href="#Mat-channels" class="headerlink" title="Mat::channels"></a><strong>Mat::channels</strong></h4><p><a href="http://docs.opencv.org/2.4/modules/core/doc/basic_structures.html#mat-channels" target="_blank" rel="external">channels API文档</a><br>Returns the number of matrix channels.</p>
+<h2 id="API"><a href="#API" class="headerlink" title="API"></a><strong>API</strong></h2><h3 id="imread"><a href="#imread" class="headerlink" title="imread"></a><strong>imread</strong></h3><p><a href="http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html#imread" target="_blank" rel="external">imread API文档</a><br>imread：读取图片文件，并按照一定的格式将其返回（Mat对象）<br><strong>C++: Mat imread(const string&amp; filename, int flags=1 )</strong><br>Python: cv2.imread(filename[, flags]) → retval<br>C: IplImage<em> cvLoadImage(const char</em> filename, int iscolor=CV_LOAD_IMAGE_COLOR )<br>C: CvMat<em> cvLoadImageM(const char</em> filename, int iscolor=CV_LOAD_IMAGE_COLOR )<br>Python: cv.LoadImage(filename, iscolor=CV_LOAD_IMAGE_COLOR) → None<br>Python: cv.LoadImageM(filename, iscolor=CV_LOAD_IMAGE_COLOR) → None</p>
 <p>Parameters:    </p>
 <ul>
 <li>filename – Name of file to be loaded.</li>
@@ -221,7 +221,7 @@ Mat-基本图像容器Mat官方解释教">
 <li>=0 Return a grayscale image.</li>
 <li>&lt;0 Return the loaded image as is (with alpha channel).</li>
 </ul>
-<h3 id="cvtColor"><a href="#cvtColor" class="headerlink" title="cvtColor"></a><strong>cvtColor</strong></h3><p><a href="http://docs.opencv.org/modules/imgproc/doc/miscellaneous_transformations.html#cvtcolor" target="_blank" rel="external">cvtColor官方解释</a><br>对图片进行处理，从一种颜色空间转换到另一种颜色空间（Converts an image from one color space to another.）</p>
+<h3 id="cvtColor"><a href="#cvtColor" class="headerlink" title="cvtColor"></a><strong>cvtColor</strong></h3><p><a href="http://docs.opencv.org/modules/imgproc/doc/miscellaneous_transformations.html#cvtcolor" target="_blank" rel="external">cvtColor API文档</a><br>对图片进行处理，从一种颜色空间转换到另一种颜色空间（Converts an image from one color space to another.）</p>
 <ul>
 <li><strong>RGB &lt;–&gt; GRAY</strong> ( CV_BGR2GRAY, CV_RGB2GRAY, CV_GRAY2BGR, CV_GRAY2RGB )</li>
 <li><strong>RGB &lt;–&gt;  CIE XYZ.Rec 709 with D65 white point </strong>( CV_BGR2XYZ, CV_RGB2XYZ, CV_XYZ2BGR, CV_XYZ2RGB )</li>
@@ -232,10 +232,10 @@ Mat-基本图像容器Mat官方解释教">
 <li><strong>RGB &lt;–&gt; CIE L<em>u</em>v* </strong>( CV_BGR2Luv, CV_RGB2Luv, CV_Luv2BGR, CV_Luv2RGB )</li>
 <li><strong>Bayer -&gt; RGB</strong> ( CV_BayerBG2BGR, CV_BayerGB2BGR, CV_BayerRG2BGR, CV_BayerGR2BGR, CV_BayerBG2RGB, CV_BayerGB2RGB, CV_BayerRG2RGB, CV_BayerGR2RGB )</li>
 </ul>
-<h3 id="split"><a href="#split" class="headerlink" title="split"></a><strong>split</strong></h3><p><a href="http://docs.opencv.org/2.4/modules/core/doc/operations_on_arrays.html#split" target="_blank" rel="external">split官方解释</a><br>split函数的主要功能是把一个彩色图像分割成3个通道，方便进一步的图像处理，具体说明如下：<br>split Divides a multi-channel array into several single-channel arrays.<br>C++: void split(const Mat&amp; mtx, Mat* mv)<br>C++: void split(const Mat&amp; mtx, vector&amp; mv)</p>
-<h3 id="merge"><a href="#merge" class="headerlink" title="merge"></a><strong>merge</strong></h3><p><a href="http://docs.opencv.org/2.4/modules/core/doc/operations_on_arrays.html#merge" target="_blank" rel="external">merge官方解释</a><br>merge可以实现与split相反的操作，简单说明如下：<br>merge Composes a multi-channel array from several single-channel arrays.<br>C++: void merge(const Mat* mv, size_t count, OutputArray dst)<br>C++: void merge(const vector&amp; mv, OutputArray dst)</p>
-<h3 id="mixChannels"><a href="#mixChannels" class="headerlink" title="mixChannels"></a><strong>mixChannels</strong></h3><p><a href="http://docs.opencv.org/2.4/modules/core/doc/operations_on_arrays.html#mixChannels" target="_blank" rel="external">mixChannels官方解释</a></p>
-<h3 id="equalizeHist"><a href="#equalizeHist" class="headerlink" title="equalizeHist"></a><strong>equalizeHist</strong></h3><p>将灰度图进行直方图均衡化（直方图均衡化是通过拉伸像素强度分布范围来增强图像对比度的一种方法）</p>
+<h3 id="split"><a href="#split" class="headerlink" title="split"></a><strong>split</strong></h3><p><a href="http://docs.opencv.org/2.4/modules/core/doc/operations_on_arrays.html#split" target="_blank" rel="external">split API文档</a><br>split函数的主要功能是把一个彩色图像分割成3个通道，方便进一步的图像处理，具体说明如下：<br>split Divides a multi-channel array into several single-channel arrays.<br>C++: void split(const Mat&amp; mtx, Mat* mv)<br>C++: void split(const Mat&amp; mtx, vector&amp; mv)</p>
+<h3 id="merge"><a href="#merge" class="headerlink" title="merge"></a><strong>merge</strong></h3><p><a href="http://docs.opencv.org/2.4/modules/core/doc/operations_on_arrays.html#merge" target="_blank" rel="external">merge API文档</a><br>merge可以实现与split相反的操作，简单说明如下：<br>merge Composes a multi-channel array from several single-channel arrays.<br>C++: void merge(const Mat* mv, size_t count, OutputArray dst)<br>C++: void merge(const vector&amp; mv, OutputArray dst)</p>
+<h3 id="mixChannels"><a href="#mixChannels" class="headerlink" title="mixChannels"></a><strong>mixChannels</strong></h3><p><a href="http://docs.opencv.org/2.4/modules/core/doc/operations_on_arrays.html#mixChannels" target="_blank" rel="external">mixChannels API文档</a></p>
+<h3 id="equalizeHist"><a href="#equalizeHist" class="headerlink" title="equalizeHist"></a><strong>equalizeHist</strong></h3><p><a href="http://docs.opencv.org/2.4/modules/imgproc/doc/histograms.html#equalizehist" target="_blank" rel="external">equalizeHist API文档</a><br><a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/imgproc/histograms/histogram_equalization/histogram_equalization.html" target="_blank" rel="external">直方图均衡化</a><br>将灰度图进行直方图均衡化（直方图均衡化是通过拉伸像素强度分布范围来增强图像对比度的一种方法）</p>
 <p>C++: void equalizeHist(InputArray src, OutputArray dst)<br>Python: cv2.equalizeHist(src[, dst]) → dst<br>C: void cvEqualizeHist(const CvArr<em> src, CvArr</em> dst)<br>Parameters:<br>src – Source 8-bit single channel image.<br>dst – Destination image of the same size and type as src .</p>
 <p>原理：<br>1，Calculate the histogram H for src .<br>2，Normalize the histogram so that the sum of histogram bins is 255.<br>3，Compute the integral of the histogram:<br><img src="/hello-world/img/sum_H.png" alt="求和"><br>4，Transform the image using H’ as a look-up table: <strong>dst(x,y) = H’(src(x,y))</strong></p>
 <p>The algorithm normalizes the brightness and increases the contrast of the image.</p>
