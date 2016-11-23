@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-11-22T09:21:10.869Z</updated>
+  <updated>2016-11-23T02:30:57.009Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,14 +20,32 @@
     <link href="http://yoursite.com/2016/11/22/opencv-api-%E7%AC%94%E8%AE%B0/"/>
     <id>http://yoursite.com/2016/11/22/opencv-api-笔记/</id>
     <published>2016-11-22T07:23:18.000Z</published>
-    <updated>2016-11-22T09:21:10.869Z</updated>
+    <updated>2016-11-23T02:30:57.009Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong><br>opencv在图像处理中使用广泛，许多常见的应用场景例如人脸识别，车牌识别等都是基于opencv开发的。本文是学习opencv api的一些笔记。<br>感兴趣的朋友欢迎加入<strong>学习小组QQ群: 193765960</strong>。</p>
 <blockquote>
 <p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
 </blockquote>
+<p><a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/tutorials.html" target="_blank" rel="external">《openCV中文教程》</a></p>
 <h2 id="Mat"><a href="#Mat" class="headerlink" title="Mat"></a><strong>Mat</strong></h2><p>Mat是openCV2.0使用c++构建的用于储存、处理图像数据的类。Mat可以认为是Matrix即矩阵的意思。其具有内存管理，内存复用，矩阵数据处理等功能，也提供了丰富的API接口。</p>
-<h2 id="API"><a href="#API" class="headerlink" title="API"></a><strong>API</strong></h2><h3 id="imread"><a href="#imread" class="headerlink" title="imread"></a><strong>imread</strong></h3><h3 id="split"><a href="#split" class="headerlink" title="split"></a><strong>split</strong></h3><p><a href="http://docs.opencv.org/2.4/modules/core/doc/operations_on_arrays.html#split" target="_blank" rel="external">split官方解释</a><br>split函数的主要功能是把一个彩色图像分割成3个通道，方便进一步的图像处理，具体说明如下：<br>split Divides a multi-channel array into several single-channel arrays.<br>C++: void split(const Mat&amp; mtx, Mat* mv)<br>C++: void split(const Mat&amp; mtx, vector&amp; mv)</p>
+<h2 id="API"><a href="#API" class="headerlink" title="API"></a><strong>API</strong></h2><h3 id="imread"><a href="#imread" class="headerlink" title="imread"></a><strong>imread</strong></h3><p><a href="http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html#imread" target="_blank" rel="external">imread官方解释</a><br>imread：读取图片文件，并按照一定的格式将其返回（Mat对象）<br><strong>C++: Mat imread(const string&amp; filename, int flags=1 )</strong><br>Python: cv2.imread(filename[, flags]) → retval<br>C: IplImage<em> cvLoadImage(const char</em> filename, int iscolor=CV_LOAD_IMAGE_COLOR )<br>C: CvMat<em> cvLoadImageM(const char</em> filename, int iscolor=CV_LOAD_IMAGE_COLOR )<br>Python: cv.LoadImage(filename, iscolor=CV_LOAD_IMAGE_COLOR) → None<br>Python: cv.LoadImageM(filename, iscolor=CV_LOAD_IMAGE_COLOR) → None</p>
+<p>Parameters:    </p>
+<ul>
+<li>filename – Name of file to be loaded.</li>
+<li>flags –Flags specifying the color type of a loaded image:<ul>
+<li>CV_LOAD_IMAGE_ANYDEPTH - If set, return 16-bit/32-bit image when the input has the corresponding depth, otherwise convert it to 8-bit.</li>
+<li>CV_LOAD_IMAGE_COLOR - If set, always convert image to the color one</li>
+<li>CV_LOAD_IMAGE_GRAYSCALE - If set, always convert image to the grayscale one</li>
+<li><blockquote>
+<p>0 Return a 3-channel color image.<br>Note In the current implementation the alpha channel, if any, is stripped from the output image. Use negative value if you need the alpha channel.</p>
+</blockquote>
+</li>
+<li>=0 Return a grayscale image.</li>
+<li>&lt;0 Return the loaded image as is (with alpha channel).</li>
+</ul>
+</li>
+</ul>
+<h3 id="split"><a href="#split" class="headerlink" title="split"></a><strong>split</strong></h3><p><a href="http://docs.opencv.org/2.4/modules/core/doc/operations_on_arrays.html#split" target="_blank" rel="external">split官方解释</a><br>split函数的主要功能是把一个彩色图像分割成3个通道，方便进一步的图像处理，具体说明如下：<br>split Divides a multi-channel array into several single-channel arrays.<br>C++: void split(const Mat&amp; mtx, Mat* mv)<br>C++: void split(const Mat&amp; mtx, vector&amp; mv)</p>
 <h3 id="merge"><a href="#merge" class="headerlink" title="merge"></a><strong>merge</strong></h3><p><a href="http://docs.opencv.org/2.4/modules/core/doc/operations_on_arrays.html#merge" target="_blank" rel="external">merge官方解释</a><br>merge可以实现与split相反的操作，简单说明如下：<br>merge Composes a multi-channel array from several single-channel arrays.<br>C++: void merge(const Mat* mv, size_t count, OutputArray dst)<br>C++: void merge(const vector&amp; mv, OutputArray dst)</p>
 <h3 id="mixChannels"><a href="#mixChannels" class="headerlink" title="mixChannels"></a><strong>mixChannels</strong></h3><p><a href="http://docs.opencv.org/2.4/modules/core/doc/operations_on_arrays.html#mixChannels" target="_blank" rel="external">mixChannels官方解释</a></p>
 <h3 id="equalizeHist"><a href="#equalizeHist" class="headerlink" title="equalizeHist"></a><strong>equalizeHist</strong></h3><p>将灰度图进行直方图均衡化（直方图均衡化是通过拉伸像素强度分布范围来增强图像对比度的一种方法）</p>
