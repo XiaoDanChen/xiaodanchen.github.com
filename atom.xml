@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-11-23T07:16:45.481Z</updated>
+  <updated>2016-11-23T07:30:02.285Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,13 +20,13 @@
     <link href="http://yoursite.com/2016/11/22/opencv-api-%E7%AC%94%E8%AE%B0/"/>
     <id>http://yoursite.com/2016/11/22/opencv-api-笔记/</id>
     <published>2016-11-22T07:23:18.000Z</published>
-    <updated>2016-11-23T07:16:45.481Z</updated>
+    <updated>2016-11-23T07:30:02.285Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong><br>opencv在图像处理中使用广泛，许多常见的应用场景例如人脸识别，车牌识别等都是基于opencv开发的。本文是学习opencv api的一些笔记。<br>感兴趣的朋友欢迎加入<strong>学习小组QQ群: 193765960</strong>。</p>
 <blockquote>
 <p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
 </blockquote>
-<p><a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/tutorials.html" target="_blank" rel="external">《openCV中文教程》</a></p>
+<p><a href="http://www.opencv.org.cn/" target="_blank" rel="external">《openCV中文网站》</a></p>
 <h2 id="Mat-基本图像容器"><a href="#Mat-基本图像容器" class="headerlink" title="Mat-基本图像容器"></a><strong>Mat-基本图像容器</strong></h2><p><a href="http://docs.opencv.org/2.4/modules/core/doc/basic_structures.html#mat" target="_blank" rel="external">Mat官方解释</a><br><a href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/doc/tutorials/core/mat%20-%20the%20basic%20image%20container/mat%20-%20the%20basic%20image%20container.html#matthebasicimagecontainer" target="_blank" rel="external">教程</a><br>基本上讲 Mat 是一个类，由两个数据部分组成：矩阵头（包含矩阵尺寸，存储方法，存储地址等信息）和一个指向存储所有像素值的矩阵（根据所选存储方法的不同矩阵可以是不同的维数）的指针。矩阵头的尺寸是常数值，但矩阵本身的尺寸会依图像的不同而不同，通常比矩阵头的尺寸大数个数量级。因此，当在程序中传递图像并创建拷贝时，大的开销是由矩阵造成的，而不是信息头。OpenCV是一个图像处理库，囊括了大量的图像处理函数，为了解决问题通常要使用库中的多个函数，因此在函数中传递图像是家常便饭。同时不要忘了我们正在讨论的是计算量很大的图像处理算法，因此，除非万不得已，我们不应该拷贝 大 的图像，因为这会降低程序速度。</p>
 <p>为了搞定这个问题，OpenCV使用引用计数机制。其思路是让<strong>每个 Mat 对象有自己的信息头，但共享同一个矩阵。这通过让矩阵指针指向同一地址而实现。而拷贝构造函数则 只拷贝信息头和矩阵指针 ，而不拷贝矩阵。</strong></p>
 <p>但某些时候你仍会想<strong>拷贝矩阵</strong>本身(不只是信息头和矩阵指针)，这时可以使用函数<strong> clone() </strong>或者 <strong>copyTo()</strong> 。</p>
