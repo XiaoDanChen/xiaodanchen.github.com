@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-11-24T02:39:47.551Z</updated>
+  <updated>2016-11-24T02:47:08.246Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2016/11/22/opencv-api-%E7%AC%94%E8%AE%B0/"/>
     <id>http://yoursite.com/2016/11/22/opencv-api-笔记/</id>
     <published>2016-11-22T07:23:18.000Z</published>
-    <updated>2016-11-24T02:39:47.551Z</updated>
+    <updated>2016-11-24T02:47:08.246Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong><br>opencv在图像处理中使用广泛，许多常见的应用场景例如人脸识别，车牌识别等都是基于opencv开发的。本文是学习opencv api的一些笔记。<br>感兴趣的朋友欢迎加入<strong>学习小组QQ群: 193765960</strong>。</p>
 <blockquote>
@@ -80,6 +80,7 @@
 <li>为了从一副图像中提取出我们需要的部分，应该用图像中的每一个像素点的灰度值与选取的阈值进行比较，并作出相应的判断。（注意：阈值的选取依赖于具体的问题。即：物体在不同的图像中有可能会有不同的灰度值。</li>
 <li>一旦找到了需要分割的物体的像素点，我们可以对这些像素点设定一些特定的值来表示。（例如：可以将该物体的像素点的灰度值设定为：‘0’（黑色）,其他的像素点的灰度值为：‘255’（白色）；当然像素点的灰度值可以任意，但最好设定的两种颜色对比度较强，方便观察结果）</li>
 </ul>
+<p>C++: double threshold(InputArray src, OutputArray dst, double thresh, double maxval, int type)<br>Python: cv2.threshold(src, thresh, maxval, type[, dst]) → retval, dst<br><img src="/hello-world/img/opencv_threshold_type.png" alt="阈值函数的5种类型"></p>
 ]]></content>
     
     <summary type="html">
