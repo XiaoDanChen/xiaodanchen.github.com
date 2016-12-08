@@ -288,7 +288,7 @@
     <link href="http://yoursite.com/2016/10/31/%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B9%8B%E8%B7%AF%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E9%97%A8%E5%A4%96%E6%B1%89%E7%9A%84%E6%9D%82%E6%83%B3/"/>
     <id>http://yoursite.com/2016/10/31/架构师之路（一）：门外汉的杂想/</id>
     <published>2016-10-31T03:34:48.000Z</published>
-    <updated>2016-11-09T03:48:43.799Z</updated>
+    <updated>2016-11-30T02:46:48.137Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong></p>
 <p>作为Android移动端的一枚小菜鸟，时不时的也会想想自己未来的路该如何走。架构师是个不错的方向，作为一个门外汉，仅以此篇记录下自己那些七零八碎靠谱或者不靠谱的想法。<br>欢迎加入<strong>学习小组QQ群: 193765960</strong>。</p>
@@ -297,7 +297,8 @@
 </blockquote>
 <h3 id="通讯协议和数据格式"><a href="#通讯协议和数据格式" class="headerlink" title="通讯协议和数据格式"></a>通讯协议和数据格式</h3><p>request、response<br>head、body<br>error code、error message<br>客户端、服务端统一参数定义格式，统一大小写，统一编码格式</p>
 <h3 id="接口版本技术："><a href="#接口版本技术：" class="headerlink" title="接口版本技术："></a>接口版本技术：</h3><p>为了兼容不同的软件版本或者业务版本，在后台接口设计的时候加入版本信息字段。后台根据版本信息做逻辑处理。</p>
-<h3 id="数据同步技术："><a href="#数据同步技术：" class="headerlink" title="数据同步技术："></a>数据同步技术：</h3><h4 id="唯一标识方案："><a href="#唯一标识方案：" class="headerlink" title="唯一标识方案："></a>唯一标识方案：</h4><p>1、服务器端产生GUID作为数据的唯一标识同步到本地（优点：唯一性；缺点：需要存储多终端oldGUID，数据处理逻辑稍复杂。）</p>
+<h3 id="数据库主键设计"><a href="#数据库主键设计" class="headerlink" title="数据库主键设计"></a>数据库主键设计</h3><p><a href="http://www.jcodecraeer.com/a/shujuku/2012/1014/434.html" target="_blank" rel="external">《数据库主键设计之思考》</a></p>
+<h3 id="数据同步技术："><a href="#数据同步技术：" class="headerlink" title="数据同步技术："></a>数据同步技术：</h3><h4 id="唯一标识方案-主键设计参看上面文章-："><a href="#唯一标识方案-主键设计参看上面文章-：" class="headerlink" title="唯一标识方案(主键设计参看上面文章)："></a>唯一标识方案(主键设计参看上面文章)：</h4><p>1、服务器端产生GUID作为数据的唯一标识同步到本地（优点：唯一性；缺点：需要存储多终端oldGUID，数据处理逻辑稍复杂。）</p>
 <p>2、使用几个特殊字段拼出一个字符串做加密（MD5?），使用密文作为唯一标识（优点：同步逻辑简单。缺点：字段如果有变化，数据不会作为修改数据而是作为新增数据）</p>
 <p>3、业务ID与物理ID：<br>使用GUID作为物理ID；使用某些业务数据拼出的MD5加密字符串作为业务ID。<br>新增、修改、删除数据在向服务器同步时，服务器需要校验业务ID。<br>如果服务器已存在业务ID，根据物理ID来进行数据是新增还是合并。如果数据存在合并，服务器需要向客户端返回合并后的物理ID和客户端原来的物理ID，客户端接收到合并信息后，对本地的数据的物理ID进行修改。</p>
 <h4 id="数据同步方案："><a href="#数据同步方案：" class="headerlink" title="数据同步方案："></a>数据同步方案：</h4><p>方案一：<br>1，同步方法：<br>对所有需要同步的数据按新增、修改、删除进行分类。<br>按照修改 -&gt; 删除 -&gt; 新增 -&gt; 查询的流程逐条同步。在每一条同步结束后，回调同步方法。</p>

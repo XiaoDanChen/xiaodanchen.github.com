@@ -31,7 +31,7 @@
 版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/archives/ 
 
 通讯协议和数据格式request、responseh">
-<meta property="og:updated_time" content="2016-11-09T03:48:43.799Z">
+<meta property="og:updated_time" content="2016-11-30T02:46:48.137Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="架构师之路（一）：门外汉的杂想">
 <meta name="twitter:description" content="前言
@@ -148,7 +148,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#通讯协议和数据格式"><span class="toc-text">通讯协议和数据格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#接口版本技术："><span class="toc-text">接口版本技术：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据同步技术："><span class="toc-text">数据同步技术：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#唯一标识方案："><span class="toc-text">唯一标识方案：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据同步方案："><span class="toc-text">数据同步方案：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据备份技术："><span class="toc-text">数据备份技术：</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#通讯协议和数据格式"><span class="toc-text">通讯协议和数据格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#接口版本技术："><span class="toc-text">接口版本技术：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据库主键设计"><span class="toc-text">数据库主键设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据同步技术："><span class="toc-text">数据同步技术：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#唯一标识方案-主键设计参看上面文章-："><span class="toc-text">唯一标识方案(主键设计参看上面文章)：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据同步方案："><span class="toc-text">数据同步方案：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据备份技术："><span class="toc-text">数据备份技术：</span></a></li></ol>
   </div>
 
 
@@ -193,7 +193,8 @@
 </blockquote>
 <h3 id="通讯协议和数据格式"><a href="#通讯协议和数据格式" class="headerlink" title="通讯协议和数据格式"></a>通讯协议和数据格式</h3><p>request、response<br>head、body<br>error code、error message<br>客户端、服务端统一参数定义格式，统一大小写，统一编码格式</p>
 <h3 id="接口版本技术："><a href="#接口版本技术：" class="headerlink" title="接口版本技术："></a>接口版本技术：</h3><p>为了兼容不同的软件版本或者业务版本，在后台接口设计的时候加入版本信息字段。后台根据版本信息做逻辑处理。</p>
-<h3 id="数据同步技术："><a href="#数据同步技术：" class="headerlink" title="数据同步技术："></a>数据同步技术：</h3><h4 id="唯一标识方案："><a href="#唯一标识方案：" class="headerlink" title="唯一标识方案："></a>唯一标识方案：</h4><p>1、服务器端产生GUID作为数据的唯一标识同步到本地（优点：唯一性；缺点：需要存储多终端oldGUID，数据处理逻辑稍复杂。）</p>
+<h3 id="数据库主键设计"><a href="#数据库主键设计" class="headerlink" title="数据库主键设计"></a>数据库主键设计</h3><p><a href="http://www.jcodecraeer.com/a/shujuku/2012/1014/434.html" target="_blank" rel="external">《数据库主键设计之思考》</a></p>
+<h3 id="数据同步技术："><a href="#数据同步技术：" class="headerlink" title="数据同步技术："></a>数据同步技术：</h3><h4 id="唯一标识方案-主键设计参看上面文章-："><a href="#唯一标识方案-主键设计参看上面文章-：" class="headerlink" title="唯一标识方案(主键设计参看上面文章)："></a>唯一标识方案(主键设计参看上面文章)：</h4><p>1、服务器端产生GUID作为数据的唯一标识同步到本地（优点：唯一性；缺点：需要存储多终端oldGUID，数据处理逻辑稍复杂。）</p>
 <p>2、使用几个特殊字段拼出一个字符串做加密（MD5?），使用密文作为唯一标识（优点：同步逻辑简单。缺点：字段如果有变化，数据不会作为修改数据而是作为新增数据）</p>
 <p>3、业务ID与物理ID：<br>使用GUID作为物理ID；使用某些业务数据拼出的MD5加密字符串作为业务ID。<br>新增、修改、删除数据在向服务器同步时，服务器需要校验业务ID。<br>如果服务器已存在业务ID，根据物理ID来进行数据是新增还是合并。如果数据存在合并，服务器需要向客户端返回合并后的物理ID和客户端原来的物理ID，客户端接收到合并信息后，对本地的数据的物理ID进行修改。</p>
 <h4 id="数据同步方案："><a href="#数据同步方案：" class="headerlink" title="数据同步方案："></a>数据同步方案：</h4><p>方案一：<br>1，同步方法：<br>对所有需要同步的数据按新增、修改、删除进行分类。<br>按照修改 -&gt; 删除 -&gt; 新增 -&gt; 查询的流程逐条同步。在每一条同步结束后，回调同步方法。</p>
