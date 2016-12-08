@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>Android 设计模式：（一）面向对象的六大原则 | Hello World!</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="设计模式," />
+  
+
+  <meta name="description" content="前言最近同事买了本Android设计模式的书，借来看看，感觉还不错，做一下笔记呗。有兴趣的同学可以买原书看看：《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社。文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。感兴趣的朋友欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiao">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 设计模式：（一）面向对象的六大原则">
+<meta property="og:url" content="http://yoursite.com/2016/12/08/Android-设计模式：（一）面向对象的六大原则/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="前言最近同事买了本Android设计模式的书，借来看看，感觉还不错，做一下笔记呗。有兴趣的同学可以买原书看看：《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社。文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。感兴趣的朋友欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiao">
+<meta property="og:updated_time" content="2016-12-08T03:57:54.805Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 设计模式：（一）面向对象的六大原则">
+<meta name="twitter:description" content="前言最近同事买了本Android设计模式的书，借来看看，感觉还不错，做一下笔记呗。有兴趣的同学可以买原书看看：《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社。文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。感兴趣的朋友欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiao">
+
+  
+    <link rel="alternate" href="/atom.xml" title="Hello World!" type="application/atom+xml">
+  
+
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+  
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#优化代码的第一步-单一职责原则"><span class="toc-text">优化代码的第一步-单一职责原则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#屌丝青年版"><span class="toc-text">屌丝青年版</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#源码"><span class="toc-text">源码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解析"><span class="toc-text">解析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#普通青年版"><span class="toc-text">普通青年版</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#源码-1"><span class="toc-text">源码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解析-1"><span class="toc-text">解析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Android-设计模式：（一）面向对象的六大原则" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Android 设计模式：（一）面向对象的六大原则</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.12.08</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>行者</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/Android/">Android</a> / <a class="article-category-link" href="/categories/Android/Java/">Java</a> / <a class="article-category-link" href="/categories/Android/Java/架构师/">架构师</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>前言</strong><br>最近同事买了本Android设计模式的书，借来看看，感觉还不错，做一下笔记呗。有兴趣的同学可以买原书看看：<strong>《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社</strong>。<br>文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。<br>感兴趣的朋友欢迎加入<strong>学习小组QQ群: 193765960</strong>。</p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
+</blockquote>
+<h2 id="优化代码的第一步-单一职责原则"><a href="#优化代码的第一步-单一职责原则" class="headerlink" title="优化代码的第一步-单一职责原则"></a><strong>优化代码的第一步-单一职责原则</strong></h2><p><strong>单一职责原则（SRP）:</strong>就一个类而言，应该仅有一个引起他变化的原因。简单来说，一个类应该是一组<strong>高度相关</strong>的函数，数据的封装。</p>
+<p>很抽象的概念是不是？别管他，举个栗子：<br><strong>开发一个图片加载器（ImageLoader），要求能够实现图片的下载加载，并能将图片缓存起来。</strong></p>
+<h3 id="屌丝青年版"><a href="#屌丝青年版" class="headerlink" title="屌丝青年版"></a>屌丝青年版</h3><h4 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">* 图片加载类</div><div class="line">**/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImageLoader</span></span>&#123;</div><div class="line">  <span class="comment">//图片缓存</span></div><div class="line">  LruCache&lt;Strig, Bitmap&gt; mImageCache;</div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ImageLoader</span><span class="params">()</span></span>&#123;</div><div class="line">    initImageCatche();</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="comment">//初始化缓存：mImageCache</span></div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initImageCache</span><span class="params">()</span></span>&#123;...&#125;</div><div class="line">  </div><div class="line">  <span class="comment">//加载图片</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">displayImage</span><span class="params">(String url, ImageView imageView)</span></span>&#123;...&#125;</div><div class="line">  </div><div class="line">  <span class="comment">//下载图片</span></div><div class="line">  <span class="function"><span class="keyword">public</span> Bitmap <span class="title">downloadImage</span><span class="params">(String ImgUrl)</span></span>&#123;...&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h4><p>ImageLoader耦合太严重，简直没有设计可言，更不要说扩展性，灵活性。所有的功能都写在一个类里，随着功能的增多，ImageLoader会越来越重，越来越臃肿复杂。整个图片加载系统就越来越脆弱。</p>
+<h3 id="普通青年版"><a href="#普通青年版" class="headerlink" title="普通青年版"></a>普通青年版</h3><h4 id="源码-1"><a href="#源码-1" class="headerlink" title="源码"></a>源码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">* 图片缓存类</div><div class="line">**/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImageCache</span></span>&#123;</div><div class="line">  <span class="comment">//图片缓存</span></div><div class="line">  LruCache&lt;Strig, Bitmap&gt; mImageCache;</div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ImageCache</span><span class="params">()</span></span>&#123;</div><div class="line">    initImageCatche();</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="comment">//初始化缓存：mImageCache</span></div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initImageCache</span><span class="params">()</span></span>&#123;...&#125;</div><div class="line">  </div><div class="line">  <span class="comment">//缓存图片</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(String url, Bitmap bitmap)</span></span>&#123;...&#125;</div><div class="line">  </div><div class="line">  <span class="comment">//获取图片</span></div><div class="line">  <span class="function"><span class="keyword">public</span> Bitmap <span class="title">get</span><span class="params">(String url)</span></span>&#123;...&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line">* 图片加载类</div><div class="line">**/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ImageLoader</span></span>&#123;</div><div class="line">  <span class="comment">//图片缓存</span></div><div class="line">  LruCache&lt;Strig, Bitmap&gt; mImageCache = <span class="keyword">new</span> ImageCache();</div><div class="line">  </div><div class="line">  <span class="comment">//加载图片</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">displayImage</span><span class="params">(String url, ImageView imageView)</span></span>&#123;...&#125;</div><div class="line">  </div><div class="line">  <span class="comment">//下载图片</span></div><div class="line">  <span class="function"><span class="keyword">public</span> Bitmap <span class="title">downloadImage</span><span class="params">(String ImgUrl)</span></span>&#123;...&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="解析-1"><a href="#解析-1" class="headerlink" title="解析"></a>解析</h4><p>将上个版本一份为二：<strong>ImageLoader</strong>，<strong>ImageCache</strong>。ImageLoader只负责图片的加载和下载逻辑；ImageCache只负责图片的缓存逻辑。这样架构更加清晰，功能模块的耦合性更加低，相互间的影响更小。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>从上面的例子中可以初步体会到，单一职责所表达的用意就是“单一”二字。我们设计类的时候，一定要仔细考虑如何划分类的职责和函数的功能。<br>正如前文所说，一个类应当是一组高度相关的函数和数据的组合，即一个类应当高内聚，低耦合。</p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">扫描加群</span>
+      <div class="donation-body">
+        <div class="tip text-center">好好学习，天天向上！</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qun.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+    <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+    
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>
