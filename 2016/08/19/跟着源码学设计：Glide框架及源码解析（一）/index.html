@@ -19,7 +19,7 @@
 
 本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/ 
 
-Gl">
+相关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="跟着源码学设计：Glide 框架及源码解析（一）">
 <meta property="og:url" content="http://yoursite.com/2016/08/19/跟着源码学设计：Glide框架及源码解析（一）/index.html">
@@ -28,17 +28,17 @@ Gl">
 
 本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/ 
 
-Gl">
+相关">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/GlideLifeCycle.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/GlideLifeCycleCallBack.png">
-<meta property="og:updated_time" content="2016-08-27T07:54:41.641Z">
+<meta property="og:updated_time" content="2016-12-10T08:42:52.339Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跟着源码学设计：Glide 框架及源码解析（一）">
 <meta name="twitter:description" content="前言近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。学习小组QQ群: 193765960。
 
 本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/ 
 
-Gl">
+相关">
 <meta name="twitter:image" content="http://yoursite.com/hello-world/img/GlideLifeCycle.png">
 
   
@@ -190,6 +190,8 @@ Gl">
 <blockquote>
 <p>本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/" target="_blank" rel="external">https://xiaodanchen.github.io/</a> </p>
 </blockquote>
+<p><strong>相关文章：</strong></p>
+<p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（一）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（二）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（三）</a><br><a href="https://xiaodanchen.github.io/2016/08/23/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（四）</a><br><a href="https://xiaodanchen.github.io/2016/09/11/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（五）</a></p>
 <h3 id="Glide-简介"><a href="#Glide-简介" class="headerlink" title="Glide 简介"></a>Glide 简介</h3><p>Glide是一个性能优良的第三方网络图片加载框架，Google官方对其较为推荐。Glide的优良性能在节省内存和快速流畅加载方面具有较好体现。究其内部机制，发现其优良性能得益于以下几点：</p>
 <ul>
 <li>与使用环境生命周期相绑定：RequestManagerFragment &amp; SupportRequestManagerFragment</li>

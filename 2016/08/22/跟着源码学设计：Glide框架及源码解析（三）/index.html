@@ -34,7 +34,7 @@
 <meta property="og:image" content="http://yoursite.com/hello-world/img/inbitmap.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/NormalLruMemory.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/GlideMemoryResourceCache.png">
-<meta property="og:updated_time" content="2016-08-27T07:55:46.094Z">
+<meta property="og:updated_time" content="2016-12-10T08:41:57.038Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跟着源码学设计：Glide框架及源码解析（三）">
 <meta name="twitter:description" content="前言
@@ -195,8 +195,8 @@
 <blockquote>
 <p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
 </blockquote>
-<p><strong>往期文章：</strong></p>
-<p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（一）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（二）</a></p>
+<p><strong>相关文章：</strong></p>
+<p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（一）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（二）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（三）</a><br><a href="https://xiaodanchen.github.io/2016/08/23/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（四）</a><br><a href="https://xiaodanchen.github.io/2016/09/11/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（五）</a></p>
 <h3 id="Glide内存缓存机制"><a href="#Glide内存缓存机制" class="headerlink" title="Glide内存缓存机制"></a>Glide内存缓存机制</h3><p>在之前的两篇中我们剖析了Glide的生命周期绑定机制和Glide的请求管理机制。接下来按说应该讲到request实际请求资源并回调刷新界面这一块了，但是为了更好的理解Glide在这一块的设计，我先大致的讲一讲Glide的内存缓存和管理机制。<br>不同于其他常见网络加载框架只有LruCatch一种缓存机制，Glide内存为三块（非常牛逼巧妙的设计）：</p>
 <ul>
 <li>ActiveResourceCache：缓存当前正在使用的资源（注意是弱引用）</li>
