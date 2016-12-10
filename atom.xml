@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-12-09T07:20:15.020Z</updated>
+  <updated>2016-12-10T08:24:28.673Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,86 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Android 设计模式：（二）单例模式</title>
+    <link href="http://yoursite.com/2016/12/09/Android-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%9A%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/"/>
+    <id>http://yoursite.com/2016/12/09/Android-设计模式：（二）单例模式/</id>
+    <published>2016-12-09T08:18:05.000Z</published>
+    <updated>2016-12-10T08:24:28.673Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>前言</strong><br>本文是对<strong>《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社</strong>所做的读书笔记。文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。<br>这本书不错，有兴趣的同学可以买原书看看。<br>感兴趣的朋友欢迎加入<strong>学习小组QQ群: 193765960</strong>。</p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
+</blockquote>
+<h2 id="1-单例模式的定义"><a href="#1-单例模式的定义" class="headerlink" title="1. 单例模式的定义"></a><strong>1. 单例模式的定义</strong></h2><p><strong>单例模式:</strong>确保某一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。</p>
+<h2 id="2-单例模式的实现"><a href="#2-单例模式的实现" class="headerlink" title="2. 单例模式的实现"></a><strong>2. 单例模式的实现</strong></h2><p>在正式介绍单例模式之前，我们有必要了解一下 instance = new Singleton()这样一条语句。乍一看这是一天简单的语句，用来生成一个Singleton类的实例，但实际上他不是一条原子操作。这条代码最终会被编译成多条汇编指令，他大致做了3件事情：<br>（1）给Singleton实例分配内存。<br>（2）调用Singleton()构造方法，初始化成员字段。<br>（3）将instance对象指向分配的内存空间（此时instance就不是null了）。<br>另外，JVM执行上面三条汇编指令的顺序是不定的，有可能是1-2-3，也有可能是1-3-2。</p>
+<h3 id="2-1饿汉模式"><a href="#2-1饿汉模式" class="headerlink" title="2.1饿汉模式"></a><strong>2.1饿汉模式</strong></h3><h4 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span></span>&#123;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton instance = <span class="keyword">new</span> Singleton();</div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">return</span> instance;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h4><p><strong>优点：</strong></p>
+<ul>
+<li>线程安全，无需关注多线程的问题。</li>
+<li>加载没有延时：在类创建的同时，就已经创建好类的实例</li>
+<li>写法简单</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>由于在类创建的时候，就创建了实例（不管你会不会用到），那么就有可能会缓存很多用户根本用不到的实例。</li>
+<li>如果类中的实例会消耗较大量的内存，则要慎用饿汉模式创建单例。</li>
+</ul>
+<h3 id="2-2-懒汉模式"><a href="#2-2-懒汉模式" class="headerlink" title="2.2 懒汉模式"></a><strong>2.2 懒汉模式</strong></h3><h4 id="代码示例-1"><a href="#代码示例-1" class="headerlink" title="代码示例"></a>代码示例</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span></span>&#123;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;</div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">if</span>(<span class="keyword">null</span> == instance)&#123;</div><div class="line">      intance = <span class="keyword">new</span> Singleton();</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> instance;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="优缺点-1"><a href="#优缺点-1" class="headerlink" title="优缺点"></a>优缺点</h4><p><strong>优点：</strong></p>
+<ul>
+<li>在使用时才会创建实例，在一定程度上节省了资源。<br><strong>缺点：</strong></li>
+<li>第一次加载时需要实例化，反应稍慢。</li>
+<li>加了同步锁，造成不必要的同步开销。</li>
+<li>如果忘记加同步锁，则是线程不安全的。</li>
+</ul>
+<h3 id="2-3-Double-Check-Lock"><a href="#2-3-Double-Check-Lock" class="headerlink" title="2.3 Double Check Lock"></a><strong>2.3 Double Check Lock</strong></h3><h4 id="代码示例-2"><a href="#代码示例-2" class="headerlink" title="代码示例"></a>代码示例</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line">  * volatile: </div><div class="line">  * 告诉JVM不要对volitile所修饰的变量进行拷贝。</div><div class="line">  * 这样就保证了instance不会在线程内存中保存拷贝，instance每次都从主内存中读取。</div><div class="line">  *</div><div class="line">  */</div><div class="line">  <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton instance;</div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">if</span>(<span class="keyword">null</span> == instance)&#123;</div><div class="line">      synchornized(Singleton.class)&#123;</div><div class="line">         <span class="keyword">if</span>(<span class="keyword">null</span> == instance)&#123;</div><div class="line">           intance = <span class="keyword">new</span> Singleton();</div><div class="line">         &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> instance;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="优缺点-2"><a href="#优缺点-2" class="headerlink" title="优缺点"></a>优缺点</h4><p><strong>优点：</strong></p>
+<ul>
+<li>资源利用率高，只有在第一次调用时才会分配资源。</li>
+<li>相较于懒汉模式，加载速度更快。</li>
+<li>在一定程度上避免了多余的同步，减轻了线程安全的问题。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>第一次加载时存在延时，反应较慢。</li>
+<li>存在失效的情况（虽然概率较小）：正如上文所说，如果当前线程调用new Singleton()对应的汇编的执行顺序是1-3-2，当有新的线程调用getinstance()时，instance没有初始化却非空，就造成了instance失效。</li>
+</ul>
+<h3 id="2-4-静态内部类单例模式"><a href="#2-4-静态内部类单例模式" class="headerlink" title="2.4 静态内部类单例模式"></a><strong>2.4 静态内部类单例模式</strong></h3><h4 id="代码示例-3"><a href="#代码示例-3" class="headerlink" title="代码示例"></a>代码示例</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span></span>&#123;</div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">return</span> SingletonHolder.instance;</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="comment">/**</span></div><div class="line">  * 静态内部类</div><div class="line">  */</div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SinletonHolder</span></span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton instace = <span class="keyword">new</span> Singleton();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="优缺点-3"><a href="#优缺点-3" class="headerlink" title="优缺点"></a>优缺点</h4><p>第一次加载Singleton类时并不会初始化instance，只有在第一次调用Singleton的getInstace()方法时才会导致instance初始化。因为，第一次调用getInstace()时，JVM才会加载SingletonHolder类。<br>这种方式不仅能够确保线程的安全，而且延迟了实例化，避免了饿汉模式的资源浪费，同时也能够保证单例对象的唯一性。</p>
+<h3 id="2-5-枚举单例"><a href="#2-5-枚举单例" class="headerlink" title="2.5 枚举单例"></a><strong>2.5 枚举单例</strong></h3><h4 id="代码示例-4"><a href="#代码示例-4" class="headerlink" title="代码示例"></a>代码示例</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">enum</span> SingletonEnum&#123;</div><div class="line">  INSTANCE;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span></span>&#123;</div><div class="line">    ...</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="优缺点-4"><a href="#优缺点-4" class="headerlink" title="优缺点"></a>优缺点</h4><ul>
+<li>写法简单</li>
+<li>线程安全</li>
+<li>在任何情况下(即使反序列化)，他都是一个实例。2.1到2.4介绍的几种方法，在反序列化（将实例对象写入磁盘再读取出来）时无法保证实例的唯一性。因为反序列化时系统会通过特殊的途径创建一个类的新实例，相当于调用了该类的构造函数，哪怕构造函数是私有的。反序列化操作提供了一个特别的钩子函数readResolve()，这个方法可以让开发人员控制对象的发序列化。例如，上述几个实现单例模式的方法要想杜绝反序列化时重新生成对象，那么必须加入如下方法：<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> Object <span class="title">readResolve</span><span class="params">()</span> throw ObjectStreamException</span>&#123;</div><div class="line">  <span class="keyword">return</span> instance;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="2-6-使用容器实现单例"><a href="#2-6-使用容器实现单例" class="headerlink" title="2.6 使用容器实现单例"></a><strong>2.6 使用容器实现单例</strong></h3><h4 id="代码示例-5"><a href="#代码示例-5" class="headerlink" title="代码示例"></a>代码示例</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonManager</span></span>&#123;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String,Object&gt; objMap =  <span class="keyword">new</span> HashMap&lt;String,Object&gt;();</div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">SingletonManager</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">registerService</span><span class="params">(String key, Object instance)</span></span>&#123;</div><div class="line">    <span class="keyword">if</span>(!objMap.containsKey(key))&#123;</div><div class="line">      objMap.put(key,instance);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">getService</span><span class="params">(String key)</span></span>&#123;</div><div class="line">    <span class="keyword">return</span> objMap.get(key);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="优缺点-5"><a href="#优缺点-5" class="headerlink" title="优缺点"></a>优缺点</h4><p>在程序的初始，将多中单例类型注入到一个统一的管理类中，在使用时根据key获取对应类型的对象。这种方式使得我们可以管理多种类型的单例，并且在使用时可以通过统一的接口进行获取操作，降低了用户的使用成本，也对用户隐藏了具体实现，降低了耦合度。<br>例如系统服务，就是这种模式：getSystemService(System.xx_SERVICE)</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;strong&gt;前言&lt;/strong&gt;&lt;br&gt;本文是对&lt;strong&gt;《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社&lt;/strong&gt;所做的读书笔记。文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。&lt;br&gt;这
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Android/Java/"/>
+    
+      <category term="架构师" scheme="http://yoursite.com/categories/Android/Java/%E6%9E%B6%E6%9E%84%E5%B8%88/"/>
+    
+    
+      <category term="设计模式" scheme="http://yoursite.com/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Android 设计模式：（一）面向对象的六大原则</title>
     <link href="http://yoursite.com/2016/12/08/Android-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%9A%EF%BC%88%E4%B8%80%EF%BC%89%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%85%AD%E5%A4%A7%E5%8E%9F%E5%88%99/"/>
     <id>http://yoursite.com/2016/12/08/Android-设计模式：（一）面向对象的六大原则/</id>
     <published>2016-12-08T02:48:01.000Z</published>
-    <updated>2016-12-09T07:20:15.020Z</updated>
+    <updated>2016-12-09T08:22:03.199Z</updated>
     
     <content type="html"><![CDATA[<p><strong>前言</strong><br>最近同事买了本Android设计模式的书，借来看看，感觉还不错，做一下笔记呗。有兴趣的同学可以买原书看看：<strong>《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社</strong>。<br>文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。<br>感兴趣的朋友欢迎加入<strong>学习小组QQ群: 193765960</strong>。</p>
 <blockquote>
@@ -1278,92 +1353,6 @@ a_{m1}\ \ a_{m2}\ ... a_{mn}
 </li>
 </ul>
 <p>（本篇是Glide框架及源码解析的第四篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/2016/08/23/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89/" target="_blank" rel="external">原文链接</a>）</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;strong&gt;前言&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。&lt;strong&gt;学习小组QQ群&lt;/strong&gt;: 193765960。&lt;/p&gt;
-&lt;p&gt;本篇是Glid
-    
-    </summary>
-    
-      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
-    
-    
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
-    
-      <category term="Glide" scheme="http://yoursite.com/tags/Glide/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>跟着源码学设计：Glide框架及源码解析（三）</title>
-    <link href="http://yoursite.com/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89/"/>
-    <id>http://yoursite.com/2016/08/22/跟着源码学设计：Glide框架及源码解析（三）/</id>
-    <published>2016-08-22T07:30:25.000Z</published>
-    <updated>2016-08-27T07:55:46.094Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong>前言</strong></p>
-<p>近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。<strong>学习小组QQ群</strong>: 193765960。</p>
-<p>本篇是Glide框架及源码解析的第三篇，更多文章敬请关注后续文章。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。</p>
-<blockquote>
-<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
-</blockquote>
-<p><strong>往期文章：</strong></p>
-<p><a href="https://xiaodanchen.github.io/2016/08/19/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（一）</a><br><a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="external">跟着源码学设计：Glide框架及源码解析（二）</a></p>
-<h3 id="Glide内存缓存机制"><a href="#Glide内存缓存机制" class="headerlink" title="Glide内存缓存机制"></a>Glide内存缓存机制</h3><p>在之前的两篇中我们剖析了Glide的生命周期绑定机制和Glide的请求管理机制。接下来按说应该讲到request实际请求资源并回调刷新界面这一块了，但是为了更好的理解Glide在这一块的设计，我先大致的讲一讲Glide的内存缓存和管理机制。<br>不同于其他常见网络加载框架只有LruCatch一种缓存机制，Glide内存为三块（非常牛逼巧妙的设计）：</p>
-<ul>
-<li>ActiveResourceCache：缓存当前正在使用的资源（注意是弱引用）</li>
-<li>LruResourceCache： 缓存最近使用过但是当前未使用的资源，LRU算法</li>
-<li>BitmapPool：缓存所有被释放的图片，内存复用，LRU算法</li>
-</ul>
-<p>注意：</p>
-<ul>
-<li>LruResourceCache和ActiveResourceCache设计是为了尽可能的资源复用</li>
-<li>BitmapPool的设计目的是为了尽可能的内存复用</li>
-</ul>
-<p>说的比较抽象，是不是懵逼了？别急，上图：<br><img src="/hello-world/img/MemoryCacheManager.png" alt="Glide内存缓存及管理机制"></p>
-<ul>
-<li>当我们需要显示某个资源时，Glide会先去查找LruResourceCache，找到了则将资源从LruResourceCache移除加入到ActiveResourceCache；</li>
-<li>LruResourceCache找不到资源则查找ActiveResourceCache。</li>
-<li>如果在ActiveResourceCache也找不到合适的资源，则会根据加载策略从硬盘或者网络加载资源。</li>
-<li>获取数据后Glide会从BitmapPool中找寻合适的可供内存复用的废弃recycled bitmap（找不到则会重新创建bitmap对象），然后刷新bitmap的数据。</li>
-<li>bitmap被转换封装为Resource缓存入ActiveResourceCache和Request对象中。</li>
-<li><p>Request的target会获取resource中引用的bitmap并展示。</p>
-</li>
-<li><p>当target的资源需要release时，resource会根据缓存策略被缓存到LruResourceCache，同时ActiveResourceCache中的弱引用会被删除。如果，该资源不能缓存到LruResourceCache，则资源将被recycle到BitmapPool。</p>
-</li>
-<li><p>当需要回收内存时（比如系统内存不足或者生命周期结束），LruResourceCache将根据LRU算法recycle一些resource到BitmapPool。</p>
-</li>
-<li>BitmapPool会根据缓存池的尺寸和recycled resource的缓存策略来缓存resource的bitmap。</li>
-<li>BitmapPool会根据LRU算法和缓存池的尺寸来释放一些老旧资源。</li>
-<li>当系统GC时，则会回收可回收的资源释放内存</li>
-</ul>
-<p>这样就完成了一个资源的完整的循环。</p>
-<h3 id="BitmapPool的内存复用机制"><a href="#BitmapPool的内存复用机制" class="headerlink" title="BitmapPool的内存复用机制"></a>BitmapPool的内存复用机制</h3><p>知识储备：</p>
-<ul>
-<li>BitmapFactory.Options.inBitmap是AndroiD3.0新增的一个属性，如果设置了这个属性则会重用这个Bitmap的内存从而提升性能。</li>
-<li>在SDK 11 -&gt; 18之间，重用的bitmap大小必须是一致的，例如给inBitmap赋值的图片大小为100-100，那么新申请的bitmap必须也为100-100才能够被重用。从SDK 19开始，新申请的bitmap大小必须小于或者等于已经赋值过的bitmap大小。</li>
-<li>新申请的bitmap与旧的bitmap必须有相同的解码格式，例如大家都是8888的，如果前面的bitmap是8888，那么就不能支持4444与565格式的bitmap了</li>
-</ul>
-<h4 id="使用inbitmap前，内存占用情况"><a href="#使用inbitmap前，内存占用情况" class="headerlink" title="使用inbitmap前，内存占用情况"></a>使用inbitmap前，内存占用情况</h4><p><img src="/hello-world/img/inbitmap_null.png" alt="使用inbitmap前，内存占用情况"></p>
-<h4 id="使用inbitmap后，内存占用情况"><a href="#使用inbitmap后，内存占用情况" class="headerlink" title="使用inbitmap后，内存占用情况"></a>使用inbitmap后，内存占用情况</h4><p><img src="/hello-world/img/inbitmap.png" alt="使用inbitmap后，内存占用情况"></p>
-<p>下面看一下核心代码：Downsampler的downsampleWithSize()方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> Bitmap <span class="title">downsampleWithSize</span><span class="params">(MarkEnforcingInputStream is, RecyclableBufferedInputStream  bufferedStream,</span></span></div><div class="line">BitmapFactory.Options options, BitmapPool pool, <span class="keyword">int</span> inWidth, <span class="keyword">int</span> inHeight, <span class="keyword">int</span> sampleSize,</div><div class="line">DecodeFormat decodeFormat) &#123;</div><div class="line">  <span class="comment">// Prior to KitKat, the inBitmap size must exactly match the size of the bitmap we're decoding.</span></div><div class="line">  Bitmap.Config config = getConfig(is, decodeFormat);</div><div class="line">  options.inSampleSize = sampleSize;</div><div class="line">  options.inPreferredConfig = config;</div><div class="line">  <span class="keyword">if</span> ((options.inSampleSize == <span class="number">1</span> || Build.VERSION_CODES.KITKAT &lt;= Build.VERSION.SDK_INT) &amp;&amp; shouldUsePool(is)) &#123;</div><div class="line">    <span class="keyword">int</span> targetWidth = (<span class="keyword">int</span>) Math.ceil(inWidth / (<span class="keyword">double</span>) sampleSize);</div><div class="line">    <span class="keyword">int</span> targetHeight = (<span class="keyword">int</span>) Math.ceil(inHeight / (<span class="keyword">double</span>) sampleSize);</div><div class="line">    <span class="comment">// BitmapFactory will clear out the Bitmap before writing to it, so getDirty is safe.</span></div><div class="line">    setInBitmap(options, pool.getDirty(targetWidth, targetHeight, config));</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> decodeStream(is, bufferedStream, options);</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="meta">@TargetApi</span>(Build.VERSION_CODES.HONEYCOMB)</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setInBitmap</span><span class="params">(BitmapFactory.Options options, Bitmap recycled)</span> </span>&#123;</div><div class="line">  <span class="keyword">if</span> (Build.VERSION_CODES.HONEYCOMB &lt;= Build.VERSION.SDK_INT) &#123;</div><div class="line">  	options.inBitmap = recycled;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="让我们先看一下我们最常见到的LruMemoryCache机制"><a href="#让我们先看一下我们最常见到的LruMemoryCache机制" class="headerlink" title="让我们先看一下我们最常见到的LruMemoryCache机制"></a>让我们先看一下我们最常见到的LruMemoryCache机制</h3><p><img src="/hello-world/img/NormalLruMemory.png" alt="ActiveResourceCache的设计"></p>
-<ul>
-<li>如图，当系统内存不足时，LruMemoryCache会根据LRU算法移除一些资源（bitmap）</li>
-<li>针对移除的资源，系统在GC时会回收资源(bitmap)以释放内存</li>
-<li>当应用再次需要次资源时，需要重新分配内存，重新对资源文件进行解析生成bitmap<br>1）这样会造成内存抖动；<br>2）比较耗费时间，影响流畅度（GC也比较频繁）</li>
-</ul>
-<h3 id="让我们再来看一下Glide的机制"><a href="#让我们再来看一下Glide的机制" class="headerlink" title="让我们再来看一下Glide的机制"></a>让我们再来看一下Glide的机制</h3><p><img src="/hello-world/img/GlideMemoryResourceCache.png" alt="ActiveResourceCache的设计"></p>
-<ul>
-<li>如图，当系统内存不足时，LruResourceCache会根据LRU算法移除一些资源（resource）到BitmapPool</li>
-<li>到BitmapPool会根据LRU算法移除一些资源（bitmap）</li>
-<li>当应用再次需要资源时，会优先复用到BitmapPool中的bitmap对象（复用其内存），只需刷新bitmap的像素数据<br>1）这样能有效地降低内存抖动；<br>2）由于很多情况下可以复用废弃bitmap的内存，因此避免了内存分配等造成的性能损耗，系统比较流畅<br>3）降低了系统GC的频率<br>4）LruResourceCache和BitmapPool中都是当前不在使用的资源，做整体的资源回收那叫一个酸爽。</li>
-</ul>
-<p>（本篇是Glide框架及源码解析的第三篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/2016/08/22/%E8%B7%9F%E7%9D%80%E6%BA%90%E7%A0%81%E5%AD%A6%E8%AE%BE%E8%AE%A1%EF%BC%9AGlide%E6%A1%86%E6%9E%B6%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89/" target="_blank" rel="external">原文链接</a>）</p>
 ]]></content>
     
     <summary type="html">
