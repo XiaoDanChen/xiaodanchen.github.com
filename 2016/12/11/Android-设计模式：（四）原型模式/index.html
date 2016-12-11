@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>Android 设计模式：（四）原型模式 | Hello World!</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="设计模式," />
+  
+
+  <meta name="description" content="前言本文是对《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社所做的读书笔记。文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。这本书不错，有兴趣的同学可以买原书看看。感兴趣的朋友欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/arch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 设计模式：（四）原型模式">
+<meta property="og:url" content="http://yoursite.com/2016/12/11/Android-设计模式：（四）原型模式/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="前言本文是对《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社所做的读书笔记。文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。这本书不错，有兴趣的同学可以买原书看看。感兴趣的朋友欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/arch">
+<meta property="og:updated_time" content="2016-12-11T05:37:03.096Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 设计模式：（四）原型模式">
+<meta name="twitter:description" content="前言本文是对《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社所做的读书笔记。文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。这本书不错，有兴趣的同学可以买原书看看。感兴趣的朋友欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/arch">
+
+  
+    <link rel="alternate" href="/atom.xml" title="Hello World!" type="application/atom+xml">
+  
+
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+  
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-原型模式的定义"><span class="toc-text">1. 原型模式的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-原型模式的实现"><span class="toc-text">2. 原型模式的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-屌丝程序员小明"><span class="toc-text">2.1 屌丝程序员小明</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#源码"><span class="toc-text">源码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解析"><span class="toc-text">解析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-装逼程序员小民"><span class="toc-text">2.2 装逼程序员小民</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#源码-1"><span class="toc-text">源码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解析-1"><span class="toc-text">解析</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-浅拷贝和深拷贝"><span class="toc-text">3. 浅拷贝和深拷贝</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Android-设计模式：（四）原型模式" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Android 设计模式：（四）原型模式</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.12.11</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>行者</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/Android/">Android</a> / <a class="article-category-link" href="/categories/Android/Java/">Java</a> / <a class="article-category-link" href="/categories/Android/Java/架构师/">架构师</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>前言</strong><br>本文是对<strong>《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社</strong>所做的读书笔记。文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。<br>这本书不错，有兴趣的同学可以买原书看看。<br>感兴趣的朋友欢迎加入<strong>学习小组QQ群: 193765960</strong>。</p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
+</blockquote>
+<h2 id="1-原型模式的定义"><a href="#1-原型模式的定义" class="headerlink" title="1. 原型模式的定义"></a><strong>1. 原型模式的定义</strong></h2><p>原型模式：对一个对象，通过<strong>克隆</strong>生成其副本，而不是通过new 的方式重新生成。<br>使用场景：</p>
+<ul>
+<li>类初始化需要消耗非常多的资源，包括数据、硬件资源等。通过克隆的方式，可以避免这些消耗。</li>
+<li>通过new 产生一个对象需要非常繁琐的数据准备或者访问权限，这时可以使用原型模式。</li>
+<li>一个对象需要提供给其他对象访问，而且各个调用者可能都需要修改其数据时，可以用原型模式拷贝多个对象供调用者使用，即保护性拷贝。</li>
+<li>一个对象，如果要求在某些对象中不允许对其修改，则可以使用原型模式，对其进行保护性拷贝，这样，无论对备份怎么修改都不会影响原型数据。</li>
+</ul>
+<h2 id="2-原型模式的实现"><a href="#2-原型模式的实现" class="headerlink" title="2. 原型模式的实现"></a><strong>2. 原型模式的实现</strong></h2><p>在开发中，我们有时会满足一些需求，就是有的对象中的数据只允许客户端读取，而不允许修改。例如，用户登录信息，只允许在用户登录模块修改，在其他模块比如登录校验、个人信息显示等模块，用户数信息不允许修改。让我们看看该如何实现：</p>
+<h3 id="2-1-屌丝程序员小明"><a href="#2-1-屌丝程序员小明" class="headerlink" title="2.1 屌丝程序员小明"></a><strong>2.1 屌丝程序员小明</strong></h3><h4 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">* 用户实体类</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span></span>&#123;</div><div class="line">  <span class="keyword">public</span> <span class="keyword">int</span> age;</div><div class="line">  <span class="keyword">public</span> String name;</div><div class="line">  <span class="keyword">public</span> String phone;</div><div class="line">  <span class="keyword">public</span> Address address;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line">* 用户地址类</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Address</span></span>&#123;</div><div class="line">  <span class="keyword">public</span> String city;<span class="comment">//城市</span></div><div class="line">  <span class="keyword">public</span> String district;<span class="comment">//区</span></div><div class="line">  <span class="keyword">public</span> String street;<span class="comment">//街道</span></div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Address</span><span class="params">(String city,String district,String street)</span></span>&#123;</div><div class="line">    <span class="keyword">this</span>.city = city;</div><div class="line">    <span class="keyword">this</span>.district = district;</div><div class="line">    <span class="keyword">this</span>.street = street;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line">* 登录接口</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Login</span></span>&#123;</div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">login</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line">* 登录实现</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginImpl</span> <span class="keyword">implements</span> <span class="title">Login</span></span>&#123;</div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">login</span><span class="params">()</span></span>&#123;</div><div class="line">    User user = <span class="keyword">new</span> User();</div><div class="line">    <span class="comment">//登录服务器获取用户信息，将信息赋值给user</span></div><div class="line">    user.age = <span class="number">22</span>;</div><div class="line">    user.name = <span class="string">"xiaoming"</span></div><div class="line">    user.address = <span class="keyword">new</span> Address(<span class="string">"北京市"</span>,<span class="string">"海淀区"</span>,<span class="string">"花园东路"</span>);</div><div class="line">    ...</div><div class="line">    </div><div class="line">    <span class="comment">//用户信息获取到后，将用户信息设置到Session中（单例模式）</span></div><div class="line">    LoginSession.getLoginSession().setLoginedUser(user);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line">* 登录Session:单例模式</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginSession</span></span>&#123;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> LoginSession instance = <span class="keyword">null</span>;</div><div class="line">  <span class="comment">//已登录用户</span></div><div class="line">  <span class="keyword">private</span> User sUser;</div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">LoginSession</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">  </div><div class="line">  <span class="comment">//懒汉模式</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> LoginSession <span class="title">getLoginSession</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">if</span>(<span class="keyword">null</span> == instance)&#123;</div><div class="line">      instance = <span class="keyword">new</span> LoginSession();</div><div class="line">    &#125;</div><div class="line">    renturn instance;</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="comment">//设置已登录的用户信息:包级私有函数</span></div><div class="line">  <span class="comment">//public：所有类可见。 </span></div><div class="line">  <span class="comment">//pirvate：只有同一类内部的方法可见，在有就是内部类也可以访问到。 </span></div><div class="line">  <span class="comment">//默认（friendly）：包内可见。 </span></div><div class="line">  <span class="comment">//protected:继承可见。</span></div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">setLoginedUser</span><span class="params">(User user)</span></span>&#123;</div><div class="line">    sUser = user;</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">public</span> User <span class="title">getLoginedUser</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">return</span> sUser;</div><div class="line">  &#125;</div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">login</span><span class="params">()</span></span>&#123;</div><div class="line">    User user = <span class="keyword">new</span> User();</div><div class="line">    <span class="comment">//登录服务器获取用户信息，将信息赋值给user</span></div><div class="line">    user.age = <span class="number">22</span>;</div><div class="line">    user.name = <span class="string">"xiaoming"</span></div><div class="line">    ...</div><div class="line">    </div><div class="line">    <span class="comment">//用户信息获取到后，将用户信息设置到Session中（单例模式）</span></div><div class="line">    LoginSession.getLoginSession().setLoginedUser(user);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h4><p>用户登录时从服务器获取用户信息，通过setLoginedUser方法设置给LoginSession。由于setLoginedUser的访问权限是包级别的，因此外部模块无法访问，在一定程度上满足了不允许其他模块修改的要求，小明很高兴。<br>可是，小明有一个比他还菜的同事大力协同开发，大力果然出奇迹啊：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//在用户信息功能模块，</span></div><div class="line"><span class="comment">//获取登录用户信息</span></div><div class="line">User user = LoginSession.getLoginSession().getLoginedUser();</div><div class="line"><span class="comment">//测试：更新用户地址信息</span></div><div class="line">user.address = <span class="keyword">new</span> Address(<span class="string">"北京市"</span>,<span class="string">"朝阳区"</span>,<span class="string">"大望路"</span>);</div></pre></td></tr></table></figure></p>
+<p>联调时发现，用户显示的信息和服务器获取的信息不一致，小民很郁闷，他本来打的好算盘是只允许LoginSession包下才能通过setLoginedUser设定修改用户信息，然而并没有其他人调用setLoginedUser方法，追查了好久终于发现大力这个猪队友干的好事。如何才能保证服务器获取到的数据在其他模块下不会被更改呢？但是屌丝到爆的小明对这个问题束手无策了。<br>无奈之下，小明找到了小民，小民嘴角一勾，“小CASE!”</p>
+<h3 id="2-2-装逼程序员小民"><a href="#2-2-装逼程序员小民" class="headerlink" title="2.2 装逼程序员小民"></a><strong>2.2 装逼程序员小民</strong></h3><h4 id="源码-1"><a href="#源码-1" class="headerlink" title="源码"></a>源码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">* 用户实体类</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Cloneable</span></span>&#123;</div><div class="line">  ...</div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> User <span class="title">clone</span><span class="params">()</span></span>&#123;</div><div class="line">    User user = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span>&#123;</div><div class="line">      user = (User)<span class="keyword">super</span>.clone();</div><div class="line">    &#125;<span class="keyword">catch</span>(CloneNotSupportedException e)&#123;</div><div class="line">      e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">//修改LoginSession的getLoginedUser方法</span></div><div class="line"><span class="function"><span class="keyword">public</span> User <span class="title">getLoginedUser</span><span class="params">()</span></span>&#123;</div><div class="line">  <span class="keyword">return</span> sUser.clone()；</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="解析-1"><a href="#解析-1" class="headerlink" title="解析"></a>解析</h4><p>小民采用了原型模式，让User实现了克隆功能，在不允许修个user的地方，使用其副本，即保护性拷贝。</p>
+<h2 id="3-浅拷贝和深拷贝"><a href="#3-浅拷贝和深拷贝" class="headerlink" title="3. 浅拷贝和深拷贝"></a><strong>3. 浅拷贝和深拷贝</strong></h2><blockquote>
+<p>未完，待续</p>
+</blockquote>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">扫描加群</span>
+      <div class="donation-body">
+        <div class="tip text-center">好好学习，天天向上！</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qun.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+    <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+    
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>
