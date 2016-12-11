@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>Android 设计模式：（五）工厂方法模式 | Hello World!</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="设计模式," />
+  
+
+  <meta name="description" content="前言本文是对《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社所做的读书笔记。文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。这本书不错，有兴趣的同学可以买原书看看。感兴趣的朋友欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/arch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 设计模式：（五）工厂方法模式">
+<meta property="og:url" content="http://yoursite.com/2016/12/11/Android-设计模式：（五）工厂方法模式/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="前言本文是对《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社所做的读书笔记。文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。这本书不错，有兴趣的同学可以买原书看看。感兴趣的朋友欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/arch">
+<meta property="og:updated_time" content="2016-12-11T08:31:02.663Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 设计模式：（五）工厂方法模式">
+<meta name="twitter:description" content="前言本文是对《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社所做的读书笔记。文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。这本书不错，有兴趣的同学可以买原书看看。感兴趣的朋友欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/arch">
+
+  
+    <link rel="alternate" href="/atom.xml" title="Hello World!" type="application/atom+xml">
+  
+
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+  
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-工厂方法模式的定义"><span class="toc-text">1. 工厂方法模式的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-工厂方法模式的实现"><span class="toc-text">2. 工厂方法模式的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-厂长小明的幸福人生"><span class="toc-text">2.1 厂长小明的幸福人生</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#源码"><span class="toc-text">源码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解析"><span class="toc-text">解析</span></a></li></ol></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Android-设计模式：（五）工厂方法模式" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Android 设计模式：（五）工厂方法模式</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.12.11</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>行者</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/Android/">Android</a> / <a class="article-category-link" href="/categories/Android/Java/">Java</a> / <a class="article-category-link" href="/categories/Android/Java/架构师/">架构师</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>前言</strong><br>本文是对<strong>《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社</strong>所做的读书笔记。文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。<br>这本书不错，有兴趣的同学可以买原书看看。<br>感兴趣的朋友欢迎加入<strong>学习小组QQ群: 193765960</strong>。</p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
+</blockquote>
+<h2 id="1-工厂方法模式的定义"><a href="#1-工厂方法模式的定义" class="headerlink" title="1. 工厂方法模式的定义"></a><strong>1. 工厂方法模式的定义</strong></h2><p>定义一个<strong>用于创建对象的接口</strong>，让子类决定实例化那个类。</p>
+<h2 id="2-工厂方法模式的实现"><a href="#2-工厂方法模式的实现" class="headerlink" title="2. 工厂方法模式的实现"></a><strong>2. 工厂方法模式的实现</strong></h2><p>先说明两个接口：<strong>抽象产品类</strong>和<strong>抽象工厂类</strong>。<br>抽象产品类：定义了产品族，同一产品组的产品具有相似的功能，因此可以使用同一个产品线。<br>抽象工厂类：定义了产品线</p>
+<h3 id="2-1-厂长小明的幸福人生"><a href="#2-1-厂长小明的幸福人生" class="headerlink" title="2.1 厂长小明的幸福人生"></a><strong>2.1 厂长小明的幸福人生</strong></h3><p>假如，小明是一家汽车厂的厂长，主要负责Audi某种车型的组装，比如Q3、Q5、Q7，对于这类车型来说，因为内部结构差异并不大，所以一条生产线足以应付这3种车型。</p>
+<h4 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">* 抽象产品类:定义该类产品的功能</div><div class="line">* 奥迪车</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AudiCar</span></span>&#123;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">drive</span><span class="params">()</span></span>;<span class="comment">//汽车可以行使</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">selfNavigation</span><span class="params">()</span></span>;<span class="comment">//汽车可以自动巡航</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line">* 抽象工厂类:定义生产某类产品产品线</div><div class="line">* 奥迪生产线</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AudiFactory</span></span>&#123;</div><div class="line">  <span class="comment">//生产Audi类车</span></div><div class="line">  <span class="keyword">public</span> <span class="keyword">abstract</span> &lt;T extends AudiCar&gt; <span class="function">T <span class="title">createCar</span><span class="params">(Class&lt;T&gt; clz)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>产品的具体类型<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">* Q3</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AudiQ3</span> <span class="keyword">extends</span> <span class="title">AudiCar</span></span>&#123;</div><div class="line">  ...</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line">* Q3</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AudiQ5</span> <span class="keyword">extends</span> <span class="title">AudiCar</span></span>&#123;</div><div class="line">  ...</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line">* Q3</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AudiQ7</span> <span class="keyword">extends</span> <span class="title">AudiCar</span></span>&#123;</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>建成流水线<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AudiCarFactory</span> <span class="keyword">extends</span> <span class="title">AudiFactory</span></span>&#123;</div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="keyword">public</span> &lt;T extends AudiCar&gt; <span class="function">T <span class="title">createCar</span><span class="params">(Class&lt;T&gt; clz)</span></span>&#123;</div><div class="line">    AudiCar car = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span>&#123;</div><div class="line">      car = (AudiCar)Class.forName(clz.getName()).newInstance();</div><div class="line">    &#125;<span class="keyword">catch</span>(Exception e)&#123;</div><div class="line">      e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> (T)car;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>成产<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span></span>&#123;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] agrs)</span></span>&#123;</div><div class="line">    <span class="comment">//引进流水线</span></div><div class="line">    AudiFactory factory = <span class="keyword">new</span> AudiCarFactory();</div><div class="line">    <span class="comment">//接收订单</span></div><div class="line">    Class&lt;? extends AudiCar&gt;[] orders = <span class="keyword">new</span> Class&lt;&gt;[]&#123;AudiQ3.class,AudiQ5.class,AudiQ5.class,AudiQ3.calss,AudiQ7.calss&#125;;</div><div class="line">    <span class="comment">//生产</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>,size=orders.lenth; i&lt;size; i++)&#123;</div><div class="line">      AudiCar car = (AudiCar)factory.createCar(orders[i]);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h4><p>工厂方法模式：根据具体产品的类型，构建对应的产品线，生产出对应的产品。</p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">扫描加群</span>
+      <div class="donation-body">
+        <div class="tip text-center">好好学习，天天向上！</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qun.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+    <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+    
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>
