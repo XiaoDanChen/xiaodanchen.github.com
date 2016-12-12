@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>Android 设计模式：（七）策略模式 | Hello World!</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="设计模式," />
+  
+
+  <meta name="description" content="前言本文是对《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社所做的读书笔记。文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。这本书不错，有兴趣的同学可以买原书看看。感兴趣的朋友欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/arch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 设计模式：（七）策略模式">
+<meta property="og:url" content="http://yoursite.com/2016/12/12/Android-设计模式：（七）策略模式/index.html">
+<meta property="og:site_name" content="Hello World!">
+<meta property="og:description" content="前言本文是对《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社所做的读书笔记。文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。这本书不错，有兴趣的同学可以买原书看看。感兴趣的朋友欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/arch">
+<meta property="og:updated_time" content="2016-12-12T08:36:19.016Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 设计模式：（七）策略模式">
+<meta name="twitter:description" content="前言本文是对《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社所做的读书笔记。文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。这本书不错，有兴趣的同学可以买原书看看。感兴趣的朋友欢迎加入学习小组QQ群: 193765960。
+
+版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/arch">
+
+  
+    <link rel="alternate" href="/atom.xml" title="Hello World!" type="application/atom+xml">
+  
+
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+  <link href="/css/styles.css?v=028c63b1" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+  
+
+  
+
+</head>
+
+<body>
+
+
+  
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-策略模式的定义"><span class="toc-text">1. 策略模式的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-策略模式的实现"><span class="toc-text">2. 策略模式的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-屌丝程序猿小明"><span class="toc-text">2.1 屌丝程序猿小明</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#源码"><span class="toc-text">源码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解析"><span class="toc-text">解析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-装逼程序猿小民"><span class="toc-text">2.2 装逼程序猿小民</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#源码-1"><span class="toc-text">源码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解析-1"><span class="toc-text">解析</span></a></li></ol></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Android-设计模式：（七）策略模式" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Android 设计模式：（七）策略模式</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.12.12</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>行者</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/Android/">Android</a> / <a class="article-category-link" href="/categories/Android/Java/">Java</a> / <a class="article-category-link" href="/categories/Android/Java/架构师/">架构师</a>
+  </span>
+
+
+
+      
+
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>前言</strong><br>本文是对<strong>《Adroid 源码设计模式解析与实战》 何红辉、关爱民 著 人民邮电出版社</strong>所做的读书笔记。文章是对本书的一些列学习笔记，如若有侵犯到作者权益，还望作者能联系我，我会及时下架。<br>这本书不错，有兴趣的同学可以买原书看看。<br>感兴趣的朋友欢迎加入<strong>学习小组QQ群: 193765960</strong>。</p>
+<blockquote>
+<p>版权归作者所有，如有转发，请注明文章出处：<a href="https://xiaodanchen.github.io/archives/" target="_blank" rel="external">https://xiaodanchen.github.io/archives/</a> </p>
+</blockquote>
+<h2 id="1-策略模式的定义"><a href="#1-策略模式的定义" class="headerlink" title="1. 策略模式的定义"></a><strong>1. 策略模式的定义</strong></h2><p>假如在开发中遇到下列情况：</p>
+<ul>
+<li>针对同一问题有多重处理方式，他们仅仅是具体行为有差别。</li>
+<li>需要安全的封装多种同一类型的操作。</li>
+<li>同一个抽象类有多个子类，而子类的使用又是互斥的。</li>
+</ul>
+<p>遇到上述几种情况时，我们可以使用策略模式。策略模式定义了一系列的算法，并将每一个算法封装起来，而且使他们还可以相互替换。策略模式让算法独立于使用它的客户而独立变化。</p>
+<h2 id="2-策略模式的实现"><a href="#2-策略模式的实现" class="headerlink" title="2. 策略模式的实现"></a><strong>2. 策略模式的实现</strong></h2><p>通常如果一个问题有多个解决方案时，最简单的方法就是利用if-else或者switch语句方式根据不同的情景选择不同的解决方案，但这种简单的方案问题太多，例如耦合性太高、代码臃肿、难于维护等。而且违反开闭原则，而应对这种情况策略模式是很好的选择。<br>举个栗子：假如我们要设计一个出行交通工具(公交车、地铁)计费模块。</p>
+<h3 id="2-1-屌丝程序猿小明"><a href="#2-1-屌丝程序猿小明" class="headerlink" title="2.1 屌丝程序猿小明"></a><strong>2.1 屌丝程序猿小明</strong></h3><h4 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">* 价格计算器类</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PriceCalculator</span></span>&#123;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BUS = <span class="number">1</span>;<span class="comment">//公交车类型</span></div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SUBWAY = <span class="number">2</span>;<span class="comment">//地铁类型</span></div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</div><div class="line">    PriceCalculator calculator =  <span class="keyword">new</span> PriceCalculator();</div><div class="line">    System.out.println(<span class="string">"坐16公里的公交车票价为："</span>+calculator.calculatePrice(<span class="number">16</span>,BUS));</div><div class="line">    </div><div class="line">    System.out.println(<span class="string">"坐16公里的地铁票价为："</span>+calculator.calculatePrice(<span class="number">16</span>,SUBWAY));</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="comment">/**</span></div><div class="line">  * 公交车，十公里之内1元，超过十公里后没加一元钱可以乘车公里。</div><div class="line">  */</div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">busPrice</span><span class="params">(<span class="keyword">int</span> km)</span></span>&#123;</div><div class="line">    <span class="comment">//超过10公里的中国</span></div><div class="line">    <span class="keyword">int</span> extraTotal = km-<span class="number">10</span>;</div><div class="line">    <span class="comment">//超过的距离是5公里的倍数</span></div><div class="line">    <span class="keyword">int</span> extraFactor = extraTotal/<span class="number">5</span>；</div><div class="line">    <span class="comment">//超过的距离对5公里取余</span></div><div class="line">    <span class="keyword">int</span> fraction = extraTotal%<span class="number">5</span>;</div><div class="line">    </div><div class="line">    <span class="comment">//计算价格</span></div><div class="line">    <span class="keyword">int</span> price = <span class="number">1</span>+extraFactor*<span class="number">1</span>;</div><div class="line">    <span class="keyword">return</span> fraction&gt;<span class="number">0</span>?++price:price;</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="comment">/**</span></div><div class="line">  * 地铁，6公里（含）之内3元，6~12公里（含）4元，</div><div class="line">  * 12~22公里（含）5元，22~32公里（含）6元，。</div><div class="line">  */</div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">subwayPrice</span><span class="params">(<span class="keyword">int</span> km)</span></span>&#123;</div><div class="line">    <span class="keyword">if</span>(km&lt;=<span class="number">6</span>)&#123;</div><div class="line">      <span class="keyword">return</span> <span class="number">3</span>;</div><div class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(km&gt;<span class="number">6</span> &amp;&amp; km&lt;=<span class="number">12</span>)&#123;</div><div class="line">      <span class="keyword">return</span> <span class="number">4</span>;</div><div class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(km&gt;<span class="number">12</span> &amp;&amp; km&lt;=<span class="number">22</span>)&#123;</div><div class="line">      <span class="keyword">return</span> <span class="number">5</span>;</div><div class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(km&gt;<span class="number">22</span> &amp;&amp; km&lt;=<span class="number">32</span>)&#123;</div><div class="line">      <span class="keyword">return</span> <span class="number">6</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">7</span>;</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">int</span> <span class="title">calculatePrice</span><span class="params">(<span class="keyword">int</span> km,<span class="keyword">int</span> type)</span></span>&#123;</div><div class="line">    <span class="keyword">if</span>(type == BUS)&#123;</div><div class="line">      <span class="keyword">return</span> busPrice(km);</div><div class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(type == SUBWAY)&#123;</div><div class="line">      <span class="keyword">return</span> subwayPrice(km);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h4><p>首先，PriceCalculator类很明显的问题就是违反了单一职责原则，他承担了计算公交车和地铁乘车价格的职责。<br>其次，PriceCalculator类违反了开闭原则，通过if-else语句的形式来判断使用哪种计算方式，当我们增加一种出行方式时比如出租车，我们就需要在PriceCalculator类中增加一个方法来计算出租车出行的价格，并且需要在calculatePrice方法中增加新的条件分支。</p>
+<p>这样随着业务的复杂，这个代码会越来越臃肿，难以维护。</p>
+<h3 id="2-2-装逼程序猿小民"><a href="#2-2-装逼程序猿小民" class="headerlink" title="2.2 装逼程序猿小民"></a><strong>2.2 装逼程序猿小民</strong></h3><p>小民采用策略模式来设计该功能</p>
+<h4 id="源码-1"><a href="#源码-1" class="headerlink" title="源码"></a>源码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">* 计价策略接口</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CalculateStrategy</span></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line">  * 按距离计算价格</div><div class="line">  * <span class="doctag">@param</span> km 距离</div><div class="line">  * <span class="doctag">@return</span> 价格</div><div class="line">  */</div><div class="line">  <span class="function"><span class="keyword">int</span> <span class="title">calculatePrice</span><span class="params">(<span class="keyword">int</span> km)</span></span>;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line">* 公交车计价策略</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BusStrategy</span> <span class="keyword">implements</span> <span class="title">CalculateStrategy</span></span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line">  * 公交车，十公里之内1元，超过十公里后没加一元钱可以乘车公里。</div><div class="line">  */</div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">calculatePrice</span><span class="params">(<span class="keyword">int</span> km)</span></span>&#123;</div><div class="line">    <span class="comment">//超过10公里的中国</span></div><div class="line">    <span class="keyword">int</span> extraTotal = km-<span class="number">10</span>;</div><div class="line">    <span class="comment">//超过的距离是5公里的倍数</span></div><div class="line">    <span class="keyword">int</span> extraFactor = extraTotal/<span class="number">5</span>；</div><div class="line">    <span class="comment">//超过的距离对5公里取余</span></div><div class="line">    <span class="keyword">int</span> fraction = extraTotal%<span class="number">5</span>;</div><div class="line">    </div><div class="line">    <span class="comment">//计算价格</span></div><div class="line">    <span class="keyword">int</span> price = <span class="number">1</span>+extraFactor*<span class="number">1</span>;</div><div class="line">    <span class="keyword">return</span> fraction&gt;<span class="number">0</span>?++price:price;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line">* 地铁计价策略</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BusStrategy</span> <span class="keyword">implements</span> <span class="title">CalculateStrategy</span></span>&#123;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">  * 地铁，6公里（含）之内3元，6~12公里（含）4元，</div><div class="line">  * 12~22公里（含）5元，22~32公里（含）6元，。</div><div class="line">  */</div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">calculatePrice</span><span class="params">(<span class="keyword">int</span> km)</span></span>&#123; </div><div class="line">    <span class="keyword">if</span>(km&lt;=<span class="number">6</span>)&#123;</div><div class="line">      <span class="keyword">return</span> <span class="number">3</span>;</div><div class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(km&gt;<span class="number">6</span> &amp;&amp; km&lt;=<span class="number">12</span>)&#123;</div><div class="line">      <span class="keyword">return</span> <span class="number">4</span>;</div><div class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(km&gt;<span class="number">12</span> &amp;&amp; km&lt;=<span class="number">22</span>)&#123;</div><div class="line">      <span class="keyword">return</span> <span class="number">5</span>;</div><div class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(km&gt;<span class="number">22</span> &amp;&amp; km&lt;=<span class="number">32</span>)&#123;</div><div class="line">      <span class="keyword">return</span> <span class="number">6</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">7</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line">* 价格计算器类</div><div class="line">*/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PriceCalculator</span></span>&#123;</div><div class="line">  CalculateStrategy mStrategy;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</div><div class="line">    PriceCalculator calculator =  <span class="keyword">new</span> PriceCalculator();</div><div class="line">    <span class="comment">//设置计价策略</span></div><div class="line">    calculator.setStrategy(<span class="keyword">new</span> BusStrategy());</div><div class="line">    System.out.println(<span class="string">"坐16公里的公交车票价为："</span>+calculatePrice(<span class="number">16</span>));</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStrategy</span><span class="params">(CalculateStrategy strategy;)</span></span>&#123;</div><div class="line">    mStrategy = strategy</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">calculatePrice</span><span class="params">(<span class="keyword">int</span> km)</span></span>&#123;</div><div class="line">    <span class="keyword">if</span>(<span class="keyword">null</span> == mStrategy)&#123;</div><div class="line">      <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> mStrategy.calculatePrice(km);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="解析-1"><a href="#解析-1" class="headerlink" title="解析"></a>解析</h4><p>经过上面的重构之后，去掉了各种各样的if-else语句，结构变得更加清晰。<br>不同的策略封装符合单一职责原则。<br>PriceCalculator的实际调用符合开闭原则和依赖注入原则，便于扩展。</p>
+
+    
+  </div>
+</article>
+
+</div>
+
+
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">扫描加群</span>
+      <div class="donation-body">
+        <div class="tip text-center">好好学习，天天向上！</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qun.jpg" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+    <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+    
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>
