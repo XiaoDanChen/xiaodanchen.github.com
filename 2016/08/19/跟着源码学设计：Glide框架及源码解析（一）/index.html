@@ -29,9 +29,10 @@
 本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/ 
 
 相关">
+<meta property="og:image" content="http://yoursite.com/hello-world/img/glide_lifecycle_sample.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/GlideLifeCycle.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/GlideLifeCycleCallBack.png">
-<meta property="og:updated_time" content="2016-12-15T02:58:09.960Z">
+<meta property="og:updated_time" content="2016-12-15T03:09:16.179Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跟着源码学设计：Glide 框架及源码解析（一）">
 <meta name="twitter:description" content="前言近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。学习小组QQ群: 193765960。
@@ -39,7 +40,7 @@
 本篇是Glide框架及源码解析的第一篇，更多文章敬请关注后续文章。版权归作者所有，如有转发，请注明文章出处：https://xiaodanchen.github.io/ 
 
 相关">
-<meta name="twitter:image" content="http://yoursite.com/hello-world/img/GlideLifeCycle.png">
+<meta name="twitter:image" content="http://yoursite.com/hello-world/img/glide_lifecycle_sample.png">
 
   
     <link rel="alternate" href="/atom.xml" title="Hello World!" type="application/atom+xml">
@@ -148,7 +149,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Glide-简介"><span class="toc-text">1. Glide 简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-为什么要绑定生命周期（有什么优点）？"><span class="toc-text">1.1 为什么要绑定生命周期（有什么优点）？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-绑定原理"><span class="toc-text">1.2 绑定原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Glide生命周期绑定机制类图"><span class="toc-text">3. Glide生命周期绑定机制类图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-RequestManagerRetriever-单例模式"><span class="toc-text">3.1 RequestManagerRetriever(单例模式)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-xxxxRequestManagerFragment-绑定context的生命周期"><span class="toc-text">3.2 xxxxRequestManagerFragment(绑定context的生命周期)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-ActivityFragmentLifecycle"><span class="toc-text">3.3 ActivityFragmentLifecycle</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-RequestManager"><span class="toc-text">3.4 RequestManager</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Glide生命周期绑定机制时序图"><span class="toc-text">4. Glide生命周期绑定机制时序图</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Glide-简介"><span class="toc-text">1. Glide 简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-为什么要绑定生命周期（有什么优点）？"><span class="toc-text">1.1 为什么要绑定生命周期（有什么优点）？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-绑定原理"><span class="toc-text">1.2 绑定原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Glide生命周期回调示意图"><span class="toc-text">2. Glide生命周期回调示意图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Glide生命周期绑定机制类图"><span class="toc-text">3. Glide生命周期绑定机制类图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-RequestManagerRetriever-单例模式"><span class="toc-text">3.1 RequestManagerRetriever(单例模式)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-xxxxRequestManagerFragment-绑定context的生命周期"><span class="toc-text">3.2 xxxxRequestManagerFragment(绑定context的生命周期)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-ActivityFragmentLifecycle"><span class="toc-text">3.3 ActivityFragmentLifecycle</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-RequestManager"><span class="toc-text">3.4 RequestManager</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Glide生命周期绑定机制时序图"><span class="toc-text">4. Glide生命周期绑定机制时序图</span></a></li></ol>
   </div>
 
 
@@ -210,6 +211,7 @@
 <li>Glide定义了RequestManagerFragment 和 SupportRequestManagerFragment两种fragment。该两类Fragment不具有任何的界面和其他功能，通过入口传入的context获取到的fm绑定生命周期到context上。</li>
 <li>Glide内部的生命周期绑定机制进一步通过基于xxxxRequestManagerFragment 的生命周期接口的回调实现。</li>
 </ul>
+<h2 id="2-Glide生命周期回调示意图"><a href="#2-Glide生命周期回调示意图" class="headerlink" title="2. Glide生命周期回调示意图"></a><strong>2. Glide生命周期回调示意图</strong></h2><p><img src="/hello-world/img/glide_lifecycle_sample.png" alt="Glide生命周期绑定机制类图"></p>
 <h2 id="3-Glide生命周期绑定机制类图"><a href="#3-Glide生命周期绑定机制类图" class="headerlink" title="3. Glide生命周期绑定机制类图"></a><strong>3. Glide生命周期绑定机制类图</strong></h2><p><img src="/hello-world/img/GlideLifeCycle.png" alt="Glide生命周期绑定机制类图"></p>
 <h3 id="3-1-RequestManagerRetriever-单例模式"><a href="#3-1-RequestManagerRetriever-单例模式" class="headerlink" title="3.1 RequestManagerRetriever(单例模式)"></a><strong>3.1 RequestManagerRetriever(单例模式)</strong></h3><ul>
 <li>根据context获取fm;</li>
