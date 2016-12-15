@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://yoursite.com/hello-world/img/glide_lifecycle_sample.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/GlideLifeCycle.png">
 <meta property="og:image" content="http://yoursite.com/hello-world/img/GlideLifeCycleCallBack.png">
-<meta property="og:updated_time" content="2016-12-15T03:09:16.179Z">
+<meta property="og:updated_time" content="2016-12-15T03:24:01.026Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跟着源码学设计：Glide 框架及源码解析（一）">
 <meta name="twitter:description" content="前言近期研究了一下Glide的图片加载框架，在这里和大家分享一下。由于代码研读有限，难免有错误的地方，了解的童鞋还望指正。如果这篇文章对大家学习Glide有帮助，还望大家多多转载。学习小组QQ群: 193765960。
@@ -211,7 +211,7 @@
 <li>Glide定义了RequestManagerFragment 和 SupportRequestManagerFragment两种fragment。该两类Fragment不具有任何的界面和其他功能，通过入口传入的context获取到的fm绑定生命周期到context上。</li>
 <li>Glide内部的生命周期绑定机制进一步通过基于xxxxRequestManagerFragment 的生命周期接口的回调实现。</li>
 </ul>
-<h2 id="2-Glide生命周期回调示意图"><a href="#2-Glide生命周期回调示意图" class="headerlink" title="2. Glide生命周期回调示意图"></a><strong>2. Glide生命周期回调示意图</strong></h2><p><img src="/hello-world/img/glide_lifecycle_sample.png" alt="Glide生命周期绑定机制类图"></p>
+<h2 id="2-Glide生命周期回调示意图"><a href="#2-Glide生命周期回调示意图" class="headerlink" title="2. Glide生命周期回调示意图"></a><strong>2. Glide生命周期回调示意图</strong></h2><p><img src="/hello-world/img/glide_lifecycle_sample.png" alt="Glide生命周期回调示意图"></p>
 <h2 id="3-Glide生命周期绑定机制类图"><a href="#3-Glide生命周期绑定机制类图" class="headerlink" title="3. Glide生命周期绑定机制类图"></a><strong>3. Glide生命周期绑定机制类图</strong></h2><p><img src="/hello-world/img/GlideLifeCycle.png" alt="Glide生命周期绑定机制类图"></p>
 <h3 id="3-1-RequestManagerRetriever-单例模式"><a href="#3-1-RequestManagerRetriever-单例模式" class="headerlink" title="3.1 RequestManagerRetriever(单例模式)"></a><strong>3.1 RequestManagerRetriever(单例模式)</strong></h3><ul>
 <li>根据context获取fm;</li>
